@@ -1,0 +1,66 @@
+<div class="popup-section bg-effects-cointainer vidyoConnecto-popup">
+    <div class="bg-effects-cointainer-inner vidyoConnecto-popup-inner">
+        <div class="bgfx-section">
+            <image id="bgEffectClose" src="images/cancel.png" alt="" class="bg-effect cancel" />
+
+            <h1>Choose background</h1>
+
+            <div class="vidyoConnecto-popup-body">
+                <!-- <div class="bg-gird-prev-img">
+                    <img class="grid_image" src="images/login-img.jpg" alt="">
+                </div> -->
+
+                <form id="select-img">
+                    <label class="radioButton">None
+                        <input type="radio" checked="checked" name="radioBGFX" value="VIDYO_CONNECTORCAMERAEFFECTTYPE_None" />
+                        <span class="RadioCheckmark"></span>
+                    </label>
+
+                    <label class="radioButton">Blur background
+                        <input type="radio" name="radioBGFX" value="VIDYO_CONNECTORCAMERAEFFECTTYPE_Blur" />
+                        <span class="RadioCheckmark"></span>
+                    </label>
+
+                    <label class="radioButton">Virtual background
+                        <input type="radio" name="radioBGFX" value="VIDYO_CONNECTORCAMERAEFFECTTYPE_VirtualBackground" />
+                        <span class="RadioCheckmark"></span>
+                    </label>
+                    <div class="from-field disabled">
+                        <div class="range-wrapper">
+                                <label for="rangeBlurIntensity">Intensity</label>
+                            <input class="input-range" id="rangeBlurIntensity" type="range" name="rangeBlurIntensity" min="3" max="8" value="6" step="1" />
+                        </div>
+                    </div>
+                    </div>
+                </form>
+
+                <div class="bg-gird-images disable">
+                    <div id="bgOptionsDisabler"></div>
+                    <ul>
+                        <li class="txt">
+                            <span id="openLocalBackgroundImgFile">Use your images</span>
+                        </li>
+                        <li><img class="grid_image" data-imgVal="1" src="images/thumbnails/virtual-bg-1.png"
+                                alt=""></li>
+                        <li><img class="grid_image" data-imgVal="2" src="images/thumbnails/virtual-bg-2.png" alt=""></li>
+                        <li><img class="grid_image" data-imgVal="3" src="images/thumbnails/virtual-bg-3.png" alt="">
+                        </li>
+                        <li><img class="grid_image" data-imgVal="4" src="images/thumbnails/virtual-bg-4.png" alt=""></li>
+                        <li><img class="grid_image" data-imgVal="5" src="images/thumbnails/virtual-bg-5.png" alt=""></li>
+                        <li><img class="grid_image" data-imgVal="6" src="images/thumbnails/virtual-bg-6.png" alt=""></li>
+                        <li><img class="grid_image" data-imgVal="7" src="images/thumbnails/virtual-bg-7.png" alt=""></li>
+                        <!-- <li><img class="grid_image" src="images/thumbnails/space-1.png" alt=""></li> -->
+                    </ul>
+                </div>
+
+            </div>
+            <div class="inputButton">
+                <input id="applyBackground" type="button" value="Apply" class="Button ButtonGreen">
+            </div>
+        </div>
+
+
+    </div>
+</div>
+</div>
+<!-- @TODO remove unused classes -->

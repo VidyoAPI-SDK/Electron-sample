@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <script src="js/uiChanger.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&display=swap"
+        rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="lib/jquery-3.1.1.min.js"><\/script>')</script>
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+            background: #353535;
+            font-family: 'Lato', sans-serif;
+            font-size: 16px;
+            font-weight: normal;
+            color: #4a4a4a;
+            overflow: hidden;
+        }
+
+        #wm-heading {
+            font-weight: 100;
+            ;
+            color: #C2C2C2;
+            font-size: 40px;
+            margin-bottom: 24px;
+            ;
+        }
+
+        #wm-wrapper {
+            margin: 8px;
+            padding: 24px;
+            box-sizing: border-box;
+
+            width: 600px;
+            ;
+            height: 400px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+
+        }
+
+        #wm-wrapper ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        #wm-wrapper:-webkit-scrollbar-track {
+            box-shadow: inset 0 0 2px #fff;
+            border-radius: 5px;
+            background: #fff;
+        }
+
+        #wm-wrapper::-webkit-scrollbar-thumb {
+            background: #ececec;
+            border-radius: 5px;
+        }
+
+        #wm-wrapper::-webkit-scrollbar-thumb:hover {
+            background: #ececec;
+        }
+
+        .note {
+            font-weight: 300;
+            ;
+            letter-spacing: 1px;
+            color: #C2C2C2;
+            font-size: 16px;
+            line-height: 180%;
+        }
+
+        #joinLink-wrapper {
+            width: 100%;
+            padding: 8px;
+            border: solid 1px #ccc;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            background-color: #242424;
+        }
+        #joinLink-wrapper  > div{
+            margin-bottom: 8px;;
+        }
+        .caption{
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #C2C2C2;
+            font-size: 12px;
+            line-height: 180%;
+        }
+        #joinLink-text ,  #roomPin-text{
+            font-weight: 400;
+            letter-spacing: 1px;
+            color: #C2C2C2;
+            font-size: 16px;
+            line-height: 180%;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="wm-wrapper">
+        <div id="wm-heading">"Let's meet via Vidyo!</div>
+        <p class="note" id="inviteContent"></p>
+        <div id="joinLink-wrapper">
+            <div class="caption">
+                Copy and Share URL and Room Pin to Invite
+            </div>
+            <div id="joinLink-text">
+
+            </div>
+            <div id="roomPin-text">
+                <div> Room PIN : <span id="roomPin"></span></div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const extension = urlParams.get('extension');
+        const roomPin = urlParams.get('roomPin');
+        const joinLink = urlParams.get('joinLink');
+        const inviteContent = urlParams.get('inviteContent');
+        $("#inviteContent").text(decodeURI(inviteContent))
+        $("#joinLink-text").text(decodeURI(joinLink));
+        $("#roomPin").text(decodeURI(roomPin));
+        
+
+    </script>
+</body>
+
+</html>

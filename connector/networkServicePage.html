@@ -1,0 +1,253 @@
+<div class="vidyoConnecto-popup">
+  <div class="vidyoConnecto-popup-inner network-service-cointainer-inner">
+    <div class="ns-header">
+      <div></div>
+      <div>Network Service</div>
+      <div><img src="images/cancel.png" class="close-icon" /></div>
+    </div>
+
+    <div class="caption-text">
+      An application tool used for SOAP/REST interface.
+    </div>
+    <div class="network-popup-body">
+      <h3>HTTP REQUEST DETAIL</h3>
+
+      <form onsubmit="event.preventDefault();" action="" class="form-network-service-request">
+        <div class="ns-row services">
+          <div class="ns-col">
+            <label for="networkServiceURL">Service Url*</label>
+            <div class="fieldbox">
+              <input type="text" id="networkServiceURL" name="networkServiceURL" class="from-txt-box" required />
+              <small>Error</small>
+            </div>
+          </div>
+          <div class="ns-col">
+            <label for="networkServiceRequestNumber">Request Number</label>
+            <div class="fieldbox">
+              <input type="text" id="networkServiceRequestNumber" name="networkServiceRequestNumber"
+                class="from-txt-box" />
+            </div>
+          </div>
+        </div>
+
+        <div class="webProxy">
+          <p class="subheading">
+            WebProxy Credentials
+          </p>
+          <div class="ns-row">
+            <div class="ns-col">
+              <label>User Name</label>
+              <div class="fieldbox">
+                <input type="text" name="" class="from-txt-box" id = "networkServiceWebProxyUserName"/>
+              </div>
+            </div>
+            <div class="ns-col">
+              <label>User Password</label>
+              <div class="fieldbox">
+                <input type="password" name="" class="from-txt-box" id = "networkServiceWebProxyPassword"/>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="auth-detail-selection">
+
+        </div>
+
+        <div class="token">
+          <p class="subheading">Select Authorization Detail</p>
+          <div class="ns-row">
+            <div class="ns-col">
+              <div class="radio ml" >
+                <input id="authDetailToken" name="radioNetworkServiceAuthDetail" type="radio" />
+                <label for="authDetailToken" class="radio-label">Token</label>
+              </div>
+              <div class="fieldbox">
+                <input type="text" id="networkServiceTokenInput" name="" class="from-txt-box" disabled />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="credentials">
+          <div class="ns-row">
+            <div class="ns-col">
+              <div class="radio">
+                <input id="authDetailCredentials" name="radioNetworkServiceAuthDetail" type="radio" />
+                <label for="authDetailCredentials" class="radio-label">Credentials</label>
+              </div>
+            </div>
+            <div class="ns-col">
+              <label>User Name</label>
+              <div class="fieldbox">
+                <input type="text" id="networkServiceCredentialName" name="" class="from-txt-box" disabled />
+              </div>
+            </div>
+            <div class="ns-col">
+              <label>User Password</label>
+              <div class="fieldbox">
+                <input type="password" id="networkServiceCredentialPassword" name="" class="from-txt-box" disabled />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="requesttype">
+          <div class="ns-row">
+            <div class="ns-col">
+              <p class="subheading">Select Request Type*</p>
+              <div class="radio-group">
+                <div class="radio">
+                  <input id="networkServiceReqSOAP" name="networkServiceReqType" type="radio" checked />
+                  <label for="networkServiceReqSOAP" class="radio-label">SOAP</label>
+                </div>
+                <div class="radio">
+                  <input id="networkServiceReqREST" name="networkServiceReqType" type="radio" />
+                  <label for="networkServiceReqREST" class="radio-label">REST</label>
+                </div>
+              </div>
+            </div>
+            <div class="ns-col">
+              <p class="subheading">Select Requested Method</p>
+              <div class="fieldbox">
+                <select class="from-txt-box" id="networkServiceReqMethod" disabled>
+                  <option value="POST">POST</option>
+                  <option value="GET">GET</option>
+                  <option value="PUT">PUT</option>
+                  <option value="PATCH">PATCH</option>
+                  <option value="DELETE">DELETE</option>
+                </select>
+              </div>
+            </div>
+            <div class="ns-col">
+              <p class="subheading">Select Encoding Method</p>
+              <div class="fieldbox">
+                <!-- <input type="text" name="" class="from-txt-box" id=""/>
+                 -->
+                <select class="from-txt-box" id="networkServiceContentEncoding">                 
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="token">
+          <p class="subheading">Select Certificate Authority</p>
+          <div class="ns-row">
+            <div class="ns-col">
+              <div class="radio">
+                <input id="networkServiceReqFileInfo" name="radioNetworkServiceReqFile" type="radio" checked />
+                <label for="networkServiceReqFileInfo" class="radio-label">File Info</label>
+              </div>
+              <div class="fieldbox">
+                <input type="text" id="networkServiceFileInfo" name="" class="from-txt-box" />
+              </div>
+            </div>
+            <div class="ns-col">
+              <div class="radio">
+                <input id="networkServiceReqFileContent" name="radioNetworkServiceReqFile" type="radio" />
+                <label for="networkServiceReqFileContent" class="radio-label">File Content</label>
+              </div>
+              <div class="fieldbox">
+                <input type="text" id="networkServiceFileContent" name="" class="from-txt-box" disabled />
+              </div>
+            </div>
+          </div>
+        </div>  
+
+        <div class="HTTPRequest">
+          <p class="subheading">HTTP Request Payload</p>
+          <div class="ns-row">
+            <div class="ns-col">
+              <div class="fieldbox">
+                <textarea name="networkServiceRequestPayload" id="networkServiceRequestPayload" rows="4"
+                  class="from-txt-box"></textarea>
+              </div>
+            </div>
+            <div class="ns-col">
+              <div class="btns"><!-- @todo btn will be disabled by default -->
+                <input type="submit" value="Send Request" name="btnNetworkServiceRequest" />
+                <input type="button" class="reset-settings" value="Clear Details" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <hr />
+
+      <h3>HTTP RESPONSE DETAIL</h3>
+
+      <form class="form-network-service-response">
+        <div class="col-3">
+          <div class="ns-row">
+            <div class="ns-col">
+              <label>Response Number</label>
+              <div class="fieldbox">
+                <input type="text" name="networkServiceResponseNumber" id="networkServiceResponseNumber" class="from-txt-box" disabled/>
+              </div>
+            </div>
+            <div class="ns-col">
+              <label>Error Code</label>
+              <div class="fieldbox">
+                <input type="text" name="networkServiceResponseErrCode" id="networkServiceResponseErrCode" class="from-txt-box" readonly/>
+              </div>
+            </div>
+            <div class="ns-col">
+              <label>HTTP Status Code</label>
+              <div class="fieldbox">
+                <input type="text" name="networkServiceResponseHttpStatus" id="networkServiceResponseHttpStatus" class="from-txt-box" readonly/>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="webProxy size-Content">
+          <div class="ns-row">
+            <div class="ns-col">
+              <label>Size</label>
+              <div class="fieldbox">
+                <input type="text" name="networkServiceResponseSize" id="networkServiceResponseSize" class="from-txt-box" disabled />
+              </div>
+            </div>
+            <div class="ns-col">
+              <label>Content Type</label>
+              <div class="fieldbox">
+                <input type="text" name="networkServiceResponseContentType" id="networkServiceResponseContentType" class="from-txt-box" disabled/>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="webProxy disabled">
+          <p class="subheading">WebProxy Discover Information-</p>
+          <div class="ns-row">
+            <div class="ns-col">
+              <label>IP Address</label>
+              <div class="fieldbox">
+                <input type="text" name="networkServiceResponseIPAdd" id="networkServiceResponseIPAdd" class="from-txt-box" disabled/>
+              </div>
+            </div>
+            <div class="ns-col">
+              <label>IP Port</label>
+              <div class="fieldbox">
+                <input type="text" name="networkServiceResponseIPPort" id="networkServiceResponseIPPort" class="from-txt-box" disabled/>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="HTTP">
+          <p class="subheading">HTTP Response Payload</p>
+          <div class="ns-row">
+            <div class="ns-col">
+              <div class="fieldbox">
+                <textarea name="networkServiceResponseHttpPayload" id="networkServiceResponseHttpPayload" rows="4" class="from-txt-box" readonly></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

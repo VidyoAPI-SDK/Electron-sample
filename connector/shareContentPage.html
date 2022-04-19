@@ -1,0 +1,57 @@
+<!-- popup -->
+<div class="vidyoConnecto-popup">
+    <div class="screen-share-popup" style="width:80%;">
+        <img id="close-share-popup" src="images/cancel-white.png" alt="" class="cancel">
+        <h1>What would you like to share?</h1>
+        
+        <div class="share-popup-body">
+
+            <div class="share-list">
+                <ul>
+                    <li class="content-share-list active" id="share_all_application"><image src="images/all_shares.svg" alt=""> <span>All Applications</span></li>
+                    <li class="content-share-list" id="share_screen"><image src="images/monitor.svg" alt=""> <span>Screens</span></li>
+                </ul>
+                <ul id="localWindowShareList">
+                   
+                </ul>
+            </div>
+
+            <div class="share-right">
+                <div class="share-right-header">
+                   
+                    <div id="content-share-tooltip">
+                        <div id="tooltip-head">
+                            <div id="tooltip-arrow">
+
+                            </div>
+                        </div>
+                        <div id="tooltip-content">
+                            Recommended for sharing static documents, presentations, images etc.
+                        </div>
+                    </div>
+
+                    <div class="radio radio1">
+                        <input id="shareframe_rate_normal" name="shareframe_rate" type="radio" value="framerate-normal" checked=""/>
+                        <label for="shareframe_rate_normal" class="radio-label radio-label1">Static (Recommended)</label>
+                    </div>
+                    <div class="radio radio1">
+                        <input id="shareframe_rate_high" name="shareframe_rate" type="radio" value="framerate-high" />
+                        <label for="shareframe_rate_high" class="radio-label radio-label1">Video</label>
+                    </div>
+                    <div class="radio radio1" id="audio-share-check">
+                        <input id="content_share_audio" name="content_share_audio" type="checkbox" disabled="disabled" />
+                        <label for="content_share_audio" class="radio-label radio-label1">Audio Sharing</label>
+                        
+                    </div>
+                </div>
+
+                <div id="share-screen-content" class="screen-area">
+
+                   
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

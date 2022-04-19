@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>EDD864C2-6AE7-4631-B61E-56BF651878AC</title>
+    <defs>
+        <path d="M14.7343454,4 L15.9323816,5.18856198 L11.191,9.993 L16,14.7638394 L14.7891329,15.939553 L10.006,11.194 L5.26571489,16 L4.06767868,14.8114978 L8.808,10.006 L4,5.23622039 L5.21086714,4.06050676 L9.993,8.805 L14.7343454,4 Z" id="path-1"></path>
+    </defs>
+    <g id="UX-391-&amp;-392-VidyoConnector-Sample-app-on-Windows-&amp;-MacOS-v7" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Assets" transform="translate(-212.000000, -196.000000)">
+            <g id="icon_close" transform="translate(212.000000, 196.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use fill="#4A4A4A" xlink:href="#path-1"></use>
+            </g>
+        </g>
+    </g>
+</svg>

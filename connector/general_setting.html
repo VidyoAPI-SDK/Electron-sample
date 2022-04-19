@@ -1,0 +1,118 @@
+<image id="settingClose" src="images/cancel.png" alt="" class="setting cancel" />
+<h1>General</h1>
+<div class="right-con-section-scroll general-setting-cointainer">
+    <div class="right-con-section-row">
+        <div class="right-con-section-col">
+            <div class="from-field cpuProfileFrame">
+                <p class="lbl">CPU Profile</p>
+                <div class="radio">
+                    <input id="radio-1" value="VIDYO_CONNECTORTRADEOFFPROFILE_Low" name="radio_cpuprofile" type="radio" checked>
+                    <label for="radio-1" class="radio-label">Low</label>
+                </div>
+                <div class="radio">
+                    <input id="radio-2" value="VIDYO_CONNECTORTRADEOFFPROFILE_Medium" name="radio_cpuprofile" type="radio">
+                    <label for="radio-2" class="radio-label">Medium</label>
+                </div>
+                <div class="radio">
+                    <input id="radio-3" value="VIDYO_CONNECTORTRADEOFFPROFILE_High" name="radio_cpuprofile" type="radio">
+                    <label for="radio-3" class="radio-label">High</label>
+                </div>
+            </div>
+            <div class="from-field networkSignalingFrame">
+                <p class="lbl">Network for signaling</p>
+                <select id="sel_network_signal">
+                </select>
+            </div>
+            <div class="from-field NetworkMediaFrame">
+                <p class="lbl">Network for media</p>
+                <select id="sel_network_media">
+                </select>
+            </div>
+        </div>
+        <div class="right-con-section-col">
+            <div class="from-field autoReconnectFrame">
+                <div class="checkbox-btn">
+                    <label class="checkbox">
+                        <input type="checkbox" value="1" id="check_autoReconnect" name="showhide">
+                        <span>Auto reconnect</span>
+                    </label>
+                </div>
+            </div>
+            <div class="from-field autoConnectFrame ">
+                <p class="lbl">Max reconnect attempts</p>
+                <div class="radio-col">
+                    <div class="radio">
+                        <input id="radio-01" value="1" name="radio_maxReconnectAttempt" type="radio">
+                        <label for="radio-01" class="radio-label">1</label>
+                    </div>
+                    <div class="radio">
+                        <input id="radio-02" value="2" name="radio_maxReconnectAttempt" type="radio">
+                        <label for="radio-02" class="radio-label">2</label>
+                    </div>
+                    <div class="radio">
+                        <input id="radio-03" value="3" name="radio_maxReconnectAttempt" type="radio" checked>
+                        <label for="radio-03" class="radio-label">3</label>
+                    </div>
+                    <div class="radio">
+                        <input id="radio-04" value="4" name="radio_maxReconnectAttempt" type="radio">
+                        <label for="radio-04" class="radio-label">4</label>
+                    </div>
+                </div>
+            </div>
+            <div class="from-field autoConnectFrame ">
+                <p class="lbl">Reconnect back off</p>
+                <select id="radio_reconnectBackOff">
+                <option value="2">2 sec</option>
+                <option value="3">3 sec</option>
+                <option value="4">4 sec</option>
+                <option value="5">5 sec</option>
+                <option value="6">6 sec</option>
+                <option value="7">7 sec</option>
+                <option value="8">8 sec</option>
+                <option value="9">9 sec</option>
+                <option value="10">10 sec</option>
+                <option value="11">11 sec</option>
+                <option value="12">12 sec</option>
+                <option value="13">13 sec</option>
+                <option value="14">14 sec</option>
+                <option value="15">15 sec</option>
+                <option value="16">16 sec</option>
+                <option value="17">17 sec</option>
+                <option value="18">18 sec</option>
+                <option value="19">19 sec</option>
+                <option value="20">20 sec</option>
+                </select>
+            </div>
+
+          
+            <div class="from-field analyticsToggle">
+                <p class="lbl">Set Analytics Provider</p>
+                <div class="analyticsToggleContent">
+                    <div class="radio-row">
+                        <div class="radio">
+                            <input id="radio-analytic-00" value="VIDYO_CONNECTORANALYTICSSERVICETYPE_None" name="radio_analytic_type" type="radio" checked="true" />
+                            <label for="radio-analytic-00" class="radio-label">None</label>
+                        </div>
+                        <div class="radio">
+                            <input id="radio-analytic-01" value="VIDYO_CONNECTORANALYTICSSERVICETYPE_VidyoInsights" name="radio_analytic_type" type="radio" />
+                            <label for="radio-analytic-01" class="radio-label">VidyoInsights</label>
+                        </div>
+                        <div class="radio">
+                            <input id="radio-analytic-02" value="VIDYO_CONNECTORANALYTICSSERVICETYPE_Google" name="radio_analytic_type" type="radio" />
+                            <label for="radio-analytic-02" class="radio-label">Google</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="debug-sperator"/>
+            <div class="from-field">
+                <p class="lbl">Debug Mode</p>
+                <div class="toggle-debug-mode switch">
+                    <input type="checkbox" id="toggleDebugMode" />
+                    <label for="toggleDebugMode">Toggle</label>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

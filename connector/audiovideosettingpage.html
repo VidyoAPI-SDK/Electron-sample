@@ -1,0 +1,106 @@
+<image src="images/cancel.png" alt="" class="cancel" id="settingClose">
+    <h1>Video</h1>
+
+    <div class="right-con-section-scroll">
+        <div class="right-con-section-row">
+
+            <div class="right-con-section-col">
+                <div class="from-field">
+                    <p class="lbl">Camera</p>
+                    <select id="cameras">
+                        <option value='0'>None</option>
+                    </select>
+                    <div class="cam-img">
+                        <!-- <image src="images/login-img.jpg" alt=""> -->
+                    </div>
+                </div>
+
+                <div class="from-field">
+                    <p class="lbl">Resolution</p>
+                    <select id="cameras_resolution">
+                   </select>
+                </div>
+
+                <div class="from-field">
+                    <p class="lbl">Frame Rate</p>
+                    <select id="cameras_fps">
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="right-con-section-col">
+                <div class="from-field">
+                    <div class="checkbox-btn"><label class="checkbox">
+                            <input type="checkbox" name="showhide" id = "disable-video-low-bandwidth">
+                            <span>Disable video on poor connection</span>
+                        </label></div>
+                </div>
+
+
+                <div class="from-field disable-vid-low-bw disabled">
+                    <p class="lbl">Response time</p>
+                    <select id = "response_time">
+                        <option value = '5'>5 sec</option>
+                        <option value = '10'>10 sec</option>
+                        <option value = '15'>15 sec</option>
+                        <option value = '20'>20 sec</option>
+                        <option value = '25'>25 sec</option>
+                        <option value = '30'>30 sec</option>
+                        <option value = '35'>35 sec</option>
+                        <option value = '40'>40 sec</option>
+                        <option value = '45'>45 sec</option>
+                        <option value = '50'>50 sec</option>
+                        <option value = '55'>55 sec</option>
+                        <option value = '60'>60 sec</option>
+                    </select>
+                </div>
+
+                <div class="from-field disable-vid-low-bw disabled">
+                    <p class="lbl">Sample time</p>
+                    <select id="sample_time">
+                        <option value = '1'>1 sec</option>
+                        <option value = '2'>2 sec</option>
+                        <option value = '3'>3 sec</option>
+                        <option value = '4'>4 sec</option>
+                        <option value = '5'>5 sec</option>
+                        <option value = '6'>6 sec</option>
+                        <option value = '7'>7 sec</option>
+                        <option value = '8'>8 sec</option>
+                        <option value = '9'>9 sec</option>
+                        <option value = '10'>10 sec</option>
+                    </select>
+                </div>
+
+                <div class="from-field disable-vid-low-bw disabled">
+                    <p class="lbl">Low bandwidth threshold</p>
+                    <select id="low_bandwidth_threshold">
+                        <option value = '100'>100 KBps</option>
+                        <option value = '150'>150 KBps</option>
+                        <option value = '200'>200 KBps</option>
+                        <option value = '250'>250 KBps</option>
+                        <option value = '300'>300 KBps</option>
+                    </select>
+                </div>
+
+                <div class="from-field">
+                    <p class="lbl">Max allowed bandwidth</p>
+
+                    <div class="send-recive">
+                        <div><label>Send </label>
+                            <input type = "number" class="from-txt-box" id ="send-Max-bandwidth"> KBps
+                        </div>
+                        <div><label>Receive </label>
+                            <input type = "number" class="from-txt-box" id ="recieve-Max-bandwidth"> KBps
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    </div>
+    </div>

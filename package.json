@@ -1,0 +1,30 @@
+{
+  "name": "VidyoConnector",
+  "version": "1.0.0",
+  "productName": "Vidyo app",
+  "description": "Multiparty HD Video Conferencing using Vidyo.io",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "package-win": "electron-packager . VidyoConnector --overwrite --platform=win32 --arch=x64 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Vidyo App\"",
+    "package-mac-m1": "electron-packager . VidyoConnector --overwrite --platform=darwin --arch=arm64 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Vidyo App\"",
+    "package-mac": "electron-packager . VidyoConnector --overwrite --platform=darwin --arch=x64 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Vidyo App\""
+  },
+  "keywords": [
+    "Electron",
+    "Vidyo",
+    "Connector",
+    "demo"
+  ],
+  "author": "Vidyo",
+  "devDependencies": {
+    "electron": "^14.0.0",
+    "node-gyp": "^3.8.0"
+  },
+  "dependencies": {
+    "@electron/remote": "^2.0.1",
+    "electron-packager": "^15.2.0",
+    "electron-rebuild": "^3.2.3",
+    "nan": "^2.15.0"
+  }
+}

@@ -1,0 +1,197 @@
+<div class="popup-container"></div>
+<div class="vidyoConnecto-popup popup-hide">
+    <div class="vidyoConnecto-popup-inner"  style="width:30%;">
+        <div class="close"><a href="#"><i class="fa-close-gray popup" title="Close"></i></a></div>
+        <h1>Select Raised Hand Option</h1>
+        <div class="vidyoConnecto-popup-body txt-center">
+            <div class="form-fields">
+                <div class="radio">
+                    <input id="radio-1" value="approve" name="radioRaisedHand" type="radio" checked>
+                    <label for="radio-1" class="radio-label">Approve Raised Hand</label>
+                </div>
+                <div class="radio">
+                    <input id="radio-2" value="dismiss" name="radioRaisedHand" type="radio">
+                    <label for="radio-2" class="radio-label">Dismiss Raised Hand</label>
+                </div>
+            </div>
+        </div>
+        <div class="inputButton">
+            <input type="hidden" id="raiseHandParticipantId">
+            <input id="btnRaiseHandCancel" type="button" value="Cancel" class="Button ButtonTransparent">
+            <input id="btnRaiseHandSubmit" type="button" value="Submit" class="Button ButtonGreen">
+        </div>
+    </div>
+</div>
+
+<div class = "conferenceModerationPopuup">
+<div class="conferenceModerationHeader">
+    <h1>Conference Moderation</h1>
+    <div class="close"><a href="#"><i class="fa-close-gray moderator-popup-close" title="Close"></i></a></div>
+</div>
+<div class="conferenceModerationBody">
+        <div class="conferenceModerationLeft">
+                <div class="leftSection">
+                    <div class="leftHeader meeting-name">
+                        <h2>Daily Standup Room</h2>
+                    </div>
+                    <div class="leftBody">
+                        <label class="checkBox">Lobby Mode
+                            <input class = "lobby-mode-checkbox" type="checkbox"  disabled>
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="leftSection">
+                    <div id="moderation-pin" class="room-security" >
+                        <div class="title">Moderation PIN</div>
+                        <div class="errorMessage"></div>
+                        <div class="pin-input">
+                            <input type="password" id="pin-moderation" maxlength="20" >
+                        </div>
+                        <div class="actions">
+                            <button class="remove" id="rem-pin-moderation" >Remove</button>
+                            <button class="set" id="set-pin-moderation" >Set</button>
+                        </div>
+                    </div>
+
+                    <div id="room-pin" class="room-security" >
+                        <div class="title">Room PIN</div>
+                        <div class="errorMessage"></div>
+                        <div class="pin-input">
+                            <input type="password" id="pin-room" maxlength="20" >
+                        </div>
+                        <div class="actions">
+                            <button class="remove" id="rem-pin-room" >Remove</button>
+                            <button class="set" id="set-pin-room" >Set</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="leftSection">
+                    <div class="leftHeader">
+                        <h2>Conference Mode</h2>
+                    </div>
+                    <div class="leftBody">
+                        <label class="radioButton">Presenter Mode
+                          <input type="radio" checked="checked" name="mode-radio-button" value = "LECTURE">
+                          <span class="RadioCheckmark"></span>
+                        </label>
+
+                        <label class="radioButton">Group Mode
+                          <input type="radio" name="mode-radio-button" value = "GROUP">
+                          <span class="RadioCheckmark"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="leftSection">
+                    <div class="leftHeader">
+                        <h2>Conference Room</h2>
+                    </div>
+                    <div class="leftBody">
+                        <label class="radioButton">Lock Room
+                          <input type="radio" checked="checked" name="room-lock-unlock-button" value = "lock">
+                          <span class="RadioCheckmark"></span>
+                        </label>
+
+                        <label class="radioButton">Unlock Room
+                          <input type="radio" name="room-lock-unlock-button" value = unlock>
+                          <span class="RadioCheckmark"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="leftSection recording-detail" style="display : none">
+                    <div class="leftHeader">
+                        <h2>Recording Controls</h2>
+                    </div>
+                    <div class="leftBody">
+
+                    </div>
+                </div>
+
+                <div class="leftSection recording-control" style="display : none">
+                    <div class="leftHeader">
+                        Start Recording
+                    </div>
+                    <div class="leftBody">
+                        <div class="recordingIcon">
+                            <div class="icon"><i id = "start-record" class="fa-start-recording" title="Start Recording"></i></div>
+                            <div class="icon"><i id= "pause-record" class="fa-pause-recording" title="Pause Recording"></i></div>
+                            <div class="icon"><i id = "stop-record" class="fa-stop-recording" title="Stop Recording"></i></div>
+                            <!--<div class="icon"><i class="fa-start-recording-red" title="Start Recording"></i></div>
+                            <div class="icon"><i class="fa-pause-recording" title="Pause Recording"></i></div>
+                            <div class="icon"><i class="fa-stop-recording" title="Stop Recording"></i></div>
+                            <div class="icon"><i class="fa-pause-recording-pressed" title="Pause Recording"></i></div>
+                            <div class="icon"><i class="fa-stop-recording-pressed" title="Stop Recording"></i></div> -->
+                        </div>
+                        <label id="lbl-recording-status">
+                            Recording Status
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+    <div class="conferenceModerationRight">
+        <div class="rightHeader">
+            <h2>Room Control</h2>
+           </div>
+        <div class="rightBody">
+            <div class="tableResponsive">
+                <div class="addParticipant popup-hide">
+                    <h3><a class="addParticipantLink" href="#">Add participants</a></h3>
+                    <div class="participantList invitedParticipantlistContainer">
+                        <div class="participantListItem">
+                            <div class="participantName">Invitees (<span class="inviteesCount"></span>)</div>
+                            <div class="participantRemove">Remove</div>
+                        </div>
+                    </div>
+                </div>
+            <table border="0" cellspacing="0" cellpadding="0" class="roomControlTable">
+                <thead>
+                  <tr>
+                    <th><a class="addParticipant addParticipantLink" href="#">Add participants</a></th>
+                    <th>&nbsp;</th>
+                    <th>Allow<br/>presenter mode</th>
+                    <th>Unraise<br/>all hands</th>
+                    <th>Soft mute<br/>all audio</th>
+                    <th>Soft mute<br/>all video</th>
+                    <th>Hard mute<br/>all audio</th>
+                    <th>Hard mute<br/>all video</th>
+                    <th>Disconnect<br/>all</th>
+                  </tr>
+                </thead>
+                <tr style="background:#ececec;">
+                    <td>All Participants</td>
+                    <td>&nbsp;</td>
+                    <td>
+                        <div class="tableCheckBox">
+                        <label class="checkBox">
+                            <input type="checkbox"  name="presenter-mode-start">
+                            <span class="checkmark"></span>
+                        </label>
+                        </div>
+                    </td>
+                    <td><div class="icon"><i class="fa-unraise-hand" id="main-dismiss-all-raisehand" title="Lower Hands"></i></div></td>
+                    <td><button class="moderation-control" value="soft-mic-mute" id="soft-mic-mute-main"></button></td>
+                    <td><button class="moderation-control" value="soft-cam-mute" id="soft-cam-mute-main"></button></td>
+                    <td><button class="moderation-control" value="hard-mic-mute" id="hard-mic-mute-main"></button></td>
+                    <td><button class="moderation-control" value="hard-cam-mute" id="hard-cam-mute-main"></button></td>
+                    <td><button class="moderation-control" value="disconnect" id="disconnect-main"></button></td>
+                </tr>
+                <tr id = "moderation-participant-list-header">
+                    <th id = "moderation-participant-list-header-particpant-count">Participants</th>
+                    <th>&nbsp;</th>
+                    <th>Presenter</th>
+                    <th>Unraise hand</th>
+                    <th>Soft mute<br/>audio</th>
+                    <th>Soft mute<br/>video</th>
+                    <th>Hard mute<br/>audio</th>
+                    <th>Hard mute<br/>video</th>
+                    <th>Disconnect</th>
+                </tr>
+            </table>
+            </div>
+        </div>
+    </div>
+    </div>

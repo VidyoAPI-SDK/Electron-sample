@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>190A8723-87ED-4592-88F3-175ADED35004</title>
+    <g id="UX-391-&amp;-392-VidyoConnector-Sample-app-on-Windows-&amp;-MacOS-v6" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="B15" transform="translate(-296.000000, -144.000000)">
+            <g id="icon_theater_mode" transform="translate(296.000000, 144.000000)">
+                <rect id="Rectangle" x="0" y="0" width="32" height="32"></rect>
+                <path d="M25.4545455,19.6363636 L25.4545455,24 L19.6363636,24 L19.6363636,19.6363636 L25.4545455,19.6363636 Z M18.9090909,19.6363636 L18.9090909,24 L13.0909091,24 L13.0909091,19.6363636 L18.9090909,19.6363636 Z M12.3636364,19.6363636 L12.3636364,24 L6.54545455,24 L6.54545455,19.6363636 L12.3636364,19.6363636 Z M25.4545455,8 L25.4545455,18.9090909 L6.54545455,18.9090909 L6.54545455,8 L25.4545455,8 Z" id="ic_video_theater_mode" fill="#FFFFFF"></path>
+            </g>
+        </g>
+    </g>
+</svg>

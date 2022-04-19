@@ -1,0 +1,206 @@
+<image id="settingClose" src="images/cancel.png" alt="" class="cancel" />
+
+<h1>Audio</h1>
+
+<div class="right-con-section-scroll">
+    <div class="right-con-section-row">
+        <div class="right-con-section-col">
+            <div class="from-field">
+                <p class="lbl">Microphone</p>
+                <select id="microphones">
+                    <option value='0'>None</option>
+                </select>
+                <div class="microphone-vol">
+                    <div class="pids-wrapper">
+                        <div class="pid"></div>
+                        <div class="pid"></div>
+                        <div class="pid"></div>
+                        <div class="pid"></div>
+                        <div class="pid"></div>
+                        <div class="pid"></div>
+                        <div class="pid"></div>
+                        <div class="pid"></div>
+                        <div class="pid"></div>
+                        <div class="pid"></div>
+                        <div class="pid"></div>
+                        <div class="pid"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="from-field">
+                <p class="lbl">Microphone Boost</p>
+
+                <div class="range-wrapper">
+                    <div class="range-amount" id="rangeV"><span></span></div>
+                    <input class="input-range" id="rangeMicBoost" type="range" name="micboost" min="0" max="20"
+                        step="1" />
+                    <output class="range-amount" for="micboost"></output>
+                </div>
+            </div>
+
+            <div class="from-field">
+                <p class="lbl">Speaker</p>
+
+                <select id="speakers">
+                    <option value='0'>None</option>
+                </select>
+            </div>
+
+            <div class="from-field">
+                <p class="lbl">Voice processing</p>
+
+                <div class="switch voice-processing-switch">
+                    <input type="checkbox" id="avp_switch" />
+                    <label for="avp_switch">Toggle</label>
+                    <span>ON</span>
+                </div>
+            </div>
+
+            <div class="from-field">
+                <p class="lbl">Automatic gain control</p>
+
+                <div class="gain-control-switch switch">
+                    <input type="checkbox" id="aagc_switch" />
+                    <label for="aagc_switch">Toggle</label>
+                    <span>ON</span>
+                </div>
+            </div>
+
+            <div id="audio_streams" class="from-field">
+                <p class="lbl">Audio streams(audio-only mode)</p>
+                <div class="radio">
+                    <input id="audio_stream_1" name="radio_audio_stream" type="radio" value=1 />
+                    <label for="audio_stream_1" class="radio-label">1</label>
+                </div>
+                <div class="radio">
+                    <input id="audio_stream_2" name="radio_audio_stream" type="radio" value=2 />
+                    <label for="audio_stream_2" class="radio-label">2</label>
+                </div>
+                <div class="radio">
+                    <input id="audio_stream_3" name="radio_audio_stream" type="radio" value=3 />
+                    <label for="audio_stream_3" class="radio-label">3</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-con-section-col">
+            <div class="from-field" id="audioDeviceUsageMode_rbtnlist">
+                <p class="lbl">Audio device usage mode</p>
+
+                <div class="radio">
+                    <input type="radio" id="usage_mode1" name="radio_usage_mode" value=share />
+                    <label for="usage_mode1" class="radio-label">Shared</label>
+                </div>
+
+                <div class="radio">
+                    <input type="radio" id="usage_mode2" name="radio_usage_mode" value=mic_exclusive />
+                    <label for="usage_mode2" class="radio-label">Microphone Exclusive</label>
+                </div>
+
+                <div class="radio">
+                    <input type="radio" id="usage_mode3" name="radio_usage_mode" value=mic_speak_exclusive />
+                    <label for="usage_mode3" class="radio-label">Microphone + Speaker Exclusive</label>
+                </div>
+            </div>
+
+            <div class="from-field">
+                <p class="lbl">Audio codec preference</p>
+
+                <div class="radio">
+                    <input type="radio" id="audio_codec_preference1" name="radio_audio_codec_preference" value="OPUS RED" />
+                    <label for="audio_codec_preference1" class="radio-label">OPUS RED</label>
+                </div>
+
+                <div class="radio">
+                    <input type="radio" id="audio_codec_preference3" name="radio_audio_codec_preference" value="OPUS" />
+                    <label for="audio_codec_preference3" class="radio-label">OPUS</label>
+                </div>
+
+                <div class="radio">
+                    <input type="radio" id="audio_codec_preference2" name="radio_audio_codec_preference"
+                        value="SPEEX RED" />
+                    <label for="audio_codec_preference2" class="radio-label">SPEEX RED</label>
+                </div>
+            </div>
+
+            <div class="from-field">
+                <p class="lbl">Audio packet interval</p>
+
+                <div class="radio">
+                    <input type="radio" id="audio_packet_interval1" name="audio_packet_interval" value="40" />
+                    <label for="audio_packet_interval1" class="radio-label">40 ms</label>
+                </div>
+
+                <div class="radio">
+                    <input type="radio" id="audio_packet_interval2" name="audio_packet_interval" value="20" />
+                    <label for="audio_packet_interval2" class="radio-label">20 ms</label>
+                </div>
+            </div>
+
+            <div class="from-field">
+                <p class="lbl">Packet loss %</p>
+
+                <div class="radio_columns">
+                    <div class="radio">
+                        <input type="radio" id="packet_loss1" name="packet_loss" value="0" />
+                        <label for="packet_loss1" class="radio-label">0</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" id="packet_loss2" name="packet_loss" value="5" />
+                        <label for="packet_loss2" class="radio-label">5</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" id="packet_loss3" name="packet_loss" value="10" />
+                        <label for="packet_loss3" class="radio-label">10</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" id="packet_loss4" name="packet_loss" value="20" />
+                        <label for="packet_loss4" class="radio-label">20</label>
+                    </div>
+
+                    <div class="radio">
+                        <input type="radio" id="packet_loss5" name="packet_loss" value="30" />
+                        <label for="packet_loss5" class="radio-label">30</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="from-field">
+                <p class="lbl">Bitrate multiplier</p>
+                <div class="radio">
+                    <input id="bitrate_multiplier_1" name="radio_bitrate_multiplier" type="radio" value="1" />
+                    <label for="bitrate_multiplier_1" class="radio-label">1</label>
+                </div>
+                <div class="radio">
+                    <input id="bitrate_multiplier_2" name="radio_bitrate_multiplier" type="radio" value="2" />
+                    <label for="bitrate_multiplier_2" class="radio-label">2</label>
+                </div>
+                <div class="radio">
+                    <input id="bitrate_multiplier_3" name="radio_bitrate_multiplier" type="radio" value="3" />
+                    <label for="bitrate_multiplier_3" class="radio-label">3</label>
+                </div>
+            </div>
+
+            <div class="form-field">
+                <hr />
+
+                <p class="lbl" id="toggle_whitelist_audio_devices"><span>&gt;</span> Whitelisted audio devices</p>
+
+                <div id="toggle_panel_whitelist_audio_devices" class="hide">
+                    <form name="whitelistForm">
+                        <input type="text" name="whitelist_input" id="whitelist_input" placeholder="Add device" />
+                        <button type="button" id="add_wl_iten">&#x2b;</button>
+                    </form>
+                    <ul id="wl_list">
+                    </ul>
+                </div>
+
+                <hr />
+            </div>
+        </div>
+    </div>
+</div>

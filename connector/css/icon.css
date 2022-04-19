@@ -1,0 +1,46 @@
+.fa-start-recording,
+.fa-start-recording-red,
+.fa-pause-recording-inactive,
+.fa-pause-recording,
+.fa-pause-recording-pressed,
+.fa-stop-recording-inactive,
+.fa-stop-recording,
+.fa-stop-recording-pressed,
+.fa-unraise-hand,
+.fa-close-gray {
+	content: '';
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+}
+.fa-start-recording:before {
+	content: url("../images/icon_start_recording.svg");
+}
+.fa-start-recording-red:before {
+	content: url("../images/icon_start_recording_red.svg");
+}
+.fa-pause-recording-inactive:before {
+	content: url("../images/icon_pause_inactive.svg");
+}
+.fa-pause-recording:before {
+	content: url("../images/icon_pause_inactive.svg");
+}
+.fa-pause-recording-pressed:before {
+	content: url("../images/icon_pause_pressed.svg");
+}
+.fa-stop-recording-inactive:before {
+	content: url("../images/icon_stop_inactive.svg");
+}
+.fa-stop-recording:before {
+	content: url("../images/icon_stop_inactive.svg");
+}
+.fa-stop-recording-pressed:before {
+	content: url("../images/icon_stop_pressed.svg");
+}
+.fa-unraise-hand:before {
+	content: url("../images/icon_unraise_hand.svg");
+}
+.fa-close-gray:before {
+	content: url("../images/icon_close.svg");
+}

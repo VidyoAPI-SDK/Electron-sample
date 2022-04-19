@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="30px" viewBox="0 0 16 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon_about</title>
+    <defs>
+        <filter x="-2.0%" y="-2.3%" width="104.0%" height="104.7%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="v8" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.5">
+        <g id="B01" transform="translate(-187.000000, -437.000000)" fill="#FFFFFF">
+            <g id="settings" filter="url(#filter-1)" transform="translate(150.000000, 44.000000)">
+                <g id="tab-7" transform="translate(0.000000, 384.000000)">
+                    <g id="Group-8" transform="translate(33.000000, 10.000000)">
+                        <path d="M12.000391,6.20958999 C12.7083287,6.20958999 13.282245,6.80666629 13.282245,7.54302313 L13.282245,7.54302313 L13.282245,20.2533371 L14.3545135,20.2533371 C15.0628421,20.2533371 15.6367585,20.8503117 15.6367585,21.5866685 C15.6367585,22.3229237 15.0628421,22.92 14.3545135,22.92 L14.3545135,22.92 L9.64509552,22.92 C8.93715786,22.92 8.36324154,22.3229237 8.36324154,21.5866685 C8.36324154,20.8503117 8.93715786,20.2533371 9.64509552,20.2533371 L9.64509552,20.2533371 L10.718146,20.2533371 L10.718146,8.8763546 L9.64509552,8.8763546 C8.93715786,8.8763546 8.36324154,8.27937996 8.36324154,7.54302313 C8.36324154,6.80666629 8.93715786,6.20958999 9.64509552,6.20958999 L9.64509552,6.20958999 Z M11.6372333,1.08 C12.5811502,1.08 13.3467629,1.87623729 13.3467629,2.85801251 C13.3467629,3.83978773 12.5811502,4.63602503 11.6372333,4.63602503 C10.6925344,4.63602503 9.92770361,3.83978773 9.92770361,2.85801251 C9.92770361,1.87623729 10.6925344,1.08 11.6372333,1.08 Z" id="icon_about"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

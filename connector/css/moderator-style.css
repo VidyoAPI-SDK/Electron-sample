@@ -1,0 +1,368 @@
+*, ::after, ::before {margin:0px; padding:0px; box-sizing: border-box;}
+.conferenceModerationPopuup {
+	height:100vh;
+	width:100vw;
+	background:#fff;
+	overflow: hidden;
+}
+
+/* body {
+	margin:0px;
+	padding:0px;
+	font-family: 'Lato', sans-serif;
+	color:#353535;
+	font-size:12px;
+} */
+
+h1 {
+	font-size:19px;	
+}
+h2 {
+	font-size:14px;	
+}
+input:focus {
+	outline:none;
+}
+
+/**** CheckBox Style ***/
+.checkBox {
+	display: block;
+	position: relative;
+	padding-left: 25px;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.checkBox input {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+	height: 0;
+	width: 0;
+}
+.checkmark {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 16px;
+	width: 16px;
+	border:solid 1px #a4a4a4;
+	border-radius:4px;
+}
+.checkBox:hover input ~ .checkmark {
+	
+}
+.checkBox input:checked ~ .checkmark {
+	border:solid 1px #80B02F;
+	background-color: #80B02F;
+}
+.checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+}
+.checkBox input:checked ~ .checkmark:after {
+	display: block;
+}
+.checkBox .checkmark:after {
+	left: 4px;
+	top: 1px;
+	width: 5px;
+	height: 9px;
+	border: solid white;
+	border-width: 0 2px 2px 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+/**** CheckBox Style End***/
+
+/**** Radio Button Style ***/
+.radioButton {
+	display: block;
+	position: relative;
+	padding-left: 24px;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.radioButton input {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+}
+.RadioCheckmark {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 16px;
+	width: 16px;
+	background-color: #fff;
+	border-radius: 50%;
+	border:solid 1px #a4a4a4;
+}
+.radioButton:hover input ~ .RadioCheckmark {
+  
+}
+.radioButton input:checked ~ .RadioCheckmark {
+	border:solid 1px #80B02F;
+	background-color: #fff;
+}
+.RadioCheckmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+.radioButton input:checked ~ .RadioCheckmark:after {
+  display: block;
+  background: #80B02F;
+}
+.radioButton .RadioCheckmark:after {
+ 	top: 3px;
+	left: 3px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: white;
+}
+/**** Radio Button Style End***/
+
+/**** Input Style ***/
+.input {
+	width:100%;
+	padding:3px;
+	height:24px;
+	border-radius:4px;
+	border:solid 1px #a4a4a4;
+	box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+.input:focus {
+	border:solid 1px #a4a4a4;
+	outline:none;
+}
+/**** Input Style End***/
+
+.conferenceModerationHeader {
+	width:100%;
+	display:block;
+	text-align:center;
+	padding:20px 0;
+}
+
+.conferenceModerationHeader .close {
+	position:absolute;
+	right:10px;
+	top:10px;
+}
+
+.conferenceModerationBody {
+	width:100%;
+	display:flex;
+	position:relative;
+	height:100%;
+}
+
+/**** Left Panel ****/
+.conferenceModerationLeft {
+	/*width:177px;*/
+	display:inline-block;
+	border-right:solid 1px #f2f2f2;
+	padding:0 15px;
+	height:90%;
+	overflow-y:auto;
+	padding-bottom: 60px;
+	box-sizing: border-box;
+}
+.conferenceModerationLeft .leftSection {
+	display:block;
+	margin-bottom:16px;
+}
+.conferenceModerationLeft .leftSection .leftHeader, .conferenceModerationLeft .leftSection .leftBody {
+	display:block;
+}
+.conferenceModerationLeft .leftSection .leftBody .checkBox {
+	margin-top:19px;
+}
+.conferenceModerationLeft .leftSection .leftBody .input {
+	margin-top:11px;
+}
+.conferenceModerationLeft .leftSection .leftBody .inputButton {
+	width:100%;
+	display:flex;
+	margin-top:8px;
+}
+.conferenceModerationLeft .leftSection .leftBody .inputButton .Button {
+	width:100%;
+	margin:0 6px;
+}
+.conferenceModerationLeft .leftSection .text a {
+	color:#353535;
+}
+.conferenceModerationLeft .leftSection .leftBody .radioButton {
+	margin-top:8px;
+}
+.conferenceModerationLeft .leftSection .leftBody .radioButton:nth-child(1) {
+	margin-top:11px;
+}
+.conferenceModerationLeft .leftSection .leftBody .recordingIcon {
+	display:flex;
+	margin-top:8px;
+}
+.conferenceModerationLeft .leftSection .leftBody .recordingIcon .icon {
+	display:block;
+	width:20px;
+	height:20px;
+}
+.conferenceModerationLeft .leftSection .leftBody .recordingIcon .icon:nth-child(2) {
+	margin:0px 8px;
+}
+/**** Left Panel End****/
+
+/**** Right Panel ****/
+.conferenceModerationRight {
+	width:100%;
+	display:inline-block;
+	border-left:solid 1px #f2f2f2;
+	padding:0 15px;
+}
+.conferenceModerationLeft .rightHeader {
+	display:block;
+}
+.conferenceModerationLeft .rightbody {
+	display:block;
+}
+.tableResponsive {
+	overflow-x:auto;
+}
+.roomControlTable {
+	margin-top:10px;
+	border-bottom:solid 1px #e8e8e8;
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+.roomControlTable thead tr th {
+	border:none;
+	padding:8px 8px;
+}
+.roomControlTable tr th{
+	font-size:10px;
+	line-height:12px;
+	padding:15px 8px 8px 8px;
+	border-bottom:solid 1px #e8e8e8;
+}
+.roomControlTable tr th:nth-child(1){
+	font-size:12px;
+	text-align:left;
+}
+.roomControlTable tr {
+	height:40px;
+	border-radius:5px;
+}
+.roomControlTable tr:nth-child(even) {
+	/*background:#ececec;*/
+}
+.roomControlTable tr td {
+	text-align:center;
+	padding:8px 8px;
+	border-top:solid 1px #e8e8e8;
+	width:100px;
+}
+.roomControlTable tr td:first-child {
+	text-align:left;
+	border-radius:5px 0 0 5px;
+	width:200px;
+}
+.roomControlTable tr td:last-child {
+	border-radius:0 5px 5px 0;
+}
+.roomControlTable tr td:nth-child(2) {
+	font-size:8px;
+	color:#666666;
+	width:50px;
+}
+/*****************************/
+.roomControlTable tr td .moderation-control {
+	width:30px;
+	height:30px;
+	cursor: pointer;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-color:transparent;
+	outline:none;
+	border:none;
+}
+
+ /* soft mic mute classes */
+ button.moderation-control[value='soft-mic-mute']{
+	background-image:url("../images/icon_soft_mute_microphone.svg");
+ }
+
+ button.moderation-control.active[value='soft-mic-mute']{
+	background-image:url("../images/icon_microphone_muted.svg");
+	background-size:27px 27px;
+}
+
+/* soft cam mute classes */
+button.moderation-control[value='soft-cam-mute']{
+	background-image:url("../images/icon_soft_mute_camera.svg");
+ }
+
+ button.moderation-control.active[value='soft-cam-mute']{
+	background-image:url("../images/icon_camera_muted.png");
+	background-size:27px 27px;
+}
+
+ /* Hard mic mute classes */
+ button.moderation-control[value='hard-mic-mute']{
+	background-image:url("../images/icon_hard_mute_microphone.svg");
+ }
+
+ button.moderation-control.active[value='hard-mic-mute']{
+	background-image:url("../images/icon_hard_unmute_microphone.svg");
+}
+
+/* hard cam mute classes */
+button.moderation-control[value='hard-cam-mute']{
+	background-image:url("../images/icon_hard_mute_camera.svg");
+ }
+
+ button.moderation-control.active[value='hard-cam-mute']{
+	background-image:url("../images/icon_hard_unmute_camera.svg");
+	background-size: 23px 23px;
+
+}
+
+button.moderation-control[value='disconnect']{
+	background-image:url("../images/icon_disconnect.svg");
+ }
+
+.roomControlTable tr td .tableCheckBox {
+}
+.roomControlTable tr td .tableCheckBox .checkBox  {
+	left:50%;
+	transform:translate(-10px, -8px);
+}
+.roomControlTable tr td .tableRadioButton .radioButton  {
+	left:50%;
+	transform:translate(-10px, -8px);
+}
+
+/**** Right Panel End****/
+
+@media (max-width:767px) {
+	.conferenceModerationBody {
+		display:block;
+	}
+	.conferenceModerationLeft {
+		width:100%;
+	}
+	.conferenceModerationRight {
+		width:100%;
+	}
+}

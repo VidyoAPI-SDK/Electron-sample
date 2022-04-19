@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 54.1 (76490) - https://sketchapp.com -->
+    <title>69BB24AC-A6BD-44F0-9A08-101A507E8B5E</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <path d="M6.5,19.3295324 L6.5,32.6704673 L15.1666667,32.6704673 L26,43.787913 L26,8.21208671 L15.1666667,19.3295324 L6.5,19.3295324 L6.5,19.3295324 Z M35.7500006,25.9999997 C35.7500006,22.064424 33.5400007,18.6847205 30.3333342,17.0393385 L30.3333342,34.9384261 C33.5400007,33.315279 35.7500006,29.9355755 35.7500006,25.9999997 L35.7500006,25.9999997 Z M30.3333342,6.5 L30.3333342,11.0803877 C36.595001,12.9925884 41.1666678,18.9515393 41.1666678,26 C41.1666678,33.0484607 36.595001,39.0074116 30.3333342,40.9196123 L30.3333342,45.5 C39.0216677,43.4766249 45.5000012,35.5165336 45.5000012,26 C45.5000012,16.4834664 39.0216677,8.52337514 30.3333342,6.5 L30.3333342,6.5 Z" id="path-1"></path>
+    </defs>
+    <g id="SoftRoom_Screens" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="MC_007-Settings---device" transform="translate(-820.000000, -752.000000)">
+            <g id="Device-settings" transform="translate(714.000000, 96.000000)">
+                <g id="3-item" transform="translate(72.000000, 620.000000)">
+                    <g id="Components/Icons/ic_camera_off" transform="translate(28.000000, 30.000000)">
+                        <mask id="mask-2" fill="white">
+                            <use xlink:href="#path-1"></use>
+                        </mask>
+                        <use id="Mask" fill="#ffffff" xlink:href="#path-1"></use>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

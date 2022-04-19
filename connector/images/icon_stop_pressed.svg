@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>A304BBC8-0154-4D44-A39F-9033943C815C</title>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="20" height="20" rx="4"></rect>
+    </defs>
+    <g id="UX-391-&amp;-392-VidyoConnector-Sample-app-on-Windows-&amp;-MacOS-v7" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="">
+        <g id="Assets" transform="translate(-104.000000, -71.000000)">
+            <g id="start-recording" transform="translate(48.000000, 48.000000)">
+                <g id="icon_stop_inactive" transform="translate(56.000000, 22.996754)">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="bg" fill="#757575" xlink:href="#path-1"></use>
+                    <g id="Icon" transform="translate(5.000000, 5.000000)" fill="#FFFFFF">
+                        <path d="M9.72395833,0 L0.276041667,0 C0.122395833,0 0,0.122395833 0,0.276041667 L0,9.72395833 C0,9.87760417 0.122395833,10 0.276041667,10 L9.72395833,10 C9.875,10 10,9.87760417 10,9.72395833 L10,0.276041667 C10,0.122395833 9.875,0 9.72395833,0 Z" id="ic_moderator_stop"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

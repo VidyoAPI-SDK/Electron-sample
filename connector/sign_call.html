@@ -1,0 +1,175 @@
+<div class="sighIn-container">
+    <div class="sighIn">
+
+
+
+        <div class="logo">
+            <image src="images/vidyo-platform-logo.png" alt="Vidyo Logo">
+        </div>
+        <div id="joinCallcontent" class="sighIn-content">
+            Welcome!</br>
+            Please enter the details below to
+            join the call as guest or sign in if
+            you have an account.
+        </div>
+        <div id="nav-view">
+            <div id="go-to-guest-view" > <img src="images/arrow-left.png" alt="Vidyo Logo"> Join as guest</div> 
+            <div id="go-to-start-call">  <img src="images/arrow-left.png" alt="Vidyo Logo">Start call</div>
+        </div>
+
+        <div id="start-call-panel" class="startup-view">
+            <div id="display-name">
+                <label>Name</label>
+                <input id="startCall-displayName" type="text" name="startCall-displayName" />
+            </div>
+            <div id="startCall-cta">
+                <button id="btnStartCall">Start call</button>
+            </div>
+            <div id="seprator">
+                <div>
+                <span>|</span>
+                <span>or</span>
+                <span>|</span>
+            </div>
+            </div>
+            <div id="sign-in-view-cta">
+                <button id="btnSignInView">Sign In</button>
+            </div>
+        </div>
+
+        <div id="sign-in-panel" class="sighIn-form startup-view">
+          
+            <div class="from-field" id="input-portal">
+                <label>Portal address</label>
+                <input id="portalAdress" type="text" name="Portal" class="from-field-box">
+            </div>
+
+            <div id="userNameId" class="from-field hidden">
+                <label>Username</label>
+                <input id="usernamevalueid" type="text" name="Username" class="from-field-box active" value="">
+            </div>
+
+            <div id="passwordId" class="from-field hidden">
+                <label>Password</label>
+                <input id="pswvalueId" type="password" name="Password" class="from-field-box active" value="">
+            </div>
+
+            <div id="displayNameId" class="from-field" >
+                <label>Display name</label>
+                <input id="displayName" type="text" name="Portal" class="from-field-box">
+            </div>
+
+            <div class="from-field" id="input-roomkey">
+                <label>Room key</label>
+                <input id="roomkey" type="text" name="Portal" class="from-field-box">
+            </div>
+
+            <div class="from-field"  id="input-roomPin">
+                <label>Room Pin (If any)</label>
+                <input id="roompin" type="text" name="Portal" class="from-field-box" value = "">
+            </div>
+
+            <button id="joincallid">Join as guest</button>
+            <div id="signInbutton" class="sign-linkk"><a href="#">Join as registered user</a></div>
+        </div>
+
+    </div>
+
+    <div id="renderer" class="sighIn-image">
+    </div>
+    <div id ="right-section" class ="right-section"></div>
+    <div class="controller-btm-section">
+        <div class="btm-list-lt">
+            <ul class="btm-list">
+                <li class="in-call">
+                    <image id="call-disconnect" src="images/icon_end_call.svg" alt="">
+                </li>
+                <li  id="setting">
+                    <image src="images/icon_settings.svg" alt="">
+                </li>
+		<li ><image id="network_service" src="images/icon_network_service.svg" alt=""></li>
+                <li class="in-call">
+                    <image id="moderator_cnt_id" src="images/icon_moderator_controls.svg" alt="">
+                </li>
+                <li class="in-call">
+                    <image id="grid-selection" src="images/icon_grid_mode.svg" alt="">
+                        <div class="select-box view-selection-box hidden">
+                            <p class="select-txt">Select view</p>
+                            <ul>
+                                <li id="theater-view-select">Theater view</li>
+                                <li id="grid-view-select">Grid view</li>
+                            </ul>
+                            <div class="participants">
+                                <p>Select number of participants:</p>
+                                <div class="participants-list">
+                                    <i class="left">
+                                        <image src="images/arrow-up.png" alt="">
+                                    </i>
+                                    <span>11</span>
+                                    <i class="right">
+                                        <image src="images/arrow-up.png" alt="">
+                                    </i>
+                                </div>
+                            </div>
+                        </div>
+                </li>
+            </ul>
+        </div>
+
+
+        <ul class="controller-list">
+            <li>
+                <image id="speaker_id" src="images/icon_speaker.svg" alt="">
+            </li>
+            <li>
+                <image id="mic_id" src="images/icon_microphone.svg" alt="">
+            </li>
+            <li>
+                <image id="cam_id" src="images/icon_camera.svg" alt="">
+            </li>
+        </ul>
+        <div class="feccControl_id"></div>     
+        <div class="btm-list-rt">
+            <ul class="btm-list">
+                    <li class="in-call multiple-share-select hidden">
+                        <image id="mulitple-share-select-image" src="images/icon_multiple_share.svg" alt="">
+                            <div class="select-box multiple-share-select-box hidden">
+                                <p class="select-txt">Select share</p>
+                                <ul>
+                                    <!-- <li>Noah Thomas's share</li>
+                                    <li>Elizabeth Martin's share</li> -->
+                                    <li id="stop-view-share">Stop viewing share</li>
+                                </ul>
+                            </div>
+                    </li>
+                    <li class="in-call" id="raise-hand-btn">
+                        <image id="raisehand_id" src="images/icon_raise_hand.svg" alt="" title="Raise Hand">
+                    </li>
+                    <li class="in-call">
+                        <image id="localfecc_id" src="images/icon_local_camera.svg" alt="">
+                    </li>
+                    <li id="bg_select">
+                        <img src="images/icon_selfview_background.svg" alt="">
+                    </li>         
+                    <li class="in-call">
+                        <image id="share_id" src="images/icon_share.svg" alt="">
+                    </li>
+                <li class="in-call">
+                    <image id = "participant_id" src="images/icon_participants.svg" alt="">
+                </li>
+                <li  class="in-call">
+                    <image id="chat_id" src="images/icon_chat.svg" alt="">
+                </li>
+                <span  class ="connecting_status"></span>
+            </ul>
+        </div>
+
+    </div>
+    <div class="lobby-mode-cointainer"></div>
+    <div class="moderator-pin-container"></div>
+    <div class="setting-cointainer"></div>
+<div class="network-service-cointainer"></div>
+    <div class="bg-effects-cointainer"></div>
+</div>
+
+ 

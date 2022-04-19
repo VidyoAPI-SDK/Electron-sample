@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51 (57462) - http://www.bohemiancoding.com/sketch -->
+    <title>fecc_icon_desktop_tile</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="fecc_icon_desktop_tile" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon">
+            <path d="M9.99949179,0 C4.48543985,0 0,4.48645627 0,9.99949179 C0,15.5145601 4.48543985,20 9.99949179,20 C15.5135437,20 20,15.5145601 20,9.99949179 C20,4.48645627 15.5135437,0 9.99949179,0" id="Path" fill="#13253B"></path>
+            <path d="M9.99955532,1.25 C5.17475987,1.25 1.25,5.17564924 1.25,9.99955532 C1.25,14.8252401 5.17475987,18.75 9.99955532,18.75 C14.8243508,18.75 18.75,14.8252401 18.75,9.99955532 C18.75,5.17564924 14.8243508,1.25 9.99955532,1.25 M9.99957765,20 C4.48621025,20 1.65911729e-12,15.5137898 1.65911729e-12,9.99957765 C1.65911729e-12,4.48621025 4.48621025,6.75015599e-14 9.99957765,6.75015599e-14 C15.5137898,6.75015599e-14 20,4.48621025 20,9.99957765 C20,15.5137898 15.5137898,20 9.99957765,20" id="Fill" fill="#F0EFF0"></path>
+            <polygon id="arrow" fill="#F0EFF0" transform="translate(10.000000, 15.230800) rotate(-180.000000) translate(-10.000000, -15.230800) " points="11.3704 17 10 15.5296 8.6296 17 7.6656 15.9656 10 13.4616 12.3344 15.9656"></polygon>
+            <polygon id="arrow" fill="#F0EFF0" transform="translate(15.230800, 10.000000) rotate(-270.000000) translate(-15.230800, -10.000000) " points="16.6012 11.7692 15.2308 10.2988 13.8604 11.7692 12.8964 10.7348 15.2308 8.2308 17.5652 10.7348"></polygon>
+            <polygon id="arrow" fill="#F0EFF0" transform="translate(4.769200, 10.000000) rotate(-90.000000) translate(-4.769200, -10.000000) " points="6.1396 11.7692 4.7692 10.2988 3.3988 11.7692 2.4348 10.7348 4.7692 8.2308 7.1036 10.7348"></polygon>
+            <polygon id="arrow" fill="#F0EFF0" points="11.3704 6.5384 10 5.068 8.6296 6.5384 7.6656 5.504 10 3 12.3344 5.504"></polygon>
+        </g>
+    </g>
+</svg>

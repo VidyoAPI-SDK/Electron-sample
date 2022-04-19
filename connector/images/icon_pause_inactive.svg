@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>0513030E-9024-41A4-B8E8-2D35BDA34C69</title>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="20" height="20" rx="4"></rect>
+        <path d="M9.60286458,0 C9.82421875,0 10,0.140625 10,0.315104167 L10,0.315104167 L10,9.68229167 C10,9.859375 9.82096354,10 9.60286458,10 L9.60286458,10 L7.27213542,10 C7.05078125,10 6.875,9.85677083 6.875,9.68229167 L6.875,9.68229167 L6.875,0.315104167 C6.875,0.140625 7.05403646,0 7.27213542,0 L7.27213542,0 Z M2.72786458,0 C2.94921875,0 3.125,0.140625 3.125,0.315104167 L3.125,0.315104167 L3.125,9.68229167 C3.125,9.859375 2.94921875,10 2.72786458,10 L2.72786458,10 L0.397135417,10 C0.17578125,10 0,9.85677083 0,9.68229167 L0,9.68229167 L0,0.315104167 C0,0.140625 0.17578125,0 0.397135417,0 L0.397135417,0 Z" id="path-3"></path>
+    </defs>
+    <g id="UX-391-&amp;-392-VidyoConnector-Sample-app-on-Windows-&amp;-MacOS-v7" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.35">
+        <g id="Assets" transform="translate(-76.000000, -71.000000)">
+            <g id="start-recording" transform="translate(48.000000, 48.000000)">
+                <g id="icon_pause_inactive" transform="translate(28.000000, 22.996754)">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="bg" fill="#4A4A4A" xlink:href="#path-1"></use>
+                    <g id="Icon" transform="translate(5.000000, 5.000000)">
+                        <mask id="mask-4" fill="white">
+                            <use xlink:href="#path-3"></use>
+                        </mask>
+                        <use id="ic_moderator_pause" fill="#FFFFFF" xlink:href="#path-3"></use>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

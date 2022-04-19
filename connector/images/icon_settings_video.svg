@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="22px" viewBox="0 0 28 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon_video</title>
+    <defs>
+        <filter x="-2.0%" y="-2.3%" width="104.0%" height="104.7%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="v8" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.5">
+        <g id="B01" transform="translate(-181.000000, -185.000000)" fill="#FFFFFF">
+            <g id="settings" filter="url(#filter-1)" transform="translate(150.000000, 44.000000)">
+                <g id="tab-3" transform="translate(0.000000, 128.000000)">
+                    <g id="Group-4" transform="translate(33.000000, 10.000000)">
+                        <path d="M14.3419071,4.99934368 C14.7818952,4.99934368 15.2038893,5.17399328 15.5149961,5.48512359 C15.826103,5.79625389 16.0006877,6.21826115 16.0006877,6.65824924 L16.0006877,17.3417508 C16.0006877,17.7817287 15.8260592,18.2037167 15.5149595,18.5148398 C15.2038598,18.8259629 14.781885,19.0006563 14.3419071,19.0006563 L3.65840554,19.0006563 C3.21848242,19.0006563 2.7965847,18.8258633 2.48555896,18.5147438 C2.17453323,18.2036243 2,17.7816739 2,17.3417508 L2,6.65824924 C2,6.21831463 2.17459421,5.79636456 2.48563979,5.48524865 C2.79668537,5.17413273 3.21859594,4.99934368 3.65853056,4.99934368 L14.3419071,4.99934368 Z M22,6.66700006 L22,17.333 L20.6673751,17.333 L16.6670001,14.0001875 L16.6670001,9.9998125 L20.6673751,6.66700006 L22,6.66700006 Z" id="icon_video"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
