@@ -205,14 +205,11 @@ statusCallBack = (Status, info)=>{}
 function Initialize( param, statusCallBack) {
     VidyoConnectorStartParam = param;
     library_load_callback = statusCallBack;
-    var webrtcLogLevel = "";
-    const plugin = true;//for electron it has to be true
-    const webrtc = false;//todo: can we remove this
     //We need to ensure we're loading the VidyoClient library and listening for the callback.
     var script = document.createElement('script');
     script.type = 'text/javascript';
-    script.src = 'https://static.vidyo.io/latest/javascript/VidyoClient/VidyoClient.js?onload=onVidyoClientLoaded&webrtc=' + webrtc + '&plugin=' + plugin + webrtcLogLevel;
-   document.getElementsByTagName('head')[0].appendChild(script);
+    script.src = 'lib/javascript/VidyoClient/VidyoClient.js?onload=onVidyoClientLoaded';
+    document.getElementsByTagName('head')[0].appendChild(script);
 }
 
 function makeCallbackObject( statusCallBack){
@@ -2091,9 +2088,9 @@ makeCallbackForLocalWindowShare = (callBack)=>{
         onRemoved: function(localWindowShare) {
             if (localWindowShare) {
                 delete localWindowShareList[localWindowShare.applicationName][localWindowShare.objId];
-                if(localWindowShareList[localWindowShare.applicationName].length <= 0){
-                    delete localWindowShareList[localWindowShare.applicationName]
-                }
+                 if(Object.getOwnPropertyNames(localWindowShareList[localWindowShare.applicationName]).length<1){
+                     delete localWindowShareList[localWindowShare.applicationName]
+                 }
                 callBack(Status.REMOVE , {});
             }
         }, 
@@ -2283,18 +2280,12 @@ async function StopRealTimeLog(){
     const status =  await vidyoConnector.UnregisterLogEventListener()
 }
 
-async function GetRealTimeLog(callback ){
-    if(callback){
-         //todo: sdk should provide clean api for this purpose.
-         const filterString = getLogFilter(GetLogLevel());
-         const status =  await vidyoConnector.RegisterLogEventListener({onLog:callback, filter:filterString});
-         //it does not work for 
-        //no need to provide filter field
-    }else{
-        const status =  await vidyoConnector.UnregisterLogEventListener();
-    }
-  
-    
+async function RegisterLogEventListener(onLogCallback, filterStrings){
+    const status =  await vidyoConnector.RegisterLogEventListener({onLog:onLogCallback, filter:filterStrings});
+}
+
+async function UnRegisterLogEventListener(){
+       const status =  await vidyoConnector.UnregisterLogEventListener();
 }
 
 async function SetAdvanceLogOptions(logFileFilter)

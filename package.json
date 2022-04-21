@@ -5,7 +5,16 @@
   "description": "Multiparty HD Video Conferencing using Vidyo.io",
   "main": "main.js",
   "scripts": {
+    "load-sdk-win": "node win_build_dependencies.js",
+    "load-sdk-mac": "node mac_build_dependencies.js",
     "start": "electron .",
+    "compile:windows": "node-gyp rebuild --target=14.2.9 --arch=x64 --dist-url=https://atom.io/download/electron -msvs_version=2017",
+    "compile:darwin": "node-gyp rebuild --target=14.2.9 --arch=$npm_config_arch --dist-url=https://atom.io/download/electron",
+    "compile": "run-script-os",
+    "download-sdk-bundle": "node ./setup/",
+    "install-with-compile": "npm run download-sdk-bundle && npm run compile",
+    "preinstall": "echo \" Starting installation.. it may take few minutes. \" ",
+    "postinstall": "npm run install-with-compile",
     "package-win": "electron-packager . VidyoConnector --overwrite --platform=win32 --arch=x64 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Vidyo App\"",
     "package-mac-m1": "electron-packager . VidyoConnector --overwrite --platform=darwin --arch=arm64 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Vidyo App\"",
     "package-mac": "electron-packager . VidyoConnector --overwrite --platform=darwin --arch=x64 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Vidyo App\""
@@ -18,13 +27,20 @@
   ],
   "author": "Vidyo",
   "devDependencies": {
+    "dotenv": "^16.0.0",
     "electron": "^14.0.0",
+    "fs-extra": "^10.0.1",
     "node-gyp": "^3.8.0"
   },
   "dependencies": {
     "@electron/remote": "^2.0.1",
     "electron-packager": "^15.2.0",
-    "electron-rebuild": "^3.2.3",
-    "nan": "^2.15.0"
+    "nan": "^2.15.0",
+    "cli-spinners": "^2.6.1",
+    "decompress": "^4.2.1",
+    "fs-extra": "^10.1.0",
+    "progress-stream": "^2.0.0",
+    "run-script-os": "^1.1.6",
+    "superagent": "^7.1.3"
   }
 }

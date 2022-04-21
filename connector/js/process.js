@@ -139,7 +139,7 @@ const JoinCallWithId = ()=>{
 let isHideRendering = false;
 const showRendering = ()=>{
     isHideRendering = false;
-    if(isModerationScreenVisible){
+    if(isModerationScreenVisible || checkIfPopupAvailable()){
         return;
     }
     if(getConfernceMode() === "LOBBY"){
@@ -147,15 +147,16 @@ const showRendering = ()=>{
     }
     offsetSelfPreviewWindowOnMac(navigator.platform.toUpperCase().indexOf('MAC')>=0);
     var rndr = document.getElementById("renderer").getBoundingClientRect();
-
      ResizeRendering(rndr.offsetLeft, rndr.offsetTop, rndr.offsetWidth, rndr.offsetHeight);
      ResizeRendering(parseInt(rndr.left), parseInt(rndr.top), parseInt(rndr.width), parseInt(rndr.height));
+     toggleRenderingClass(true);
 }
 
 const hideRendering = () =>{
     isHideRendering = true;
     var rndr = document.getElementById("renderer");
      ResizeRendering(rndr.offsetLeft, rndr.offsetTop, 0, 0);
+     toggleRenderingClass(false);
 }
 showRenderingAtView = (elementData)=>{
     let element  = elementData[0];
@@ -190,7 +191,7 @@ const start = () => {
         param.viewerId = "renderer";
         Initialize(param, (status) => {
             
-            showRendering();
+           showRendering();
             window.onresize = () => {
                 if (!isHideRendering) {
                     showRendering()
@@ -544,7 +545,7 @@ const onCloseSetting = ()=>{
        if(!autoReconnect){
         UnregisterReconnectEventListener();
        }
-        GetRealTimeLog() //unregister the log event
+       UnRegisterLogEventListener() //unregister the log event
         showRendering();
         window.onresize = () => {
             if (!isHideRendering) {
@@ -994,6 +995,10 @@ const checkForAdminOrHost = () => {
     return  getLocalUserClearenceType().toString() === "Host";
 }
 
+const checkForAdminOrHostModeration = () => {
+    return  getLocalUserClearenceType().toString() === "Host" ||  getLocalUserClearenceType().toString() === "Administrator";
+}
+
 const getRoomPinRequirementsSDK=()=>{
     return roomPinRequirementSDK()
 }
@@ -1033,7 +1038,7 @@ const removeRoomPin =()=>{
 
 const setModerationPin= (pin)=>{
     const utils = utility();
-    if(!checkForAdminOrHost()){
+    if(!checkForAdminOrHostModeration()){
         utils.showModalBox("Access Denied","You can't update moderation pin settings.");
         return;
     }
@@ -1054,7 +1059,7 @@ const setModerationPin= (pin)=>{
 
 const removeModeratorPin =()=>{
     const utils = utility();
-    if(!checkForAdminOrHost()){
+    if(!checkForAdminOrHostModeration()){
         utils.showModalBox("Access Denied","You can't update moderation pin settings.");
         return;
     }
@@ -1569,10 +1574,8 @@ const onApplyLogLevel = async (value)=>{
 
 }
 
-const onLogDisplay = async ()=>{
-    await GetRealTimeLog((o)=>{
-        $(".log-text").append(JSON.stringify(o));//TODO: need to remove log files run time when after some time this comess 
-    })
+const displyaLogEvents = async (filterKeys,renderMethod) => { 
+    await RegisterLogEventListener(renderMethod,filterKeys)
 }
 
 getLocalCamera = () =>{

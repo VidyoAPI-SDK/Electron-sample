@@ -1,5 +1,5 @@
-
-const electron = require('electron');
+require("dotenv").config();
+const electron = require('electron')
 const checkIfRemoteModuleDeprecated = () => {
   const electronVersion = process.versions.electron.toString();
   const isRemoteDeprecated = (parseInt(electronVersion.split(".")[0].toString(),10)>=14);
@@ -26,6 +26,10 @@ const BrowserWindow = electron.BrowserWindow
 
 const path = require('path')
 const url = require('url')
+
+if( process.env.LOCAL_SDK==="1" && process.env.DEV_MODE==="Debug"){
+  process.env.VIDYO_MODULE = './build/Debug/VidyoAddon';
+}
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

@@ -1147,10 +1147,14 @@ function  renderModerationParticpantListItem(particpantObj , confernceMode){
     const clearanceType = particpantObj.clearenceType;
     const name = particpantObj.participantData.name;
     const rasiseHandStyle = particpantObj.isHandRaised;
-
+    const localUser = isLocaUser(particpantObj.participantData.userId)
+    let userTypeLabel = localUser ? "Me": clearanceType;
+    if(clearanceType === "Administrator"){
+        userTypeLabel += " (Admin)";
+    }
     let $row = $("<tr>",{id:particpantUserId});
     $row.append($("<td>",{html:name}));
-    $row.append($("<td>",{html:clearanceType=== "Host" ? "Me" :clearanceType }));
+    $row.append($("<td>",{html:userTypeLabel }));
     const presenterModeOptions={
         confernceMode,
         particpantUserId,
@@ -1733,6 +1737,20 @@ function registerSettingsClickEvent(){
     document.getElementById("generalSetting").onclick = openGeneralSetting;
 }
 
+const RenderLogEventsOnUI = (logEvents) => {
+    const preFormatted = $("<pre>", {html:JSON.stringify(logEvents)});
+    $("#log-content").append(preFormatted);
+}  
+const getSelectedFilterStrings = (selectedLogLevel) => { 
+    let selectedFilterKeys = []
+    logFileFilter[selectedLogLevel].split(" ").forEach(function(item){
+        if(item !== "info@LmiPace" && item !== "all@LmiIce" ){
+            selectedFilterKeys.push(item)
+        }
+    
+    })
+    return selectedFilterKeys.join(", ")
+}
 function registerLogSettingclickEvent(){
 
     document.getElementById("loglevelapplybtn").onclick = function() {
@@ -1743,7 +1761,10 @@ function registerLogSettingclickEvent(){
         }
         onApplyLogLevel(value);
     }
-    document.getElementsByClassName("log-display")[0].onclick = onLogDisplay;
+    document.getElementsByClassName("log-display")[0].onclick = function (){
+        const logLevel = $("#logLevelSelect").val().toLowerCase();
+        displyaLogEvents(getSelectedFilterStrings(logLevel), RenderLogEventsOnUI);
+    };
 
     document.getElementById("logLevelSelect").onchange = function (event){
         const value = event.target.value;
@@ -2985,8 +3006,6 @@ function setSelectedUserPreset(){
 function addPresetToList(){
    let presetList =  getActiveUserPresetList(getUserForPresetList());
     $("#sel-cam-preset").html("")
-    let $opt = $("<option>", {val:"0", text:"[Reset]"});
-    $("#sel-cam-preset").append($opt)
     presetList.forEach(element => {
         let $opt = $("<option>", {val:element.index, text:element.name});
         $("#sel-cam-preset").append($opt)
@@ -3570,7 +3589,26 @@ const startCallHandler = () => {
       alert("Please provide valid portal and room key.");
     }
   }
+
+const toggleRenderingClass = (state) => {
+    if (state) {
+      $("#renderer").addClass("rendering-active");
+    } else {
+      $("#renderer").removeClass("rendering-active");
+    }
+};
+const checkIfPopupAvailable = () => {
+  return $(".vidyoConnecto-popup, .popup-section").is(":visible");
+};
+const checkActiveRendering = () => {
+  return $("#renderer").hasClass("rendering-active");
+};
   $(document).ready(function(){
+    $('.sighIn-container').bind("DOMSubtreeModified",function(){
+        if(checkIfPopupAvailable() && checkActiveRendering()){
+            hideRendering();
+        }
+    })
     electron.ipcRenderer.on('vidyo-join-link', (event, message) => {
         if(message && message.toString().indexOf("://join") >=0){
             const phVals = message.toString().split("vidyoconnector://join")[1];
