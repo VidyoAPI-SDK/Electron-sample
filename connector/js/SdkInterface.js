@@ -205,14 +205,11 @@ statusCallBack = (Status, info)=>{}
 function Initialize( param, statusCallBack) {
     VidyoConnectorStartParam = param;
     library_load_callback = statusCallBack;
-    var webrtcLogLevel = "";
-    const plugin = true;//for electron it has to be true
-    const webrtc = false;//todo: can we remove this
     //We need to ensure we're loading the VidyoClient library and listening for the callback.
     var script = document.createElement('script');
     script.type = 'text/javascript';
-    script.src = 'https://static.vidyo.io/latest/javascript/VidyoClient/VidyoClient.js?onload=onVidyoClientLoaded&webrtc=' + webrtc + '&plugin=' + plugin + webrtcLogLevel;
-   document.getElementsByTagName('head')[0].appendChild(script);
+    script.src = 'lib/javascript/VidyoClient/VidyoClient.js?onload=onVidyoClientLoaded';
+ document.getElementsByTagName('head')[0].appendChild(script);
 }
 
 function makeCallbackObject( statusCallBack){

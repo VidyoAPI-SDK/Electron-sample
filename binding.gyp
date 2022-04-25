@@ -37,12 +37,16 @@
           }
         }],
         ['OS=="win"', {
+             'variables': {
+             'SDK_LIB_DIR' : '<(module_root_dir)\\VidyoClient-WinVS2017SDK\\lib\\windows\\x64\\Release\\',
+             'SDK_INCL_DIR' : '<(module_root_dir)\\VidyoClient-WinVS2017SDK\\include\\',
+          },
           "copies":[
                     { 
                         'destination': '<(module_root_dir)/build/Release',
                         'files':[
-                           "<!(echo %VIDYO_CLIENT_LIB_DIR%)\\Banuba\\Release\\BNBEffectPlayerC.dll",
-                           "<!(echo %VIDYO_CLIENT_LIB_DIR%)\\Banuba\\OpenAL32.dll",
+                           "<(SDK_LIB_DIR)\\Banuba\\Release\\BNBEffectPlayerC.dll",
+                           "<(SDK_LIB_DIR)\\Banuba\\OpenAL32.dll",
                            "<(module_root_dir)/concrt140.dll",
                            "<(module_root_dir)/msvcp140.dll",
                            "<(module_root_dir)/vcruntime140.dll",
@@ -52,13 +56,13 @@
                     { 
                         'destination': '<(module_root_dir)',
                         'files':[
-                           "<!(echo %VIDYO_CLIENT_LIB_DIR%)\\Banuba\\Release\\BNBEffectPlayerC.dll",
-                           "<!(echo %VIDYO_CLIENT_LIB_DIR%)\\Banuba\\OpenAL32.dll"                         
+                           "<(SDK_LIB_DIR)\\Banuba\\Release\\BNBEffectPlayerC.dll",
+                           "<(SDK_LIB_DIR)\\Banuba\\OpenAL32.dll"                         
                         ]
                     }
                 ],
           "include_dirs" : [
-             "<!(echo %VIDYO_CLIENT_INCL_DIR%)",
+             "<(SDK_INCL_DIR)",
              "<!(node -e \"require('nan')\")"
           ],
           "libraries": [
@@ -66,15 +70,15 @@
             "opengl32.lib",
             "glu32.lib",
             "crypt32.lib",
-            "-l<!(echo %VIDYO_CLIENT_LIB_DIR%)\\libssl",
-            "-l<!(echo %VIDYO_CLIENT_LIB_DIR%)\\libspeex",
-            "-l<!(echo %VIDYO_CLIENT_LIB_DIR%)\\opus",
-            "-l<!(echo %VIDYO_CLIENT_LIB_DIR%)\\srtp2",
-            "-l<!(echo %VIDYO_CLIENT_LIB_DIR%)\\libcrypto",
-            '-l<!(echo %VIDYO_CLIENT_LIB_DIR%)\\VidyoClient',
-            "-l<!(echo %VIDYO_CLIENT_LIB_DIR%)\\vpxmt",
-            "-l<!(echo %VIDYO_CLIENT_LIB_DIR%)\\Banuba\\Release\\BNBEffectPlayerC",
-            "-l<!(echo %VIDYO_CLIENT_LIB_DIR%)\\zlibstat",
+            "-l<(SDK_LIB_DIR)\\libssl",
+            "-l<(SDK_LIB_DIR)\\libspeex",
+            "-l<(SDK_LIB_DIR)\\opus",
+            "-l<(SDK_LIB_DIR)\\srtp2",
+            "-l<(SDK_LIB_DIR)\\libcrypto",
+            '-l<(SDK_LIB_DIR)\\VidyoClient',
+            "-l<(SDK_LIB_DIR)\\vpxmt",
+            "-l<(SDK_LIB_DIR)\\Banuba\\Release\\BNBEffectPlayerC",
+            "-l<(SDK_LIB_DIR)\\zlibstat",
           ],
           'configurations': {
             'Debug': {
@@ -126,7 +130,7 @@
          ['OS=="win"', {
               "actions": [
                       {
-                        'variables': {
+                   'variables': {
                          'source_dir' : '<(module_root_dir)\\VidyoClient-WinVS2017SDK\\lib\\windows\\resources\\Banuba',
                          'dest_dir' : '<(module_root_dir)\\connector\\banuba_effects_and_resources',
                      },
