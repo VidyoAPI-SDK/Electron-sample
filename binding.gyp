@@ -3,38 +3,38 @@
     {
       "target_name": "VidyoAddon",
       "sources": [ "VidyoAddon.cc" ],
+      'variables' : {
+        'sdk_lib_dir_mac':"<(module_root_dir)/VidyoClient-OSXSDK/lib/macos",
+        'sdk_incl_dir_mac':"<(module_root_dir)/VidyoClient-OSXSDK/include"
+      },
       'conditions': [
         ['OS=="mac"', {
-            'variables': {
-               'SDK_LIB_DIR' : '<(module_root_dir)\\VidyoClient-OSXSDK\\lib\\macos\\',
-               'SDK_INCL_DIR' : '<(module_root_dir)\\VidyoClient-OSXSDK\\include\\',
-           },
           "copies":[
              {
                 'destination': './connector/banuba_effects_and_resources',
                 'files':[
-                        "<(SDK_LIB_DIR)/Banuba/effects",
-                        "<(SDK_LIB_DIR)/Banuba/BNBEffectPlayerC.framework/Resources/bnb-resources",
+                        "<(sdk_lib_dir_mac)/Banuba/effects",
+                        "<(sdk_lib_dir_mac)/Banuba/BNBEffectPlayerC.framework/Resources/bnb-resources",
                      ]
              }
           ],
           "include_dirs" : [
-             "<(SDK_INCL_DIR)",
+             "<(sdk_incl_dir_mac)",
              "<!(node -e \"require('nan')\")"
           ],
           "libraries": [
             "-framework CoreLocation",
             "-framework AVFoundation",
-            "-F<(SDK_LIB_DIR)/Banuba -framework BNBEffectPlayerC",
-            "<(SDK_LIB_DIR)/libvpx.a",
-            "<(SDK_LIB_DIR)/libspeex.a",
-            "<(SDK_LIB_DIR)/libopus.a",
-            "<(SDK_LIB_DIR)/libsrtp2.a",
-            "<(SDK_LIB_DIR)/libcrypto.a",
-            "<(SDK_LIB_DIR)/libssl.a",
-            "<(SDK_LIB_DIR)/libVidyoClient.a",
+          #  "-F<(sdk_lib_dir_mac)/Banuba -framework BNBEffectPlayerC",
+            "<(sdk_lib_dir_mac)/libvpx.a",
+            "<(sdk_lib_dir_mac)/libspeex.a",
+            "<(sdk_lib_dir_mac)/libopus.a",
+            "<(sdk_lib_dir_mac)/libsrtp2.a",
+            "<(sdk_lib_dir_mac)/libcrypto.a",
+            "<(sdk_lib_dir_mac)/libssl.a",
+            "<(sdk_lib_dir_mac)/libVidyoClient.a",
             "-Wl",
-            "-rpath <(SDK_LIB_DIR)/Banuba",
+            "-rpath <(sdk_lib_dir_mac)/Banuba",
          ],
           "xcode_settings": {
             'MACOSX_DEPLOYMENT_TARGET': '10.8'
@@ -119,14 +119,14 @@
         "target_name": "post_build",
         "type": "none",
         "conditions": [
-           ['OS=="mac"', {
+           ['OS=="mac1"', {
               "actions": [
                  {
                     "action_name": "change_bnb_path",
                     "message": "Change Banuba framework path",
                     "inputs": [""],
                     "outputs": [""],
-                    "action": ["eval", "install_name_tool -change @executable_path/../Frameworks/BNBEffectPlayerC.framework/Versions/A/BNBEffectPlayerC <(SDK_LIB_DIR)/Banuba/BNBEffectPlayerC.framework/Versions/A/BNBEffectPlayerC ./build/Release/VidyoAddon.node"],
+                    "action": ["eval", "install_name_tool -change @executable_path/../Frameworks/BNBEffectPlayerC.framework/Versions/A/BNBEffectPlayerC <(module_root_dir)/VidyoClient-OSXSDK/lib/macos/Banuba/BNBEffectPlayerC.framework/Versions/A/BNBEffectPlayerC ./build/Release/VidyoAddon.node"],
                  }
               ],
            }],

@@ -434,6 +434,12 @@ const closeFeccControl = (isLocalCamera) =>{
 }
 
 const openBackgroundEffectsDialog = () => {
+
+    if(navigator.platform.toUpperCase().indexOf('MAC')>=0)
+    {
+        return;
+    }
+
     hideRendering(); //hide the camera view because on camera view no html element can be render
     
     let utilty = utility();

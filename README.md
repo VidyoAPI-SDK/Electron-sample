@@ -71,12 +71,6 @@ Open the Git Bash in the VidyoConnector Electron Sample Project Path and Run the
 
 ### B. Compliling on Mac Os 
 
-#### Before we proceed further on Mac Os We need to disable Banuba (Background Blur and Background picture tool) Framework before compliation
-
-Currently Banuba is not integrated with Mac Os so we have to disable it with commenting the framework integration line in the ***binding.gyp*** file.
-
-![img](connector/images/img-banuba-disable.png?raw=true "Environment Variables")
-
 <br><br>
 Open the Git Bash in the VidyoConnector Electron Sample Project Path and Run the following commands in the same order.
 
@@ -132,29 +126,17 @@ If you don't see the self preview you have to check for errors in the *Developer
 
 ## 4. Troubleshooting common errors
 
-#### 1. Invalid or missing environment variables
-
-![img](connector/images/img-env-error.png?raw=true "Environment Variables Error") 
-
-Aforementioned error occurs when there are no environment variables are set  we’re trying to run `npm install` or `node-gyp rebuild ..`.
-
-#### Resolution : -
-1. Add environment variables again with the exact path where you have placed the SDK.
-1. Try and run **npm install** if there’s build folder already exists then run **node-gyp** command
-
 <br><br><br>
 
-#### 2. Electron Version Mis-match
+#### 1. Electron Version Mis-match
 
 ![img](connector/images/img-version-error.png?raw=true "Environment Variables Error") 
-
 Aforementioned error is the node-gyp-to-electron version bridge error. It’s common and may occur on first build and it can be rectifyied by re-building the app with exact electron version used in the sample app.
 
 #### Resolution :- 
 Type in GitBash / Terminal `npm outdated` to see the **Current** Electron Version (xx.x.xx) that will be used while building in the next command.
 
    ![img](connector/images/img-npm-outdated.png?raw=true "Environment Variables") 
-
 
 (Command for windows)
 
