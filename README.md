@@ -51,36 +51,6 @@ Above mentioned diagram shows the flow and usage of different components in the 
    ### C. Placing SDK and JavaScript bindings in the VidyoConnector Electron Sample
    1. Place the VidyoConnectorSDK folder in the **root** of VidyoConnector Electron Sample.
    1. Place the Javascript bindings folder in `connector/lib/` of VidyoConnector Electron Sample.
-   1. To attach the downloaded Javascript Bindings to the electron app, you have to make changes in the `SDKInterface.js` file on the following path.
-      `connector\js\SDKInterface.js`
-       1. Search for "*static.vidyo.io*"
-       1. Replace the "https://static.vidyo.io/latest" to "lib"
-   1. Make sure that SDK version matches JavaScript Bindings version in  `connector/lib/javascript/VidyoClient/VidyoClient.js`.
-
-*For Example* if you have cloned this repo in `C:\code\VidyoConnector-Electron-Sample\` then add 
-1. VidyoConnectorSDK in `C:\code\VidyoConnector-Electron-Sample\VidyoConnectorSDK\`
-1. Javascript Bindings in `C:\code\VidyoConnector-Electron-Sample\connector\lib\`
-
-<br/>
-
-### D. Setting up Environment Variables for (Windows only) :wrench:
-Follow are the steps to set environment variables using the Windows GUI:
-
-![App Icon](connector/images/img-env-vars.png?raw=true "Environment Variables")
-
-There's two Environment Variables required for Building the Native Addon using VidyoConnector SDK for Windows.
-
-|Variable Name| Value|
-|:---|:---|
-| VIDYO_CLIENT_INCL_DIR | < path-to-your-project-dir >\VidyoClient-WinVS2017SDK\include |
-| VIDYO_CLIENT_LIB_DIR | < path-to-your-project-dir >\VidyoClient-WinVS2017SDK\lib\windows\x64\Release |
-
-*For Example* if you have cloned this repo in `C:\code\VidyoConnector-Electron-Sample\` then the environment variables should look like this.
-
-|Variable Name| Value|
-|:---|:---|
-| VIDYO_CLIENT_INCL_DIR | C:\code\VidyoConnector-Electron-Sample\VidyoClient-WinVS2017SDK\include |
-| VIDYO_CLIENT_LIB_DIR | C:\code\VidyoConnector-Electron-Sample\VidyoClient-WinVS2017SDK\lib\windows\x64\Release |
 
 <br/>
 <br/>
@@ -109,11 +79,6 @@ Currently Banuba is not integrated with Mac Os so we have to disable it with com
 
 <br><br>
 Open the Git Bash in the VidyoConnector Electron Sample Project Path and Run the following commands in the same order.
-
-1. Add the following variables to attach the SDK path.
-
-   1. `export VIDYO_CLIENT_INCL_DIR=$PWD/VidyoClient-OSXSDK/include`
-   1. `export VIDYO_CLIENT_LIB_DIR=$PWD/VidyoClient-OSXSDK/lib/macos `
 
 1. Install the VidyoConnector Electron Sample Setup
    1. ```npm install```  for Intel Based Macs
