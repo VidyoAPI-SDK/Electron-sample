@@ -6,6 +6,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
+    "setup": "node ./setup/",
     "package-win": "electron-packager . VidyoConnector --overwrite --platform=win32 --arch=x64 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Vidyo App\"",
     "package-mac-m1": "electron-packager . VidyoConnector --overwrite --platform=darwin --arch=arm64 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Vidyo App\"",
     "package-mac": "electron-packager . VidyoConnector --overwrite --platform=darwin --arch=x64 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Vidyo App\""
@@ -23,8 +24,12 @@
   },
   "dependencies": {
     "@electron/remote": "^2.0.1",
+    "decompress": "^4.2.1",
     "electron-packager": "^15.2.0",
     "electron-rebuild": "^3.2.3",
-    "nan": "^2.15.0"
+    "fs-extra": "^10.1.0",
+    "nan": "^2.15.0",
+    "progress-stream": "^2.0.0",
+    "superagent": "^7.1.3"
   }
 }

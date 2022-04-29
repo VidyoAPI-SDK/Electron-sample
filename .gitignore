@@ -1,0 +1,5 @@
+node_modules
+*.log
+VidyoClient-*/
+connector/banuba_effects_and_resources/
+package-lock.json
