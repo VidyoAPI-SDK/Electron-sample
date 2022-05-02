@@ -5,10 +5,9 @@ const fs = require("fs-extra");
 const path = require("path");
 const cliSpinners = require('cli-spinners');
 
-
 const BUCKET = "https://static-vidyodev-io.s3.amazonaws.com/latest/package/";
 const JSBindings = "VidyoClient-JsSDK.zip";
-
+let decompressedSDKDir = ""
 const downloadBundle = [
     {
       platform: "win32",
@@ -22,15 +21,24 @@ const downloadBundle = [
     {
       platform: "darwin",
       source: "VidyoClient-macOSSDK-x86-64.zip",
-      arch: "x86",
+      arch:"x64"
     },
   ];
 
 const getSDKBundleByPlatform = () => {
-    const {platform, arch} = process;
+    const {platform} = process;
+    const {npm_config_arch:arch} = process.env;
     const files = downloadBundle.filter(function(item){
-        if(platform === "darwin"){
-            return item.platform === platform  &&  item.arch === arch;
+        if(platform === "darwin")
+        {
+            if(arch){
+                decompressedSDKDir = "VidyoClient-OSXSDK-arm64";
+                return item.platform === platform  &&  item.arch === "arm64";
+            }
+            else{
+                decompressedSDKDir = "VidyoClient-OSXSDK-x86-64";
+                return item.platform === platform  &&  item.arch === "x64";
+            }
         }
         else
         {
@@ -48,8 +56,8 @@ const downloadHandler = async (source, destination) => {
 
     str.on('progress', function(progress) {
         const {frames} = cliSpinners.material;
-        console.clear();
-        console.log(frames[i = ++i % frames.length] + ' setting up')
+       // console.clear();
+        //console.log(frames[i = ++i % frames.length] + ' setting up')
     });
 
     return new Promise(async (resolve,reject)=>{
@@ -109,7 +117,20 @@ const cleanup = async () => {
     try {
         fs.copySync('./connector/lib/VidyoClient-JsSDK/javascript', './connector/lib/javascript/');
         fs.removeSync('./connector/lib/VidyoClient-JsSDK/');
-        fs.removeSync(`/${getSDKBundleByPlatform()}`);
+        fs.removeSync(`./${getSDKBundleByPlatform()}`);
+        if(process.platform === "darwin"){
+
+            const currPath = `./${decompressedSDKDir}`
+            const newPath = './VidyoClient-OSXSDK'
+            fs.rename(currPath, newPath, function (err) {
+              if (err) {
+                console.log(err);
+              } else {
+                console.log("Successfully renamed the directory.");
+              }
+            });
+          // console.log(">> exists dir", decompressedSDKDir,  fs.existsSync(`./${decompressedSDKDir}/`))
+        }
 
     } catch (error) {
         console.error(err)

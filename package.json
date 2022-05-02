@@ -7,8 +7,10 @@
   "scripts": {
     "start": "electron .",
     "compile-win": "node-gyp rebuild --target=14.2.9 --arch=x64 --dist-url=https://atom.io/download/electron -msvs_version=2017",
-    "preinstall": "node-gyp -v ",
-    "postinstall": "node ./setup/ && npm run compile"
+    "compile-mac": "node-gyp rebuild --target=14.2.9 --arch=$npm_config_arch --dist-url=https://atom.io/download/electron",
+    "preinstall": "echo preinstalling ....",
+    "postinstall": "npm run download-sdk-bundle && npm run compile-mac",
+    "download-sdk-bundle": "node ./setup/"
   },
   "keywords": [
     "Electron",
