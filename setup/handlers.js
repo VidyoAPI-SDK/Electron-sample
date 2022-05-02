@@ -3,6 +3,8 @@ const decompress = require("decompress");
 const progress = require("progress-stream");
 const fs = require("fs-extra");
 const path = require("path");
+const cliSpinners = require('cli-spinners');
+
 
 const BUCKET = "https://static-vidyodev-io.s3.amazonaws.com/latest/package/";
 const JSBindings = "VidyoClient-JsSDK.zip";
@@ -40,22 +42,23 @@ const getSDKBundleByPlatform = () => {
 
 const downloadHandler = async (source, destination) => {
     var str = progress({
-        time: 500 /* ms */
+        time: 17 /* ms */
     });
+    let i =0;
+
     str.on('progress', function(progress) {
-        console.log(Math.round(progress.percentage)+'%');
+        const {frames} = cliSpinners.material;
+        console.clear();
+        console.log(frames[i = ++i % frames.length] + ' setting up')
     });
+
     return new Promise(async (resolve,reject)=>{
         var stream = fs.createWriteStream(destination);
         superAgent.get(source).on('progress',function(e){
-            console.log(">> donwloading file..")
-        }).pipe(str)
-        .on('error',function(){
+        }).pipe(str).on('error',function(){
             reject()
-            console.error(">> error occured while downloading...")
         }).pipe(stream).on('finish',function(){
             resolve();
-            console.log('>> file downloaded successfully...');
         })
     })
 }
@@ -81,7 +84,7 @@ const downloadFiles = () => {
 
 const unZipFile = async(zipFile)=>{
     return new Promise(async (resolve,reject)=>{
-        decompress(zipFile, `${path.dirname(zipFile)}/unzipped` ).then(()=>{
+        decompress(zipFile, `${path.dirname(zipFile)}` ).then(()=>{
             resolve();
         }).catch(e=>{
             reject();
@@ -96,11 +99,22 @@ const decompressFiles = () => {
 
     Promise.all([unZipJSBindings,unZipSDKBundle]).then(()=>{
         console.log("unzipped both files")
+        cleanup();
     }).catch(e=>{
         console.error(e)
     })
-
 }
+
+const cleanup = async () => { 
+    try {
+        fs.copySync('./connector/lib/VidyoClient-JsSDK/javascript', './connector/lib/javascript/');
+        fs.removeSync('./connector/lib/VidyoClient-JsSDK/');
+        fs.removeSync(`/${getSDKBundleByPlatform()}`);
+
+    } catch (error) {
+        console.error(err)
+    }
+ }
 
 module.exports = {
   downloadFiles,
