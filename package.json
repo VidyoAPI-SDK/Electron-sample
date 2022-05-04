@@ -6,10 +6,11 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "compile-win": "node-gyp rebuild --target=14.2.9 --arch=x64 --dist-url=https://atom.io/download/electron -msvs_version=2017",
-    "compile-mac": "node-gyp rebuild --target=14.2.9 --arch=$npm_config_arch --dist-url=https://atom.io/download/electron",
-    "preinstall": "echo preinstalling ....",
-    "postinstall": "npm run download-sdk-bundle && npm run compile-mac",
+    "compile:windows": "node-gyp rebuild --target=14.2.9 --arch=x64 --dist-url=https://atom.io/download/electron -msvs_version=2017",
+    "compile:darwin": "node-gyp rebuild --target=14.2.9 --arch=$npm_config_arch --dist-url=https://atom.io/download/electron",
+    "compile": "run-script-os",
+    "preinstall": "echo \" Starting installation \" ",
+    "postinstall": "npm run download-sdk-bundle && npm run compile",
     "download-sdk-bundle": "node ./setup/"
   },
   "keywords": [
@@ -30,6 +31,7 @@
     "fs-extra": "^10.1.0",
     "nan": "^2.15.0",
     "progress-stream": "^2.0.0",
+    "run-script-os": "^1.1.6",
     "superagent": "^7.1.3"
   }
 }

@@ -142,7 +142,7 @@
                     "message": "Copy Banuba effects and resources to connector folder..",
                     "inputs": [""],
                     "outputs": [""],
-                    "action": ['python', 'copy-bnb.py' ,'<(source_dir)' , '<(dest_dir)' ],
+                    "action": ['python', '.\setup\copy-bnb.py' ,'<(source_dir)' , '<(dest_dir)' ],
                  },
                ],
            }],

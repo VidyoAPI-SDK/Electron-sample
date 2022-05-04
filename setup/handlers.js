@@ -7,6 +7,8 @@ const cliSpinners = require('cli-spinners');
 
 const BUCKET = "https://static-vidyodev-io.s3.amazonaws.com/latest/package/";
 const JSBindings = "VidyoClient-JsSDK.zip";
+let downloadCounter = 0;
+const MAX_DOWNLOAD = 2;
 let decompressedSDKDir = ""
 const downloadBundle = [
     {
@@ -53,11 +55,12 @@ const downloadHandler = async (source, destination) => {
         time: 17 /* ms */
     });
     let i =0;
+    downloadCounter++;
 
     str.on('progress', function(progress) {
         const {frames} = cliSpinners.material;
-       // console.clear();
-        //console.log(frames[i = ++i % frames.length] + ' setting up')
+        console.clear();
+        console.log(`${frames[i = ++i % frames.length]} Downloading file ${downloadCounter} of ${MAX_DOWNLOAD} `)
     });
 
     return new Promise(async (resolve,reject)=>{
@@ -82,7 +85,7 @@ const downloadFiles = () => {
     const sdkBundleRequest = downloadHandler(`${BUCKET}${sdkFileName}`,sdkSaveTo);
 
     Promise.all([jsBindingRequest, sdkBundleRequest]).then(()=>{
-        console.log("Donloaded both files")
+        console.log("Download Completed!");
         decompressFiles();
     }).catch(e=>{
         console.error(e)
@@ -105,8 +108,9 @@ const decompressFiles = () => {
     const unZipJSBindings = unZipFile(`./connector/lib/${JSBindings}`);
     const unZipSDKBundle = unZipFile(`./${getSDKBundleByPlatform()}`);
 
+    console.log(`Decompressing files...`)
     Promise.all([unZipJSBindings,unZipSDKBundle]).then(()=>{
-        console.log("unzipped both files")
+        console.log("Decompressed Files !")
         cleanup();
     }).catch(e=>{
         console.error(e)
@@ -119,17 +123,16 @@ const cleanup = async () => {
         fs.removeSync('./connector/lib/VidyoClient-JsSDK/');
         fs.removeSync(`./${getSDKBundleByPlatform()}`);
         if(process.platform === "darwin"){
-
             const currPath = `./${decompressedSDKDir}`
             const newPath = './VidyoClient-OSXSDK'
             fs.rename(currPath, newPath, function (err) {
               if (err) {
-                console.log(err);
+                throw err;
               } else {
                 console.log("Successfully renamed the directory.");
               }
             });
-          // console.log(">> exists dir", decompressedSDKDir,  fs.existsSync(`./${decompressedSDKDir}/`))
+       
         }
 
     } catch (error) {
