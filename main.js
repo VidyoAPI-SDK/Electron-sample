@@ -35,6 +35,7 @@ if( process.env.LOCAL_SDK==="1" && process.env.DEV_MODE==="Debug"){
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 let deeplinkingUrl
+let videoOverlay;
 
 const gotTheLock = app.requestSingleInstanceLock()
 if (gotTheLock) {
@@ -60,11 +61,18 @@ if (gotTheLock) {
 }
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 1200, height: 900, minWidth: 884, minHeight: 570, webPreferences: {
+  mainWindow = new BrowserWindow({width: 1200, height: 725, minWidth: 800, minHeight: 600, webPreferences: {
     nodeIntegration: true,
     enableRemoteModule: true,
     contextIsolation: false
 }})
+  mainWindow.on('move', function() {
+    mainWindow.webContents.send('win-movement', mainWindow.getPosition())
+  });
+
+  mainWindow.on('resize', function() {
+    mainWindow.webContents.send('win-movement', mainWindow.getPosition())
+  });
 
   mainWindow.loadFile('connector/index.html');
   if(checkIfRemoteModuleDeprecated()){
@@ -90,13 +98,20 @@ function createWindow () {
 
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.webContents.send('vidyo-join-link', deeplinkingUrl)
+    if(process.platfrom  === 'darwin'){
+      mainWindow.webContents.send('log-path', app.getPath('userData'))
+    }
   })
+
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', ()=>{
+  createWindow();
+  CreateVideoOverlay();
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
@@ -127,6 +142,15 @@ app.on('will-finish-launching', function() {
     deeplinkingUrl = url
   })
 })
+ 
+electron.ipcMain.on('app_quit', (event, info)=>{
+  app.quit();
+})
+
+app.on('window-all-closed',()=>{
+  app.quit();
+})
+
 
 
 // Disable hardware acceleration
@@ -136,3 +160,112 @@ app.disableHardwareAcceleration();
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+
+//// Video Overlay (App Overlay)
+const CreateVideoOverlay = () => { 
+
+  videoOverlay  =  new BrowserWindow({
+    width:300,
+    height:300,
+    parent: mainWindow,
+    transparent: true,
+    frame: false,
+    movable: true,
+    roundedCorners:false,
+    show:false, 
+    webPreferences : {
+      nodeIntegration: true,
+      enableRemoteModule: true,
+      contextIsolation: false,
+    },
+    resizable:false,
+    closable:false,
+  });
+
+  videoOverlay.on('blur',()=>{
+    videoOverlay.hide();
+    mainWindow.webContents.send('overlay-hidden', true)
+  })
+  
+}
+
+const RenderOverlayComponent = (component,defaultOptions) => {
+  videoOverlay.loadFile('connector/appoverlay.html', {
+    query:{
+      'load-view':component,
+      'default-options':JSON.stringify(defaultOptions)
+    }
+  })
+};
+const ResizeOverlay = (location) => {
+  const { left, top, width, height } = location;
+  const [x, y] = mainWindow.getPosition();
+  if (process.platform == "win32") {
+    videoOverlay.setBounds({
+      x: x + left + 20,
+      y: y + top ,
+      width: width,
+      height: height,
+    });
+  } else {
+    videoOverlay.setBounds({
+      x: x + left,
+      y: y + top,
+      width: width,
+      height: height,
+    });
+  }
+};
+
+
+
+electron.ipcMain.handle("toggle-overlay", async (event, ...args) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+
+      const [isVisible, atLocation, componentToRender, options] = args;
+      if (isVisible === "show") {
+       
+        await ResizeOverlay(atLocation);
+        await RenderOverlayComponent(componentToRender,options);
+        setTimeout(() => {
+          videoOverlay.show();
+        }, 200);
+   
+      } else {
+        videoOverlay.hide();
+      }
+      resolve(true);
+    } catch (error) {
+      reject(error);
+    }
+  });
+});
+
+electron.ipcMain.handle('resize-overlay', async (event,...args) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const [atLocation] = args;
+      await ResizeOverlay(atLocation);
+      resolve(true);
+    } catch (error) {
+      reject(error);
+    }
+  });
+})
+
+electron.ipcMain.handle('set-viewmode', async (events, ...args)=>{
+  const [viewMode,participantCount] = args;
+  const options = {
+    viewMode,
+    participantCount
+  }
+  mainWindow.webContents.send('update-viewmode', options);
+})
+
+
+electron.ipcMain.handle('cameraControl-command', async (events, ...args)=>{
+  const [direction, type] = args;
+  mainWindow.webContents.send('cameraControl-movement', {direction,type});
+})

@@ -3,11 +3,11 @@
 
 
 
-        <div class="logo">
+        <div class="logo" id="log-1">
             <image src="images/vidyo-platform-logo.png" alt="Vidyo Logo">
         </div>
         <div id="joinCallcontent" class="sighIn-content">
-            Welcome!</br>
+            <b>Welcome!</b>
             Please enter the details below to
             join the call as guest or sign in if
             you have an account.
@@ -145,7 +145,7 @@
                     <li class="in-call" id="raise-hand-btn">
                         <image id="raisehand_id" src="images/icon_raise_hand.svg" alt="" title="Raise Hand">
                     </li>
-                    <li class="in-call">
+                    <li>
                         <image id="localfecc_id" src="images/icon_local_camera.svg" alt="">
                     </li>
                     <li id="bg_select">
@@ -158,6 +158,7 @@
                     <image id = "participant_id" src="images/icon_participants.svg" alt="">
                 </li>
                 <li  class="in-call">
+                    <span id="unread-message-counter"></span>
                     <image id="chat_id" src="images/icon_chat.svg" alt="">
                 </li>
                 <span  class ="connecting_status"></span>

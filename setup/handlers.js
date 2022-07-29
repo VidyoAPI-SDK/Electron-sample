@@ -4,7 +4,6 @@ const progress = require("progress-stream");
 const fs = require("fs-extra");
 const path = require("path");
 const cliSpinners = require('cli-spinners');
-
 const BUCKET = "https://static-vidyodev-io.s3.amazonaws.com/latest/package/";
 const JSBindings = "VidyoClient-JsSDK.zip";
 let downloadCounter = 0;

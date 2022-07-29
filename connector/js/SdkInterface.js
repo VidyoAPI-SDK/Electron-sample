@@ -1,6 +1,12 @@
+require("dotenv").config();
 //function with Captial letters will be considerer exported.
 
 let logLevel_ = "Production";
+const ectrn = require("electron");
+let logpath = '';
+ectrn.ipcRenderer.on('log-path',(event,message)=>{
+    logpath = message;
+})
 
 //callback return status
 const Status = {
@@ -96,13 +102,12 @@ let localWindowShareList  = [];
 let localMonitorShareList = [];
 let remoteShare = null;
 var path = require("path");
-var absolutePath = path.resolve("./connector/banuba_effects_and_resources");
 let backgroundOption = {
     token: "",
     effectType: null,
-    pathToResources: absolutePath+"/bnb-resources/",
-    pathToBlurEffect: absolutePath+"/effects/blurred-background/",
-    pathToVirtualBackgroundEffect: absolutePath+"/effects/virtual-background/",
+    pathToResources: path.resolve(__dirname,"./banuba_effects_and_resources/bnb-resources/"),
+    pathToBlurEffect: path.resolve(__dirname,"./banuba_effects_and_resources/effects/blurred-background/"),
+    pathToVirtualBackgroundEffect: path.resolve(__dirname,"./banuba_effects_and_resources/effects/virtual-background/"),
     virtualBackgroundPicture: "",
     blurIntensity: 5,
 }
@@ -112,7 +117,7 @@ var userPresetList =[];
 
 getBanubaToken = () =>{
     const fs = require("fs");
-    const tokenPath = path.resolve("./Banuba-Token.json");
+    const tokenPath = path.resolve(__dirname,"./../Banuba-Token.json");
     const data = JSON.parse(fs.readFileSync(tokenPath));
     backgroundOption.token = data.token;
 }
@@ -165,11 +170,14 @@ async function startVidyoConnector(VC, useTranscodingWebRTC, performMonitorShare
         viewStyle: VidyoConnectorStartParam.renderLayout, // Visual style of the composited renderer
         remoteParticipants: VidyoConnectorStartParam.remoteParticipants,                         // Maximum number of participants to render
         logFileFilter: VidyoConnectorStartParam.logFileFilter,
-        logFileName:"electron_app.log",
+        logFileName:logpath + "electron_app.log",
         userData:""
     });
-
-    enableDisableGoogleAnaylatics(false);
+    
+    // check if QA id to be set.
+    if(GetDefaultGATrackingID() !== ''){
+        enableDefaultGoogleAnalytics();
+    }
     //TODO: check load callback and success of above function call
     library_load_callback(Status.SUCCESS);
 }
@@ -440,6 +448,7 @@ RegisterDeviceListner =()=>{
                 cameraControlCapabilitesSDK(selectedCamera).then(function(capablities){
                     currentSelectedCameraControlCapablities = capablities;
                     sendLocalDeviceStatusCallBack(DEVICE_TYPE.CAMERA ,Status.CAMERA_CONTROL_CAPABLITES_UPDATED, {capabilities : currentSelectedCameraControlCapablities});
+                    checkIfLocalCameraControlSupported(isLocalCameraControlAllowed())
                 })
                 sendLocalDeviceStatusCallBack(DEVICE_TYPE.CAMERA ,Status.SELECT, localCamera);
             }else{
@@ -830,18 +839,21 @@ SetAudioMaxBoostFromSDK = (value) => {
     });
 }
 
-enableDisableGoogleAnaylatics = (value) => {
+enableDefaultGoogleAnalytics = () => {
     let optionItem = {
-        "enableGoogleAnalytics": value,
+        "googleAnalyticsDefaultId": GetDefaultGATrackingID(),
     };
-
     vidyoConnector.SetOptions({ options: JSON.stringify(optionItem) }).then((status) => {
-        
         if (status) {
-            console.log("enableGoogleAnalytics status", value);
+            console.log("googleAnalyticsDefaultId status", optionItem);
         }
+
     });
 }
+
+const GetDefaultGATrackingID = () => { 
+    return process.env.GOOGLE_ANALYTICS_TRAKINGID?process.env.GOOGLE_ANALYTICS_TRAKINGID:''
+ }
 
 GetWhiteListDeviceListFromSDK = async (callBack) => {
     const result = await vidyoConnector.GetWhitelistedAudioDevices({
@@ -2328,14 +2340,14 @@ function GetAnalyticsDataFromSDK(callback) {
 }
 
  GetAnalyticsEventTableFromSDK=async(callback)=> {
-    const result = await vidyoConnector.GetAnalyticsEventTable({
-        onGetAnalyticsEventTableCallback: callback
+    const result = await vidyoConnector.GetGoogleAnalyticsEventTable({
+        onGetGoogleAnalyticsEventTable: callback
     });
     return result;
 }
 
 function AnalyticsControlEventActionfromSDK(evtCategoryObj, evtActionObj, enableObj) {
-    const result = vidyoConnector.AnalyticsControlEventAction({
+    const result = vidyoConnector.GoogleAnalyticsControlEventAction({
         eventCategory: evtCategoryObj,
         eventAction: evtActionObj,
         enable: enableObj
@@ -2353,6 +2365,40 @@ AnalyticsStopFromSDK = async () => {
     const result = await vidyoConnector.AnalyticsStop();
     return result;
 };
+
+
+/*** Parallel Analytics Services ** */
+const StartGoogleAnalyticsSDK = async (trackingID) => { 
+    return await vidyoConnector.StartGoogleAnalyticsService(trackingID);
+}
+const StopGoogleAnalyticsSDK = async () => {  
+    return await vidyoConnector.StopGoogleAnalyticsService()
+}
+
+const IsGoogleAnalyticsEnabledSDK = async () => { 
+    return await vidyoConnector.IsGoogleAnalyticsServiceEnabled();
+}
+const GetGoogleAnalyticsServiceIDSDK = async () => { 
+    return await vidyoConnector.GetGoogleAnalyticsServiceID();
+}
+
+
+const StartVidyoinsightsAnalyticsSDK = async (serverURL) => { 
+    return await vidyoConnector.StartInsightsService(serverURL);
+}
+const StopVidyoinsightsAnalyticsSDK = async () => { 
+    return await vidyoConnector.StopInsightsService();
+}
+const IsVidyoInsighsAnalyticsEnabledSDK = async () => { 
+    return await vidyoConnector.IsInsightsServiceEnabled();
+}
+const GetInsightsServiceUrlSDK = async () => { 
+    return await vidyoConnector.GetInsightsServiceUrl();
+}
+
+
+/*** Parallel Analytics Services ** */
+
 
 function StartRecording(prefix, callBack){
     vidyoConnector.StartRecording({recordingProfilePrefix: prefix,       
@@ -2400,15 +2446,14 @@ const getInstantCallData = () => {
             {
                 
                 const jsonData = JSON.parse(resultData);
-                const {pin,roomUrl,extension, inviteContent} = jsonData;
+                const {roomUrl,extension, inviteContent, pin} = jsonData;
                 const portalAddress = roomUrl.split("/join/")[0]
-                const roomkey = roomUrl.split("/join/")[1]
-                console.log(">>", jsonData)
+                const roomkey = roomUrl.split("/join/")[1];
                 instantCallData.displayName = $("#startCall-displayName").val();
                 instantCallData.roomKey = roomkey;
                 instantCallData.portalUrl = portalAddress;
-                instantCallData.roomPin = pin;
                 instantCallData.extension = extension;
+                instantCallData.roomPin = pin;
                 instantCallData.joinLink = encodeURI(roomUrl);
                 instantCallData.inviteContent = encodeURI(inviteContent);
 
@@ -2427,4 +2472,41 @@ function EnableDebugSDK(){
 }
 function DisableDebugSDK(){
     vidyoConnector.DisableDebug();
+}
+const RegisterResourceManagerEventListenerSDK = (
+    resChangeCallBack,
+    maxRemoteSrcChangeCallBack
+  ) => {
+    vidyoConnector
+      .RegisterResourceManagerEventListener({
+        onAvailableResourcesChanged: resChangeCallBack,
+        onMaxRemoteSourcesChanged: maxRemoteSrcChangeCallBack,
+      })
+      .then((result) => {
+      })
+      .catch((e) => {
+        console.error("RegisterResourceManagerEventListener Failed :", e);
+      });
+  };
+
+async function CameraAllowRemoteCameraControl(localCamera,allow) {
+    let status = await localCamera.AllowRemoteCameraControl({allow});
+    return status;
+}
+
+async function CameraControlPTZNudge(camera, points) {
+    const {pan,tilt,zoom} = points;
+    let status = await camera.ControlPTZ({pan, tilt, zoom});
+    return status;
+}
+
+async function CameraControlPTZStart(camera,direction) {
+    const timeout = 330;
+    let status = await camera.ControlPTZStart({cmd:direction,timeout});
+    return status;
+}
+
+async function CameraControlPTZStop(camera) {
+    let status = await camera.ControlPTZStop();
+    return status;
 }

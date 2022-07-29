@@ -1,0 +1,52 @@
+<div id="analytics-wrapper">
+    <div class="header">
+        <div></div>
+        <div class="caption-text">Analytics Services</div>
+        <div class="close-icon" id="close-analytics-services"><img src="images/cancel.png" alt="" /></div>
+    </div>
+    <div class="content">
+        <div id="panel-links">
+            <div class="panel-links active" data-panel-id="panel-vidyoinsights" >
+                VidyoInsights
+                <span data-service="service-url-vidyoinsights" class="active-badge">Active</span>
+            </div>
+            <div class="panel-links" data-panel-id="panel-google-analytics">
+                Google Analytics
+                <span data-service="service-url-google" class="active-badge">Active</span>
+            </div>
+        </div>
+        <div id="panels">
+            <div id="panel-vidyoinsights" class="analytics-panel">
+                <div  class="caption">IP Address or URL <span class="red">*</span></div>
+                <div class="service-url">
+                    <input type="text" id="service-url-vidyoinsights" class="txt-provider-url">
+                    <button class="btn-set-provider" data-service-url="service-url-vidyoinsights"  type="button">Start</button>
+                </div>
+            </div>
+            <div id="panel-google-analytics" class="analytics-panel">
+                <div class="caption">Web Property ID <span class="muted">(Optional)</span></div>
+                <div class="service-url">
+                    <input type="text" id="service-url-google" class="txt-provider-url">
+                    <button class="btn-set-provider" data-service-url="service-url-google" type="button">Start</button>
+                </div>
+                <div class="caption">Analytics Events Table</div>
+                <div id="ga-events-table">
+                    <table id="events-table">
+                        <thead>
+                          <tr>
+                            <th class="table-cell-align-left">Category</th>
+                            <th class="table-cell-align-left">Action</th>
+                            <th class="table-cell-align-center"></th>
+                          </tr>
+                        </thead>
+                        <tbody id="analytics_action_items">
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+
+    </div>
+</div>
