@@ -112,12 +112,12 @@
         <p class="note" id="inviteContent"></p>
         <div id="joinLink-wrapper">
             <div class="caption">
-                Copy and Share URL and Room Pin to Invite
+                Copy and Share URL <span class="roompin-content">and Room Pin to Invite</span>
             </div>
             <div id="joinLink-text">
 
             </div>
-            <div id="roomPin-text">
+            <div id="roomPin-text" class="roompin-content">
                 <div> Room PIN : <span id="roomPin"></span></div>
             </div>
         </div>
@@ -129,12 +129,19 @@
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const extension = urlParams.get('extension');
-        const roomPin = urlParams.get('roomPin');
         const joinLink = urlParams.get('joinLink');
         const inviteContent = urlParams.get('inviteContent');
+        const roomPin = urlParams.get('roomPin');
         $("#inviteContent").text(decodeURI(inviteContent))
         $("#joinLink-text").text(decodeURI(joinLink));
-        $("#roomPin").text(decodeURI(roomPin));
+        if(!roomPin){
+            $(".roompin-content").hide();
+        }
+        else
+        {
+            $("#roomPin").text(decodeURI(roomPin));
+        }
+
         
 
     </script>

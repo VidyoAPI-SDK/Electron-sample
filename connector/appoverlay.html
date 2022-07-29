@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>hi</title>
+    <script type="text/javascript">
+        if (typeof module === 'object') {
+            window.module = module;
+            module = undefined;
+        }
+    </script>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&display=swap"
+        rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script>window.jQuery || document.write('<script src="lib/jquery-3.1.1.min.js"><\/script>')</script>
+    <link rel="stylesheet" href="css/overlay.css">
+    <script src="js/overlay.js"></script>
+  
+</head>
+
+<body>
+    <div id="component-wrapper" >
+
+        <div id="camera-control-wrapper" class="component">
+            <div id="tab-bar">
+                <div class="tab active" id="manual">
+                    Manual
+                </div>
+                <div class="tab" id="presets">
+                    Presets
+                </div>
+            </div>
+            <div id="manual-control">
+                <div id="view-controller">
+                    <div></div>
+                    <div class='control' id='control-up'> <img src="images/arrow-up-f.svg" alt="" class="arrow-up">
+                    </div>
+                    <div></div>
+                    <div class='control' id='control-left'><img src="images/arrow-left-f.svg" alt="" class="arrow-up">
+                    </div>
+                    <div class='center-point'>
+                        <span id='center-dot' class="focus-point"></span>
+                    </div>
+                    <div class='control' id='control-right'><img src="images/arrow-right-f.svg" alt="" class="arrow-up">
+                    </div>
+                    <div></div>
+                    <div class='control' id='control-down'><img src="images/arrow-down-f.svg" alt="" class="arrow-up">
+                    </div>
+                </div>
+                <div id="zoom">
+                    <div id="zoom-out"><span>-</span></div>
+                    <div id="zoom-in"><span>+</span></div>
+                </div>
+            </div>
+            <div id="presets-control">
+                <span id="lbl-notsupported"></span>
+            </div>
+        </div>
+
+        <div id="select-view" class="component">
+            <div class="header">
+                Select View
+            </div>
+            <div class="content">
+                <button name="btn-viewmode" type="button" value="THEATER">Theater View</button>
+                <button name="btn-viewmode" type="button" value="GRID">Grid View</button>
+            </div>
+            <div class="footer">
+                <div class="caption">
+                    Select number of participants:
+                </div>
+                <div class="controls">
+                    <button name="btn-participantlength" type="button" value="less">&minus;</button>
+                    <span id="participant-count">1</span>
+                    <button name="btn-participantlength" type="button" value="add">&plus;</button>
+                </div>
+            </div>
+        </div>
+        <div id="tool-tip">
+            <span>
+            </span>
+        </div>
+    </div>
+
+</body>
+
+</html>

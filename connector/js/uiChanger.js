@@ -2,6 +2,7 @@ let localCameraList = {};
 let localMicrophoneList = {};
 let localSpeakerList = {};
 let disableVideoOnLowBandWidth = null;
+let allowRemoteCameraControl = null;
 
 let lowBandwidthThresholdAudioStream = 3;
 let voiceProcesingAlgorithm = 2;
@@ -9,6 +10,7 @@ let currentSelectedCameraCapabities = {};
 let cameraCapablitiesData = {};
 let chatWindowPage = "";
 let currentShareContentObjId = "";
+let currentShareContentApplicationName = "";
 let lastSetCameraResolution = {};
 let openningModeratorUI = false;
 
@@ -80,6 +82,7 @@ var instantCallData = {
     inviteContent:"",
 }
 
+let defaultGAService = null;
 let userPresetMap = new Map();
 
 var persistMicBoost = {
@@ -104,6 +107,35 @@ let optionItemDefault = {
     AudioPacketLossPercentage: "10",
     audioWhitelistedItems: [],
 };
+
+let isOverlayOpen = false;
+const overlayContentBounds = [
+    {
+        component:'selectView',
+        anchor:'#grid-selection',
+        bounds:{
+            width:220,
+            height:300,
+        }
+    },
+    {
+        component:'cameraControl',
+        anchor:'#localfecc_id',
+        bounds:{
+            width:190,
+            height:600
+        }
+    }
+]
+
+let viewModeOptions = {
+    viewMode:"GRID",
+    participantsLen:11
+}
+
+let feccControlOptions ={
+    allowed:true,
+}
 function changeToSignInUI(){
     toggleNavView("guest")
     document.getElementById("joinCallcontent").classList.add("hidden")
@@ -343,7 +375,7 @@ enablePhotoGridBasedOnEffectType = (effectType) => {
 let currentEffectType = "";
 
 var path = require("path");
-var virtualBackGroundAbsolutePath = path.resolve("./connector/images/full");
+var virtualBackGroundAbsolutePath = path.resolve(__dirname, "./images/full");
 let imagePath = null;
  registerBackgroundEffectsEvents=()=> {
     // Close Background Effect Dialog
@@ -492,7 +524,7 @@ const get_style = ()=>{
 function registerEventsForViewSelection(){
     let selectBox = false;
 
-    const selection =  document.getElementById("grid-selection");
+    const selection =  document.getElementById("grid-selection1");
     selection.onclick = ()=>{
         if(selectBox){
             $('.view-selection-box').addClass("hidden")
@@ -501,7 +533,7 @@ function registerEventsForViewSelection(){
         }
         selectBox = !selectBox;
 
-        onSelectViewVisiblityChange(selectBox)
+       // onSelectViewVisiblityChange(selectBox)
     }
 
     const informProcessForViewStyleChange = ()=>{
@@ -1541,9 +1573,16 @@ function registerEventForInCallScreen(){
         openningModeratorUI = true;
         onModeratorbuttonClick(moderator_cnt.src.includes(MODERATOR_OFF_IMG))
     };
-    registerEventsForViewSelection();
+    //registerEventsForViewSelection();
     registerMutlitpleShareEvent();
+    $("#grid-selection").on("click",function(){
+        if(!isOverlayOpen){
+            initOverlay('selectView',viewModeOptions);
+        }
+    })
 }
+
+
 
 const updateLocalDeviceIconState =(device,isDisabled)=>{
     if($(".local-cam-muted") && $(".local-mic-muted"))
@@ -1796,16 +1835,18 @@ function intilizeUIEventRegistration(){
    document.getElementById("share_id").onclick = openLocalShare;
    //document.getElementById('raisehand_id').onclick = onClickRaisedHand;
   $("#raisehand_id").on("click",raiseHandEventHandler);
-
+  $('#localfecc_id').hide();
    document.getElementById("localfecc_id").onclick = function(){
-        if(isLocalCameraControlAllowed())
-        {
-            let camera = getLocalCamera();
-            toggleLocalCameraControl(camera);
+    if(isLocalCameraControlAllowed()){
+        if(!allowRemoteCameraControl){
+            showSnackBar("info", `Please allow remote camera control from Video Settings`);
+            return;
         }
-        else{
-            console.error('Local Camera Control not allowed')
+        const supportedFeatures = getSupportedCameraFeatures();
+        if(!isOverlayOpen){
+            initOverlay('cameraControl',{...supportedFeatures});
         }
+    }
    }
    if(registerEventForInCallScreen()){
     document.getElementById("network_service").style.display = "none";
@@ -1862,6 +1903,14 @@ function registerSettingMainPageListener() {
         loadSettingData($(this).data("settingName"))
     })
 }
+const toggleLocalCameraIcon = (isAllowed) => {
+    if(isAllowed){
+        $('#localfecc_id').show();
+    }
+    else{
+        $('#localfecc_id').hide();
+    }
+ }
 
 
 handleAudioVideoSettingCleanUp =()=>{
@@ -1948,6 +1997,97 @@ const updateDefaultValues = (optionsData) => {
     }
   });
 };
+const RegisterAnalyticsServicesEvents = () => { 
+
+    $("#close-analytics-services").on("click",onCloseSetting);
+    $(".panel-links").each(function(){
+        $(this).on("click",()=>{
+            var id = $(this).data("panel-id");
+            ToggleAnalyticsServicePanel(id)
+            $(this).addClass("active")
+            if(id === "panel-google-analytics"){
+                onGetAnalyticsEventTable();
+            }
+        })
+    })
+
+    $(".btn-set-provider").each(function(){
+        $(this).on("click",()=>{
+            var btn = $(this);
+            var serviceUrl = btn.attr("data-service-url");
+            if($(`#${serviceUrl}`).val() === "" && serviceUrl === 'service-url-vidyoinsights' ){
+                return ;
+            }
+            const payload = {
+                isEnabled:btn.hasClass('remove'),
+                serviceType:serviceUrl,
+                serviceUrl:$(`#${serviceUrl}`).val() 
+            }
+            ToggleAnalyticsServiceProvider(payload)
+
+        })
+    })
+
+}
+const ToggleAnalyticsServicePanel = (activePanel) => { 
+    $(".analytics-panel").hide();
+    $(".panel-links").removeClass("active");
+    $(`#${activePanel}`).show()
+}
+const ToggleAnalyticsServiceProvider = (payload) => { 
+    ToggleAnalyticsServices(payload).then((res)=>{
+        const {serviceType} = payload;
+        const {enabled,GAtrackingId,VIServiceUrl} = res
+        const uiOptions = {
+            enabled,
+            serverUrl:serviceType === 'service-url-google'? null : VIServiceUrl ,
+            trackingId:serviceType === 'service-url-google'? GAtrackingId : null ,
+        }
+        UpdateUIForAnalyticsServices(serviceType,uiOptions);
+    }).catch(e=>{
+        console.error('Error:ToggleAnalyticsServices',e)
+    })
+}
+
+const UpdateUIForAnalyticsServices = (serviceType,options) => {
+    const {enabled, serverUrl, trackingId} = options;
+    $(`#${serviceType}`).prop("disabled",false);
+    $(`#${serviceType}`).val("");
+    $(`button[data-service-url=${serviceType}]`).removeClass("remove");
+    $(`button[data-service-url=${serviceType}]`).text("Start");
+    $(`span[data-service='${serviceType}'].active-badge`).fadeOut(200);
+
+    if(enabled){
+        $(`#${serviceType}`).val(serviceType === 'service-url-google'? trackingId : serverUrl);
+        $(`#${serviceType}`).prop("disabled",true);
+
+        $(`button[data-service-url=${serviceType}]`).addClass("remove");
+        $(`button[data-service-url=${serviceType}]`).text("Stop");
+
+        $(`span[data-service='${serviceType}'].active-badge`).fadeIn(400);
+
+    }
+}
+
+const SetDefualtAnalyticsConfiguration = (checkForServices) => {
+    if(checkForServices.includes('service-url-google')) {
+        CheckIfGoogleAnalyticsIsEnabled().then(response=>{
+            UpdateUIForAnalyticsServices('service-url-google',response)
+        }).catch((e)=>{
+            console.error('Error while fetching IsGoogleAnalyticsEnabledSDK')
+        })
+    }
+
+    if(checkForServices.includes('service-url-vidyoinsights')) {
+        CheckIfVidyoInsightsIsEnabled().then(response=>{
+            UpdateUIForAnalyticsServices('service-url-vidyoinsights',response)
+        }).catch((e)=>{
+            console.error('Error while fetching IsVidyoInsighsAnalyticsEnabledSDK')
+        })
+    }
+}
+
+
 
 const addDataToAudioSettingPage = () => {
     getConnectorOption();
@@ -2321,11 +2461,26 @@ const registerEventForAudioVideoSettingPage = () => {
     $('#recieve-Max-bandwidth').donetyping(function () {
         setMaxReceiveBitRateFromSDK($('#recieve-Max-bandwidth').val() * 1000);
     });
+     if(!isLocalCameraControlAllowed()){
+        $('#allowRemoteControl').hide();
+     }
+    if(allowRemoteCameraControl){
+        $('#allow-remote-control').prop('checked',true);
+    }
+    $('#allow-remote-control').on("change", function (e) {
+        allowRemoteCameraControl = e.target.checked
+        AllowRemoteCameraControl(allowRemoteCameraControl)
+    });
+}
+
+const showMessageForAudioOnlyMode = (r) => {
+    if(r<1){
+        showSnackBar("info", `The video was disabled due to poor connection.`);
+    }
 }
 
 const addCameraDetailsToUI = (cameraDetail) => {
     currentSelectedCameraCapabities = cameraDetail.capabilities;
-    console.log(">> Camera " ,  cameraDetail)
     const cameraData = cameraDetail.cameraInfo;
     let selectedIndex = 0;
     $("#cameras_resolution").empty();
@@ -2336,7 +2491,7 @@ const addCameraDetailsToUI = (cameraDetail) => {
         $("#cameras_resolution").append("<option value='" + index + "'>" + item.width + "*" + item.height + "</option>")
     });
     if(lastSetCameraResolution && Object.keys(lastSetCameraResolution).length === 0 && lastSetCameraResolution.constructor === Object){
-        $("#cameras_resolutioqn option[value='" + selectedIndex + "']").prop('selected', true);
+        $("#cameras_resolution option[value='" + selectedIndex + "']").prop('selected', true);
     }
     else{
         $("#cameras_resolution > option").each(function(index){
@@ -2641,6 +2796,7 @@ updateMessageCount = () =>{
             }
             else{
                 $('#chatContainList #user_'+userID).find('.msg-count').remove();
+               
             }
         }
         const groupMessageCount = chatData.chat.group.messageCount;;
@@ -2652,7 +2808,22 @@ updateMessageCount = () =>{
         else{
             $("#group-msg-count").hide();
         }
+
+        showUnreadMessageCounter(getTotalUnreadMessages());
+       
     }
+}
+
+
+const showUnreadMessageCounter = (unreadMessageCount) => { 
+    if(unreadMessageCount > 0){
+        $("#unread-message-counter").show();
+        $("#unread-message-counter").text(unreadMessageCount);
+    }
+    else{
+        $("#unread-message-counter").hide();
+    }
+   
 }
 
 function onSearchParticipant(event){
@@ -2690,14 +2861,19 @@ function registerPrivateChatClickEvent(){
     $('#btnSendMsg').on('click',()=>{
         let pid = $('#participantId').val();
         let msg = $('#txtChatInput').val();
-        SendPrivateMessage(pid, msg);
+        if(!onlySpaces(msg)){
+            SendPrivateMessage(pid, msg);
+        }
+       
     });
     $("#txtChatInput").on('keydown',(event)=>{
         if(event.which == 13 )
         {
             let pid = $('#participantId').val();
             let msg = $('#txtChatInput').val();
-             SendPrivateMessage(pid, msg);
+            if(!onlySpaces(msg)){
+                SendPrivateMessage(pid, msg);
+            }
         }
     })
 }
@@ -2707,16 +2883,25 @@ function registerGroupChatClickEvent(){
 
     $('#btnSendMsg').on('click',()=>{
         let msg = $('#txtChatInput').val()
-        SendGroupMessage(msg);
+        if(!onlySpaces(msg)){
+            SendGroupMessage(msg);
+        }
     });
     $("#txtChatInput").on('keydown',(event)=>{
         if(event.which == 13 )
         {
             let msg = $('#txtChatInput').val()
-            SendGroupMessage(msg);
+            if(!onlySpaces(msg)){
+                SendGroupMessage(msg);
+            }
+            
         }
     })
 }
+
+function onlySpaces(str) {
+    return /^\s*$/.test(str);
+  }
 
 showRightBlock = () =>{
     $('#renderer').addClass('leftblock');
@@ -3018,18 +3203,13 @@ function resetShareIcon(){
 }
 function RegisterLocalShareEventListener()
 {
-    $('#close-share-popup').on('click',function(){
-        closeSharePage()
-        if(windowShared || monitorShared){
-            $('#share_id').attr('src','./images/icon_share_active.svg');
-        }
-        else{
-            $('#share_id').attr('src','./images/icon_share.svg');
-        }
-    });
+
+    // all application share - click handler
     $('#share_all_application').on('click',function(){
         loadAllApplicationShareContent();
     });
+
+    // all monitor share (screens) -  click handler
     $('#share_screen').on('click',function(){
         let localMonitorShareList = GetLocalMonitorShareList();
         $('#share-screen-content').html('');
@@ -3039,11 +3219,13 @@ function RegisterLocalShareEventListener()
         }
     })
 
+    //app share - click handler
     $(document).on('click',".content-share-list",function(){
         $(".content-share-list").removeClass('active');
         $(this).addClass('active');
     });
-
+   
+    // frame rate - change handler
     $("input[name='shareframe_rate']").on("click",function(){
         const frameRate = $(this).val();
         $("#content-share-tooltip").removeClass("highframerate");
@@ -3056,6 +3238,30 @@ function RegisterLocalShareEventListener()
          $("#tooltip-content").html("Recommended for sharing videos.")
         }
     })
+
+    $(".share-right-header").mouseover(function(){
+        $("#content-share-tooltip").show();
+    });
+    $(".share-right-header").mouseout(function(){
+        $("#content-share-tooltip").hide();
+    });
+
+    $("#share-screen-content").mouseover(function(){
+        $("#content-share-tooltip").hide();
+    });
+    
+    
+
+    // close button - click handler
+    $('#close-share-popup').on('click',function(){
+        closeSharePage()
+        if(windowShared || monitorShared){
+            $('#share_id').attr('src','./images/icon_share_active.svg');
+        }
+        else{
+            $('#share_id').attr('src','./images/icon_share.svg');
+        }
+    });
 
 }
 function loadAllApplicationShareContent()
@@ -3075,12 +3281,11 @@ function updateLocalWindowShareList(items)
         let objItem = items[applicationName];
         let li = `<li class="content-share-list" onClick="showSelectedPreview('${applicationName}')">
         <img id="lwi-${getFirstElementOfApplication(objItem).objId}" src=""/>
-        <span>${applicationName}</span></li>`;
+        <span>${applicationName}</span> <span class='sharing-badge' data-app='${applicationName}'>Sharing</span> </li>`;
         $('#localWindowShareList').append(li);
         updateWindowShareIcon(objItem, SHARE_ICON_WIDTH,SHARE_ICON_HEIGHT);
     }
-
-
+    updateSharingBadge();
 }
 
 function showSelectedPreview(applicationName)
@@ -3115,11 +3320,12 @@ function updateLocalWindowPreviewIconImage(objId, previewIcon, applicationName, 
             if(currentShareContentObjId == objId)
             {
                 activeShared = " activeShared";
-
             }
             htmlContent =
             `<div id="${objId}" class="screen-area-row">
-                <div class="screen-name">${applicationName} (${title})</div>
+                <div class="screen-name app-win">
+                <span class='active-app-name'>${applicationName}</span> 
+                <span class='active-app-details'>${title}</span></div>
                 <div class="scren-thubnail${activeShared}"><image src="${previewIcon}" alt=""/>
                     <button class="share${activeShared}" onClick="sendShareContent('${objId}','${applicationName}')">${activeShared !== "" ? "Stop Share" : "Share"}</button>
                 </div>
@@ -3127,7 +3333,10 @@ function updateLocalWindowPreviewIconImage(objId, previewIcon, applicationName, 
         break;
         case "VIDYO_LOCALWINDOWSHARESTATE_Minimized":
             htmlContent = `<div class="screen-area-row">
-            <div class="screen-name">${applicationName} (${title})</div>
+              <div class="screen-name app-win">
+              <span class='active-app-name'>${applicationName}</span>
+              <span class='active-app-details'>${title}</span>
+              </div>
             <div class="scren-thubnail">
             This application window is currently minimized. Minimized windows cannot be shared or previewed. Please restore this window to a visible size if you want to share it.
             </div>
@@ -3138,6 +3347,8 @@ function updateLocalWindowPreviewIconImage(objId, previewIcon, applicationName, 
             return;
     }
     $('#share-screen-content').append(htmlContent);
+    updateShareScreenUI()
+ 
 }
 
 function updateLocalMonitorPreviewIconImage(objId, previewIcon, sharePreviewState)
@@ -3147,7 +3358,7 @@ function updateLocalMonitorPreviewIconImage(objId, previewIcon, sharePreviewStat
         console.error('Local Monitor share preview status ',sharePreviewState)
         return;
     }
-    let count = $('.screen-area-row').length + 1;
+    let count = $('.monitor-win').length + 1;
     let monitor = 'Monitor ' + count;
     switch(sharePreviewState)
     {
@@ -3161,7 +3372,7 @@ function updateLocalMonitorPreviewIconImage(objId, previewIcon, sharePreviewStat
             }
             htmlContent =
             `<div id="${objId}" class="screen-area-row">
-                <div class="screen-name">${monitor}<br/>All applications on this monitor will be visible to other participants</div>
+                <div class="screen-name monitor-win">${monitor}<br/>All applications on this monitor will be visible to other participants</div>
                 <div class="scren-thubnail${activeShared}"><image src="${previewIcon}" alt=""/>
                     <button class="share${activeShared}" onClick="sendShareContent('${objId}')">${activeShared !== "" ? "Stop Share" : "Share"}</button>
                 </div>
@@ -3172,7 +3383,29 @@ function updateLocalMonitorPreviewIconImage(objId, previewIcon, sharePreviewStat
         return;
     }
     $('#share-screen-content').append(htmlContent);
+    updateShareScreenUI();
 }
+
+const updateShareScreenUI = () => {
+
+    const activeItem = $(".content-share-list.active").eq(0).attr("id");
+    if(activeItem === "share_all_application"){
+    }
+    else if (activeItem === "share_screen"){
+        $(".app-win").closest('div.screen-area-row').hide();
+    }
+    else{
+        let selectedAppName =  $(".content-share-list.active").eq(0).find("span").eq(0).html(); 
+        $(".active-app-name").each(function(){
+            let selectedAppWin = $(this).html()
+            if(selectedAppName.toLowerCase() !== selectedAppWin.toLowerCase()){
+                $(this).closest('div.screen-area-row').hide();
+                $(".monitor-win").closest('div.screen-area-row').hide();
+            }
+        })
+    }
+
+ }
 
 function sendShareContent(objId, applicationName = '')
 {
@@ -3224,11 +3457,11 @@ function sendShareContent(objId, applicationName = '')
 }
 
 function hideConnectingMessage (){
-    $(".connecting_status").html("");
+    showSnackBar("info", "Connected !");
 }
 
 function showCallErrorMessage (reason){
-    $(".connecting_status").html(reason);
+    showSnackBar("info", reason);
 }
 const disableAudioShare=(isDisabled)=>{
     $("#audio-share-check").css({"visibility":"hidden"})
@@ -3236,21 +3469,36 @@ const disableAudioShare=(isDisabled)=>{
         $("#audio-share-check").css({"visibility":"visible"})
     }
 }
-function shareDoneUI(objId)
+function shareDoneUI(objId, applicationName)
 {
     currentShareContentObjId = objId;
+    currentShareContentApplicationName = applicationName;
     $("#"+objId).find(".scren-thubnail").addClass("activeShared");
     $("#"+objId).find(".scren-thubnail button").addClass("activeShared");
-    $("#"+objId).find(".scren-thubnail button").text("Stop Share")
+    $("#"+objId).find(".scren-thubnail button").text("Stop Share");
+    updateSharingBadge();
 }
 
 function StopShareUI()
 {
     currentShareContentObjId = "";
+    currentShareContentApplicationName = "";
     $(".scren-thubnail").removeClass("activeShared");
     $(".scren-thubnail button").removeClass("activeShared");
     $(".scren-thubnail button").text("Share")
+    updateSharingBadge();
     
+}
+
+function updateSharingBadge(){
+    $(".sharing-badge").hide();
+   if(currentShareContentApplicationName!==""){
+       $(".sharing-badge").each(function(){
+           if(currentShareContentApplicationName === $(this).data("app")){
+               $(this).show();
+           }
+       })
+   } 
 }
 
 function registerAnalyticsConfigurationEvents(serviceProvider) {
@@ -3618,4 +3866,37 @@ const checkActiveRendering = () => {
             joinFromLinkUI(phVals);
         }
     })
-  })
+
+    window.onbeforeunload = (e) => {
+        if($("#call-disconnect").is(":visible")){
+            onCallDisconnectClick();
+        }
+        if(selectedBackgroundEffect !== "VIDYO_CONNECTORCAMERAEFFECTTYPE_None"){
+            setNoneEffect();
+            imagePath = null;
+        }
+        electron.ipcRenderer.send('app_quit');
+    }    
+
+    electron.ipcRenderer.on('update-viewmode',(e,options)=>{
+        onViewStyleChange(ViewStyle[options.viewMode], options.participantCount)
+        viewModeOptions.viewMode = options.viewMode;
+        viewModeOptions.participantsLen = options.participantCount
+        if(options.viewMode === 'GRID'){
+            $("#grid-selection").attr("src",GRID_MODE_IMG)
+        }
+        else{
+            $("#grid-selection").attr("src",THEATER_MODE_IMG)
+        }
+    })
+
+    electron.ipcRenderer.on('overlay-hidden',(e,options)=>{
+        isOverlayOpen = false;
+    })
+    
+    electron.ipcRenderer.on('cameraControl-movement',(e,command)=>{
+        OverlayCameraControl(command)
+    })
+
+
+  }) /// DOM Ready

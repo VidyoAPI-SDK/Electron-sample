@@ -288,14 +288,19 @@ input:focus {
 }
 /*****************************/
 .roomControlTable tr td .moderation-control {
-	width:30px;
-	height:30px;
-	cursor: pointer;
-	background-position: center center;
-	background-repeat: no-repeat;
-	background-color:transparent;
-	outline:none;
-	border:none;
+	width: 30px;
+    height: 30px;
+    cursor: pointer;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: #efefef;
+    outline: none;
+    border: none;
+    border-radius: 100%;
+	transition: .2s ease-in-out;
+}
+.roomControlTable tr td .moderation-control:hover{
+	background-color:#fff;
 }
 
  /* soft mic mute classes */

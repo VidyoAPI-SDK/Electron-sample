@@ -3,6 +3,7 @@ let isModerationScreenVisible = false;
 let registerdModerationEventListnersStatus = false;
 let  {showSnackBar} = utility();
 
+
 const onCallDisconnectClick = ()=>{
     DisconnectFromConference();
     clearAllOpenWindow();
@@ -123,7 +124,8 @@ const JoinCall = ()=>{
      const token = "";//todo: know of this
     // ConnectToConference(portal, token, name,roomKey, onJoinCallStatus);
      ConnectToConferceAsGuest(portal, name,roomKey, roomPin,onJoinCallStatus)
-     showCallErrorMessage("Connecting...");
+    
+     showSnackBar("info",'Connecting..',true)
 }
 
 const JoinCallWithId = ()=>{
@@ -132,7 +134,8 @@ const JoinCallWithId = ()=>{
     const user = document.getElementById("usernamevalueid").value
     const pwd = document.getElementById("pswvalueId").value
     const roomPin = document.getElementById("roompin").value;
-    showCallErrorMessage("Connecting...");
+
+   showSnackBar("info",'Connecting..',true);
     ConnectconferenceWithKey(portal, user, pwd, roomKey, roomPin,onJoinCallStatus);
 
 }
@@ -216,6 +219,7 @@ const start = () => {
             registerModerationCommandEventListener();
             addDeviceCallBackToSDKAPI();
             getDefaultsFromOptions();
+            RegisterResourceManagerEventListenerSDK(OnAvailableResourcesChanged,OnMaxRemoteSourcesChanged);
             
         });
     }).catch(err => console.error(err))
@@ -291,6 +295,12 @@ const loadSettingData =(settingName)=>{
             openLogSetting();
             break;
         case "Account":
+            break;
+        case "Analytics":
+            utilty.loadTempletWithClassName("right-con-section" , "analytics_services.html").then(()=>{
+                RegisterAnalyticsServicesEvents();
+                SetDefualtAnalyticsConfiguration(['service-url-google', 'service-url-vidyoinsights']);
+            });
             break;
     }
     lastSettingOpen = settingName;
@@ -1438,20 +1448,38 @@ chatMessageReceivedCallBack = (status, VidyoChatMessageObj) =>{
                 }
                 chatData.chat.private.messages[id].push(msg);
                 chatData.chat.private.messageCount[id] = isChatWindowOpen() ? 0 : chatData.chat.private.messageCount[id] + 1;
-                showSnackBar("chat","New message in chat")
+                if(!isChatWindowOpen()){
+                    showUnreadMessageCounter(getTotalUnreadMessages())
+                }
+                
             break;
             case 'VIDYO_CHATMESSAGETYPE_Chat':
                 msg= VidyoChatMessageObj;
                 msg.timestamp = currentTime();
                 chatData.chat.group.messages.push(msg);
                 chatData.chat.group.messageCount =  isChatWindowOpen() ? 0 : chatData.chat.group.messageCount + 1;
-                showSnackBar("chat","New message in group chat")
+                if(!isChatWindowOpen()){
+                    showUnreadMessageCounter(getTotalUnreadMessages());
+                }
+                
             break;
            default:
         }
         updateChatUI();
     }
 
+}
+
+const getTotalUnreadMessages = () => { 
+
+    let data = chatData.chat.private.messageCount;
+    let privatMessageCount = 0;
+    for(const index in data)
+    {
+        let count = data[index];
+        privatMessageCount += count;
+    }
+    return chatData.chat.group.messageCount + privatMessageCount;
 }
 
 function getNameFirstChar(text)
@@ -1723,7 +1751,7 @@ function shareApplicationContent(applicationName, objId, contentShareOptions)
         getMinBoundConstraint(enableHighFramerate), 
         getMaxBoundConstraint(enableHighFramerate));
     ShareLocalWindow(localShareWindowListArr[applicationName][objId], contentShareOptions).then(function(response){
-        if(response) { shareDoneUI(objId); }
+        if(response) { shareDoneUI(objId, applicationName); }
        
     }).catch(function(response){
         console.error('Applcation share content failed ',response)
@@ -1738,7 +1766,7 @@ function shareMonitorContent(objId,  contentShareOptions)
         getMinBoundConstraint(enableHighFramerate), 
         getMaxBoundConstraint(enableHighFramerate));
     ShareLocalMonitor(localShareMonitorListArr[objId] ,contentShareOptions).then(function(response){
-        if(response) { shareDoneUI(objId); }
+        if(response) { shareDoneUI(objId , 'monitor-sharing'); }
         
     }).catch(function(response){
         console.error('Monitior share failed ',response)
@@ -1801,9 +1829,12 @@ function isLocalCameraControlAllowed()
 {
     const res = GetCameraControlCapablities();
     let capablities = res.capabilities;
-    return (capablities.panTiltHasNudge && capablities.zoomHasNudge)
+    return (capablities.panTiltHasNudge && capablities.zoomHasNudge) || (capablities.panTiltHasContinuousMove && capablities.zooomHasContinuousMove)
 }
-
+function getSupportedCameraFeatures(){
+    const res = GetCameraControlCapablities();
+    return res.capabilities;
+}
 function isRemoteCamControlAllowed(cameraCapabilities) {
     return ((cameraCapabilities.panTiltHasNudge && cameraCapabilities.zoomHasNudge ) || cameraCapabilities.hasPresetSupport);
 }
@@ -1939,19 +1970,19 @@ const analyaticsEventCallBack = (eventAction) =>{
 const processEventCategoryName = (categoryName) => {
     let category = "";
     switch (categoryName) {
-        case "VIDYO_CONNECTORANALYTICSEVENTCATEGORY_Login":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTCATEGORY_Login":
             category = "Login";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTCATEGORY_UserType":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTCATEGORY_UserType":
             category = "User type";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTCATEGORY_JoinConference":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTCATEGORY_JoinConference":
             category = "Join conference";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTCATEGORY_ConferenceEnd":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTCATEGORY_ConferenceEnd":
             category = "Conference end";
             break;
-            case "VIDYO_CONNECTORANALYTICSEVENTCATEGORY_InCallCodec":
+            case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTCATEGORY_InCallCodec":
                 category = "InCall Codec";
                 break;
     }
@@ -1962,118 +1993,123 @@ const processEventCategoryName = (categoryName) => {
 const processActionName = (actionName) => {
     let action = "";
     switch (actionName) {
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_LoginSuccess":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_LoginSuccess":
             action = "Login sucess";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_LoginAttempt":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_LoginAttempt":
             action = "Login attempt";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_LoginFailedAuthentication":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_LoginFailedAuthentication":
             action = "login authentication failed";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_LoginFailedConnect":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_LoginFailedConnect":
             action = "Login connection failed";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_LoginSuccess":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_LoginSuccess":
             action = "Login sucess";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_LoginAttempt":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_LoginAttempt":
             action = "Login attempt";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_LoginFailedAuthentication":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_LoginFailedAuthentication":
             action = "login authentication failed";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_LoginFailedConnect":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_LoginFailedConnect":
             action = "Login connection failed";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_LoginSuccess":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_LoginSuccess":
             action = "Login sucess";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_LoginAttempt":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_LoginAttempt":
             action = "Login attempt";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_LoginFailedAuthentication":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_LoginFailedAuthentication":
             action = "login authentication failed";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_LoginFailedConnect":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_LoginFailedConnect":
             action = "Login connection failed";
             break;
-
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_LoginFailedResponseTimeout":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_LoginFailedMiscError":
+            action = "Login connection failed Misc. Error";
+            break;
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_LoginFailedWebProxyAuthRequired":
+            action = "Login connection failed Web Proxy Auth Required";
+            break;
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_LoginFailedResponseTimeout":
             action = "Login failed response timeout";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_LoginFailedUnsupportedTenantVersion":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_LoginFailedUnsupportedTenantVersion":
             action = "Login failed unsupported tenant version";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_UserTypeGuest":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_UserTypeGuest":
             action = "User type guest";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_UserTypeRegularToken":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_UserTypeRegularToken":
             action = "User type regular token";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_UserTypeRegularPassword":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_UserTypeRegularPassword":
             action = "User type regular password";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_UserTypeRegularSaml":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_UserTypeRegularSaml":
             action = "User type regular saml";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_UserTypeRegularExtdata":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_UserTypeRegularExtdata":
             action = "User type regular extData";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_JoinConferenceSuccess":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_JoinConferenceSuccess":
             action = "Join Conference Success";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_JoinConferenceAttempt":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_JoinConferenceAttempt":
             action = "Join Conference Attempt";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_JoinConferenceReconnectRequests":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_JoinConferenceReconnectRequests":
             action = "Join Conference Reconnect Requests";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_JoinConferenceFailedConnectionError":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_JoinConferenceFailedConnectionError":
             action = "Join Conference Failed Connection Error";
             break;
 
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_JoinConferenceFailedWrongPin":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_JoinConferenceFailedWrongPin":
             action = "Join Conference Failed Wrong Pin";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_JoinConferenceFailedRoomFull":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_JoinConferenceFailedRoomFull":
             action = "Join Conference Failed Room Full";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_JoinConferenceFailedRoomDisabled":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_JoinConferenceFailedRoomDisabled":
             action = "Join Conference Failed Room Disabled";
             break;
 
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_JoinConferenceFailedConferenceLocked":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_JoinConferenceFailedConferenceLocked":
             action = "Join Conference Failed Conference Locked";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_JoinConferenceFailedUnknownError":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_JoinConferenceFailedUnknownError":
             action = "Join Conference Failed Unknown Error";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_ConferenceEndLeft":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_ConferenceEndLeft":
             action = "Conference End Left";
             break;
 
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_ConferenceEndBooted":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_ConferenceEndBooted":
             action = "Conference End Booted";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_ConferenceEndSignalingConnectionLost":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_ConferenceEndSignalingConnectionLost":
             action = "Conference End Signaling Connection Lost";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_ConferenceEndMediaConnectionLost":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_ConferenceEndMediaConnectionLost":
             action = "Conference End Media Connection Lost";
             break;
 
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_ConferenceEndUnknownError":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_ConferenceEndUnknownError":
             action = "Conference End Unknown Error";
             break;
 
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_InCallCodecVideoH264":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_InCallCodecVideoH264":
             action = "In Call Codec Video H264";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_InCallCodecVideoH264SVC":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_InCallCodecVideoH264SVC":
             action = "In Call Codec Video H264 SVC";
             break;
-        case "VIDYO_CONNECTORANALYTICSEVENTACTION_InCallCodecAudioSPEEXRED":
+        case "VIDYO_CONNECTORGOOGLEANALYTICSEVENTACTION_InCallCodecAudioSPEEXRED":
             action = "In Call Codec Audio SPEEX RED";
             break;
     }
@@ -2120,6 +2156,118 @@ const onToggleAction = (category,action,state) => {
     AnalyticsControlEventActionfromSDK(category,action,state);
 };
 
+
+/*** Parallel Analytics Services ** */
+const ToggleAnalyticsServices = async (options) => {
+    const {isEnabled, serviceType, serviceUrl} = options;
+    let response = {
+        enabled:null,
+        GAtrackingId:null,
+        VIServiceUrl:null
+    }
+    return new Promise(async (resolve,reject)=>{
+        if(serviceType === 'service-url-google'){
+            if(!isEnabled){
+               await StartGoogleAnalyticsSDK(serviceUrl === "" ? GetDefaultGATrackingID() : serviceUrl).then((result)=>{
+                response.enabled = true;
+                response.GAtrackingId = serviceUrl === "" ? GetDefaultGATrackingID() : serviceUrl;   
+                resolve(response);
+                }).catch((e)=>{
+                    reject(e)
+                })
+            }
+            else{
+               await StopGoogleAnalyticsSDK().then((result)=>{
+                    response.enabled = false;
+                    response.GAtrackingId  = ''
+                    resolve(response);
+                }).catch(e=>{
+                    reject(e)
+                })
+            }
+        }
+
+        if(serviceType === 'service-url-vidyoinsights'){
+            if(!isEnabled){
+                await StartVidyoinsightsAnalyticsSDK(serviceUrl).then((result)=>{
+                    response.enabled = true;
+                    response.VIServiceUrl  = serviceUrl;
+                   resolve(response);
+                }).catch((e)=>{
+                    reject(e);
+                })
+            }
+            else{
+              await  StopVidyoinsightsAnalyticsSDK().then((result)=>{
+                response.enabled = false;
+                response.VIServiceUrl  = '';
+                 resolve(response);
+                }).catch(e=>{
+                    reject(e)
+                })
+            }
+        }
+    })
+
+};
+
+const CheckIfGoogleAnalyticsIsEnabled = async () => {
+    let response = {
+        enabled:null,
+        trackingId:null
+    }
+    return new Promise(async (resolve, reject) => {
+        await IsGoogleAnalyticsEnabledSDK().then((enabled) => {
+            response.enabled = enabled;
+            if (enabled) {
+                GetGoogleAnalyticsServiceIDSDK().then((trackingId) => {
+                    response.trackingId = trackingId
+                    resolve(response)
+                }).catch(e => {
+                    reject(e)
+                })
+            } else {
+                resolve(response);
+            }
+        })
+    })
+}
+
+
+const CheckIfVidyoInsightsIsEnabled = async () => {
+    let response = {
+        enabled:null,
+        serverUrl:null
+    }
+    return new Promise(async (resolve, reject) => {
+        await IsVidyoInsighsAnalyticsEnabledSDK().then((enabled) => {
+            response.enabled = enabled;
+            if (enabled) {
+                GetInsightsServiceUrlSDK().then((serverUrl) => {
+                    response.serverUrl = serverUrl
+                    resolve(response)
+                }).catch(e => {
+                    reject(e)
+                })
+            } else {
+                resolve(response);
+            }
+        })
+    })
+}
+
+const StopGoogleAnalyticsService = async () => { 
+    return new Promise(async (resolve,reject)=>{
+        await StopGoogleAnalyticsSDK().then(()=>{
+            resolve();
+        }).catch((e)=>{
+            reject(e)
+        })
+    })
+}
+
+/*** Parallel Analytics Services ** */
+
 const recordingCallback = (status, response) =>{
     if(response === "VIDYO_CONNECTORMODERATIONRESULT_OK") 
     {
@@ -2157,3 +2305,139 @@ const enableDebugMode = () => {
 const disableDebugMode =()=>{
     DisableDebugSDK();
 }
+const OnAvailableResourcesChanged = (r) => { }
+const OnMaxRemoteSourcesChanged = (r) => { 
+    showMessageForAudioOnlyMode(r);
+ }
+
+ const ToggleVideoOverlay = (atLocation,showComponent,options) => {
+    electron.ipcRenderer
+      .invoke(
+        "toggle-overlay",
+        "show",
+        atLocation,
+        showComponent,
+        options
+      )
+      .then((result) => {
+        isOverlayOpen = true;
+        console.log("result", result);
+      })
+      .catch((e) => {
+        console.log("error", e);
+      });
+  };
+
+const initOverlay = (renderComponent,defaultOptions) => {  
+    ToggleVideoOverlay(GetPreciseOverlaySize(renderComponent),renderComponent,defaultOptions);
+}
+
+const resizeOverlay = (position) => {
+  electron.ipcRenderer
+    .invoke("resize-overlay", position)
+    .then((result) => {
+      console.log("result", result);
+    })
+    .catch((e) => {
+      console.log("error", e);
+    });
+};
+
+
+const GetPreciseOverlaySize = (component) => { 
+  const  componentDetails = overlayContentBounds.filter((item)=>{
+        return (item.component === component)
+    })[0];
+    const {bounds,anchor} = componentDetails;
+    const {top:oTop, left:oLeft} = $(`${anchor}`).offset();
+    const {top:pTop, left:pLeft} = $(`${anchor}`).position();
+    const {width, height} = bounds;
+
+    return {
+        top:parseInt(((oTop + pTop) - height + 40),10),
+        left:parseInt(oLeft - (width / 2),10),
+        width:Math.round(width),
+        height:Math.round(height)
+    }
+ }
+
+
+ const getCameraMovementPoints = (direction) => { 
+    let pan =0 , tilt =0 , zoom =0;
+    switch(direction){
+        case "left":
+            pan = -1;
+        break;
+        case "right":
+            pan = 1;
+        break;
+        case "up":
+            tilt = 1;
+        break;
+        case "down":
+            tilt = -1;
+        break;
+        case "in":
+            zoom = 1;
+        break;
+        case "out":
+            zoom = -1;
+        break;
+    }
+    return {
+        pan,tilt,zoom
+    }
+}
+
+const cameraRelativeMovementKeys =  {
+    'left':'VIDYO_CAMERACONTROLDIRECTION_PanLeft',
+    'right':'VIDYO_CAMERACONTROLDIRECTION_PanRight',
+    'up':'VIDYO_CAMERACONTROLDIRECTION_TiltUp',
+    'down':'VIDYO_CAMERACONTROLDIRECTION_TiltDown',
+    'in':'VIDYO_CAMERACONTROLDIRECTION_ZoomIn',
+    'out':'VIDYO_CAMERACONTROLDIRECTION_ZoomOut',
+}
+const getCameraMovementKeys = (direction) => { 
+    return cameraRelativeMovementKeys[direction]
+}
+ const OverlayCameraControl = (receivedCommand) => { 
+    let camera = getLocalCamera();
+    const {direction, type} = receivedCommand;
+    switch(type){
+        case "Nudge":
+            const movementPoints =  getCameraMovementPoints(direction)
+            CameraControlPTZNudge(camera,movementPoints).then((r)=>{
+                console.log('result',r)
+            }).catch((e)=>{
+                console.error('Error CameraControlPTZNudge: ',e)
+            })
+            break;
+        case "Start":
+            const movementKey = getCameraMovementKeys(direction);
+            CameraControlPTZStart(camera,movementKey).then(r=>{
+                console.log('result',r)
+            }).catch(e=>{
+                console.error('Error CameraControlPTZStart: ',e)
+            })
+            break;
+        case "Stop":
+            CameraControlPTZStop(camera).then(r=>{
+                console.log('result',r)
+            }).catch(e=>{
+                console.error('Error CameraControlPTZStop: ',e)
+            })
+        break;
+
+    }
+}
+
+const AllowRemoteCameraControl = (allow) => { 
+    let camera = getLocalCamera();
+    CameraAllowRemoteCameraControl(camera,allow).then((r)=>{
+    }).catch(e=>{
+        console.error('Error CameraAllowRemoteCameraControl : ',e)
+    })
+ }
+ const checkIfLocalCameraControlSupported = (supported) => { 
+    toggleLocalCameraIcon(supported)
+  }
