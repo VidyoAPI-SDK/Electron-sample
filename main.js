@@ -210,8 +210,8 @@ const ResizeOverlay = (location) => {
     });
   } else {
     videoOverlay.setBounds({
-      x: x + left,
-      y: y + top,
+      x: x + left + 4,
+      y: y + top - 16,
       width: width,
       height: height,
     });

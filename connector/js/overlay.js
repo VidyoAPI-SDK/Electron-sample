@@ -4,6 +4,7 @@ const { ipcRenderer } = electron;
 const componentDetails = new Map();
 componentDetails.set("selectView", "select-view");
 componentDetails.set("cameraControl", "camera-control-wrapper");
+componentDetails.set("inviteContent", "invite-content-wrapper");
 
 $(document).ready(function () {
   const props = LoadView();
@@ -33,6 +34,9 @@ const RenderComponent = (prop) => {
       break;
     case "cameraControl":
       RenderComponent_CameraControl(options);
+      break;
+    case "inviteContent":
+      RenderComponent_InviteContent(options);
       break;
   }
 };
@@ -143,6 +147,7 @@ const RenderComponent_CameraControl = (options) => {
     });
 };
 
+
 const SendCameraControlCommand = (payload) => {
     const {direction, type} =  payload
   ipcRenderer
@@ -154,3 +159,32 @@ const SendCameraControlCommand = (payload) => {
       console.error("Error SendCameraControlCommand : ", e);
     });
 };
+
+const RenderComponent_InviteContent = (data) => {
+  const { inviteContent, joinLink, roomPin } = data;
+  $("#invite-content").text(decodeURI(inviteContent));
+  $("#join-link").text(decodeURI(joinLink));
+  if (!roomPin) {
+    $(".roompin-content").hide();
+  } else {
+    $("#roomPin").text(decodeURI(roomPin));
+  }
+
+  $("#btnCopy").on("click",function(){
+    copyToClipboard('#join-link');
+    $(this).text("Copied !");
+    setTimeout(() => {
+      $(this).text("Copy");
+    }, 2000);
+  })
+};
+
+
+
+function copyToClipboard(element) {
+  var $temp = $("<input>");
+  $("body").append($temp);
+  $temp.val($(element).text()).select();
+  document.execCommand("copy");
+  $temp.remove();
+}
