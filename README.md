@@ -14,7 +14,7 @@
 
 ## Architecture Overview
 
-![App Icon](./../connector/images/img-overview.png?raw=true "Architecture Overview")
+![App Icon](connector/images/img-overview.png?raw=true "Architecture Overview")
 
 Above mentioned diagram shows the flow and usage of different components in the VidyoConnector Electron Sample Architecture. Since Electron Application cannot directly communicate with SDK we use a different path to communicate with SDK that involves NodeJS Runtime Add-on and JavaScript Bindings. In this document we will describe the steps to acquire and use different components for the VidyoConnector Electron Sample.
 <br><br><br>
@@ -59,6 +59,6 @@ Open the Git Bash in the VidyoConnector Electron Sample Project Path and Run `np
 
 If you don't see the self preview you have to check for errors in the *Developer Tools*
 
-![img](./../connector/images/img-dev-console.png?raw=true "Opening Developer Console") 
+![img](connector/images/img-dev-console.png?raw=true "Opening Developer Console") 
 
 #### Please refer to our [Quick Start Guide](/quick-start-guide.md) for more details on api request flow and features.
