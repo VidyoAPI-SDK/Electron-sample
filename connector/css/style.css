@@ -2082,6 +2082,74 @@ input:focus {
 }
 /**** Radio Button Style End***/
 /**** Add Participant****/
+#inviteParticipantWrapper{
+    width:100%;
+    background: #ececec;
+    padding:8px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;;
+}
+#inviteParticipantWrapper > #head{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;;
+    margin-bottom: 8px;;
+}
+#inviteParticipantWrapper > #head > div{
+    width:50%;
+}
+#inviteParticipantWrapper > #head > div.caption{
+    text-align: right;
+    font-size:12px;
+    color:#9c9c9c;
+}
+#inviteParticipantWrapper > #head > div.inviteCTA > button{
+    border: None;
+    background: none;
+    border: solid 1px #80b02f;
+    background: #80b02f;
+    font-size: 12px;
+    width: 123px;
+    color: #fff;
+    height: 32px;
+    border-radius: 4px;
+}
+#inviteParticipantWrapper > #content {
+
+}
+
+#inviteParticipantWrapper > #content > #invitedParticipantList {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+#inviteParticipantWrapper > #content > #invitedParticipantList > div.invitedParticipant{
+    display: inline-block;
+    padding: 4px 10px;
+    background-color: #383838;
+    color: #fff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 4px;
+    border-radius: 30px;
+    box-sizing: border-box;
+    
+}
+#inviteParticipantWrapper > #content > #invitedParticipantList > div.invitedParticipant > div.name{
+    font-size: 12px;
+}
+#inviteParticipantWrapper > #content > #invitedParticipantList > div.invitedParticipant > div.remove-cta{
+    font-size: 20px;
+    margin-left:8px;
+    cursor: pointer;
+}
 .addParticipant {
     width: 100%;
     display: block;
@@ -2095,6 +2163,7 @@ input:focus {
     border-radius: 4px;
     text-align: center;
     cursor: pointer;
+    display: none;;
 }
 
 .addParticipantLink{
@@ -2200,27 +2269,25 @@ input:focus {
 .inviteParticipantTable .inviteParticipantList .inviteParticipantItem {
 	width:100%;
 	display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
 	padding:8px 0;
 	border-bottom:solid 1px #e8e8e8;
 }
-.inviteParticipantTable .inviteParticipantList .inviteParticipantItem:first-child {
-	border-bottom:solid 1px #bbbaba;
+.invite-col-name{
+    width:50%;
 }
-.inviteParticipantTable .inviteParticipantList .inviteParticipantItem:last-child {
-	border-bottom:solid 1px #bbbaba;
+.invite-col-status{
+    width:20%;
+    font-size:12px;
 }
-.inviteParticipantTable .inviteParticipantList .inviteParticipantItem div:nth-child(1) {
-	width:100%;
+.invite-col-check{
+    width:10%;
 }
-.inviteParticipantTable .inviteParticipantList .inviteParticipantItem div:nth-child(2) {
-	width:100%;
-	text-align:center;
-	font-size:10px;
-	color:#666666;
-}
-.inviteParticipantTable .inviteParticipantList .inviteParticipantItem div:nth-child(3) {
-	width:35px;
-	text-align:center;
+.invite-col-sent{
+    width:20%;
+    font-size:12px;
+
 }
 
 .inviteParticipantItem.Offline{
@@ -2234,6 +2301,10 @@ input:focus {
 	bottom:20px;
 	left:0px;
 	right:0px;
+}
+.invite_participant_list:disabled{
+    background: #eee;
+    border:none;
 }
 .inviteParticipantButton input {
 	padding:3px 15px;
@@ -4033,4 +4104,93 @@ input[type=range] {
     display: none;
     transform: translate(22px, -4px);
     position: absolute;
+}
+#invite-info-popup {
+    display: none;
+}
+#invite-info-popup > img{
+    transform: translateY(5px);
+    width:20px;
+    height:20px;
+}
+
+#about-wrapper{
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#about-wrapper > #header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width:100%;
+    margin-bottom: 24px;
+    padding:8px 0 ;
+    box-sizing: border-box;
+}
+#about-wrapper > #header  .heading{
+    font-weight: bold;
+    color: #3b3b3b;
+    font-size: 25px;
+}
+
+#about-wrapper > #content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height:400px;
+
+}
+#about-wrapper > #content > #logo {
+    margin-bottom: 24px;;
+}
+#about-wrapper > #content > #logo > img{
+    width:120px;
+}
+
+#about-wrapper > #content > #caption{
+    font-weight: bold;
+    color: #3b3b3b;
+    font-size: 18px;
+    margin-bottom: 24px;;
+}
+
+#about-wrapper > #content > #sdk-version{
+    font-size:14px;
+    letter-spacing: 2px;;
+    margin-bottom: 24px;;
+}
+
+#about-wrapper > #content > #external-links > button{
+
+    border:none;
+    background: none;
+    width:100px;
+    border:solid 1px #ccc;
+    padding:4px;
+    box-sizing: border-box;
+    border-radius: 4px;;
+    cursor: pointer;
+
+}
+#about-wrapper > #footer {
+    width:100%;
+}
+#about-wrapper > #footer > p{
+    font-size:12px;
+    color:rgb(112, 112, 112);
+    text-align: center;
+}
+
+#btnSeeVidyoLogger{
+    border:none;
+    background: none;
+    color:#435a1a;
+    font-size:14px;
+    text-decoration: underline;
+    cursor: pointer;
 }

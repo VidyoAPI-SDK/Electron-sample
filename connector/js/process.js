@@ -28,6 +28,7 @@ const onCallDisconnectClick = ()=>{
     userPresetMap.clear();
     windowShared = null;
     monitorShared = null;
+    invitedParticipantList = [];
 }
 
 const clearAllOpenWindow =()=>{
@@ -300,6 +301,12 @@ const loadSettingData =(settingName)=>{
             utilty.loadTempletWithClassName("right-con-section" , "analytics_services.html").then(()=>{
                 RegisterAnalyticsServicesEvents();
                 SetDefualtAnalyticsConfiguration(['service-url-google', 'service-url-vidyoinsights']);
+            });
+            break;
+        case "About":
+            utilty.loadTempletWithClassName("right-con-section" , "about_sample.html").then(()=>{
+                RegisterAboutEvents();
+                GetSDKVersion(updateSDKVersion)
             });
             break;
     }
@@ -608,8 +615,8 @@ const getCameraCapablitiesFromSDK =()=>{
     return capabilities;
 }
 
-setLocalCameraCapabilitesFromSDK = (height , width) =>{
-    setMaxConstraintForCamera (height , width);
+setLocalCameraCapabilitesFromSDK = (height , width , fps) =>{
+    setMaxConstraintForCamera (height , width , fps);
 }
 
 const getLocalMicrophonesListFromSDK = () =>{
@@ -831,6 +838,7 @@ const _openModeratorUI = () => {
         toggleBottomBarBlur(true);
         isModerationScreenVisible = true;
         updatedModerationUiForRemoteParticipant(getConfernceMode())
+        RepaintInvitedList();
        // updateRecordingStatus(getRecordingState())
     });
     window.onresize = () => { };

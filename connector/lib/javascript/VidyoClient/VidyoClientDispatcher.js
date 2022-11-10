@@ -697,6 +697,98 @@ var VidyoClientLib;
 					});
 				}
 
+				this.AnalyticsControlEventAction = function(eventCategory, eventAction, enable) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('eventCategory') && arguments[0].hasOwnProperty('eventAction') && arguments[0].hasOwnProperty('enable')){
+							var params = vcUtilsParam({c: this.objId, eventCategory: arguments[0].eventCategory, eventAction: arguments[0].eventAction, enable: arguments[0].enable});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['eventCategory', 'eventAction', 'enable'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 3 && (typeof(arguments[0]) === "string") && (typeof(arguments[1]) === "string") && (typeof(arguments[2]) === "boolean")){
+						var params = vcUtilsParam({c: this.objId, eventCategory: arguments[0], eventAction: arguments[1], enable: arguments[2]});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoConnectorAnalyticsControlEventAction?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.AnalyticsNotifyEvent = function(eventName, parameters) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('eventName') && arguments[0].hasOwnProperty('parameters')){
+							var params = vcUtilsParam({c: this.objId, eventName: arguments[0].eventName, parameters: JSON.stringify({"parameters": arguments[0].parameters})});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['eventName', 'parameters'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 2 && (typeof(arguments[0]) === "string") && (typeof(arguments[1]) === "object")){
+						var params = vcUtilsParam({c: this.objId, eventName: arguments[0], parameters: JSON.stringify({"parameters": arguments[1]})});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoConnectorAnalyticsNotifyEvent?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.AnalyticsStart = function(serviceType, serverUrl, trackingID) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('serviceType') && arguments[0].hasOwnProperty('serverUrl') && arguments[0].hasOwnProperty('trackingID')){
+							var params = vcUtilsParam({c: this.objId, serviceType: arguments[0].serviceType, serverUrl: arguments[0].serverUrl, trackingID: arguments[0].trackingID});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['serviceType', 'serverUrl', 'trackingID'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 3 && (typeof(arguments[0]) === "string") && (typeof(arguments[1]) === "string") && (typeof(arguments[2]) === "string")){
+						var params = vcUtilsParam({c: this.objId, serviceType: arguments[0], serverUrl: arguments[1], trackingID: arguments[2]});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoConnectorAnalyticsStart?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.AnalyticsStop = function() {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						var params = vcUtilsParam({c: this.objId});
+					} else if (arguments.length === 0){
+						var params = vcUtilsParam({c: this.objId});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoConnectorAnalyticsStop?" + params, OnComplete, OnError);
+					});
+				}
+
 				this.ApproveRaisedHand = function(participant, requestId) {
 					var args = [].slice.apply(arguments);
 					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
@@ -1669,6 +1761,58 @@ var VidyoClientLib;
 					});
 				}
 
+				this.GetAnalyticsData = function(onGetAnalyticsDataCallback) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('onGetAnalyticsDataCallback')){
+							this.VidyoConnectorOnGetAnalyticsData = arguments[0].onGetAnalyticsDataCallback;
+							var params = vcUtilsParam({c: this.objId});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['onGetAnalyticsDataCallback'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 1 && (typeof(arguments[0]) === "function")){
+						this.VidyoConnectorOnGetAnalyticsData = onGetAnalyticsDataCallback;
+						var params = vcUtilsParam({c: this.objId});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoConnectorGetAnalyticsData?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.GetAnalyticsEventTable = function(onGetAnalyticsEventTableCallback) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('onGetAnalyticsEventTableCallback')){
+							this.VidyoConnectorOnGetAnalyticsEventTable = arguments[0].onGetAnalyticsEventTableCallback;
+							var params = vcUtilsParam({c: this.objId});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['onGetAnalyticsEventTableCallback'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 1 && (typeof(arguments[0]) === "function")){
+						this.VidyoConnectorOnGetAnalyticsEventTable = onGetAnalyticsEventTableCallback;
+						var params = vcUtilsParam({c: this.objId});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoConnectorGetAnalyticsEventTable?" + params, OnComplete, OnError);
+					});
+				}
+
 				this.GetAudioBitrateMultiplier = function() {
 					var args = [].slice.apply(arguments);
 					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
@@ -2021,72 +2165,6 @@ var VidyoClientLib;
 					});
 				}
 
-				this.GetGoogleAnalyticsEventTable = function(onGetGoogleAnalyticsEventTable) {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						if(arguments[0].hasOwnProperty('onGetGoogleAnalyticsEventTable')){
-							this.VidyoConnectorOnGetGoogleAnalyticsEventTable = arguments[0].onGetGoogleAnalyticsEventTable;
-							var params = vcUtilsParam({c: this.objId});
-						} else {
-							return Promise.reject(new MissingArgumentException('Missing Parameters', ['onGetGoogleAnalyticsEventTable'], Object.keys(arguments[0])).error);
-						}
-					} else if (arguments.length === 1 && (typeof(arguments[0]) === "function")){
-						this.VidyoConnectorOnGetGoogleAnalyticsEventTable = onGetGoogleAnalyticsEventTable;
-						var params = vcUtilsParam({c: this.objId});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoConnectorGetGoogleAnalyticsEventTable?" + params, OnComplete, OnError);
-					});
-				}
-
-				this.GetGoogleAnalyticsServiceID = function() {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						var params = vcUtilsParam({c: this.objId});
-					} else if (arguments.length === 0){
-						var params = vcUtilsParam({c: this.objId});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoConnectorGetGoogleAnalyticsServiceID?" + params, OnComplete, OnError);
-					});
-				}
-
-				this.GetInsightsServiceUrl = function() {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						var params = vcUtilsParam({c: this.objId});
-					} else if (arguments.length === 0){
-						var params = vcUtilsParam({c: this.objId});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoConnectorGetInsightsServiceUrl?" + params, OnComplete, OnError);
-					});
-				}
-
 				this.GetLogLevel = function(loggerType) {
 					var args = [].slice.apply(arguments);
 					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
@@ -2429,30 +2507,6 @@ var VidyoClientLib;
 					});
 				}
 
-				this.GoogleAnalyticsControlEventAction = function(eventCategory, eventAction, enable) {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						if(arguments[0].hasOwnProperty('eventCategory') && arguments[0].hasOwnProperty('eventAction') && arguments[0].hasOwnProperty('enable')){
-							var params = vcUtilsParam({c: this.objId, eventCategory: arguments[0].eventCategory, eventAction: arguments[0].eventAction, enable: arguments[0].enable});
-						} else {
-							return Promise.reject(new MissingArgumentException('Missing Parameters', ['eventCategory', 'eventAction', 'enable'], Object.keys(arguments[0])).error);
-						}
-					} else if (arguments.length === 3 && (typeof(arguments[0]) === "string") && (typeof(arguments[1]) === "string") && (typeof(arguments[2]) === "boolean")){
-						var params = vcUtilsParam({c: this.objId, eventCategory: arguments[0], eventAction: arguments[1], enable: arguments[2]});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoConnectorGoogleAnalyticsControlEventAction?" + params, OnComplete, OnError);
-					});
-				}
-
 				this.HideView = function(viewId) {
 					var args = [].slice.apply(arguments);
 					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
@@ -2479,30 +2533,6 @@ var VidyoClientLib;
 					});
 				}
 
-				this.InsightsNotifyEvent = function(eventName, parameters) {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						if(arguments[0].hasOwnProperty('eventName') && arguments[0].hasOwnProperty('parameters')){
-							var params = vcUtilsParam({c: this.objId, eventName: arguments[0].eventName, parameters: JSON.stringify({"parameters": arguments[0].parameters})});
-						} else {
-							return Promise.reject(new MissingArgumentException('Missing Parameters', ['eventName', 'parameters'], Object.keys(arguments[0])).error);
-						}
-					} else if (arguments.length === 2 && (typeof(arguments[0]) === "string") && (typeof(arguments[1]) === "object")){
-						var params = vcUtilsParam({c: this.objId, eventName: arguments[0], parameters: JSON.stringify({"parameters": arguments[1]})});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoConnectorInsightsNotifyEvent?" + params, OnComplete, OnError);
-					});
-				}
-
 				this.InviteParticipant = function(contact, message, onInviteResult) {
 					var args = [].slice.apply(arguments);
 					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
@@ -2526,46 +2556,6 @@ var VidyoClientLib;
 							reject(Error(response));
 						}
 						GetRequest("VidyoConnectorInviteParticipant?" + params, OnComplete, OnError);
-					});
-				}
-
-				this.IsGoogleAnalyticsServiceEnabled = function() {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						var params = vcUtilsParam({c: this.objId});
-					} else if (arguments.length === 0){
-						var params = vcUtilsParam({c: this.objId});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoConnectorIsGoogleAnalyticsServiceEnabled?" + params, OnComplete, OnError);
-					});
-				}
-
-				this.IsInsightsServiceEnabled = function() {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						var params = vcUtilsParam({c: this.objId});
-					} else if (arguments.length === 0){
-						var params = vcUtilsParam({c: this.objId});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoConnectorIsInsightsServiceEnabled?" + params, OnComplete, OnError);
 					});
 				}
 
@@ -3310,30 +3300,6 @@ var VidyoClientLib;
 							reject(Error(response));
 						}
 						GetRequest("VidyoConnectorRegisterParticipantEventListener?" + params, OnComplete, OnError);
-					});
-				}
-
-				this.RegisterPlugin = function(plugin) {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						if(arguments[0].hasOwnProperty('plugin')){
-							var params = vcUtilsParam({c: this.objId, plugin: arguments[0].plugin});
-						} else {
-							return Promise.reject(new MissingArgumentException('Missing Parameters', ['plugin'], Object.keys(arguments[0])).error);
-						}
-					} else if (arguments.length === 1 && (typeof(arguments[0]) === "number")){
-						var params = vcUtilsParam({c: this.objId, plugin: arguments[0]});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoConnectorRegisterPlugin?" + params, OnComplete, OnError);
 					});
 				}
 
@@ -4550,6 +4516,30 @@ var VidyoClientLib;
 							reject(Error(response));
 						}
 						GetRequest("VidyoConnectorSelectVirtualSourceWindowShare?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.SelectVirtualWindowShare = function(virtualWindowShare) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('virtualWindowShare')){
+							var params = vcUtilsParam({c: this.objId, virtualWindowShare: (arguments[0].virtualWindowShare ? arguments[0].virtualWindowShare.objId : 0)});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['virtualWindowShare'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 1 && (typeof(arguments[0]) === "object")){
+						var params = vcUtilsParam({c: this.objId, virtualWindowShare: (arguments[0] ? arguments[0].objId : 0)});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoConnectorSelectVirtualWindowShare?" + params, OnComplete, OnError);
 					});
 				}
 
@@ -6159,54 +6149,6 @@ var VidyoClientLib;
 					});
 				}
 
-				this.StartGoogleAnalyticsService = function(trackingID) {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						if(arguments[0].hasOwnProperty('trackingID')){
-							var params = vcUtilsParam({c: this.objId, trackingID: arguments[0].trackingID});
-						} else {
-							return Promise.reject(new MissingArgumentException('Missing Parameters', ['trackingID'], Object.keys(arguments[0])).error);
-						}
-					} else if (arguments.length === 1 && (typeof(arguments[0]) === "string")){
-						var params = vcUtilsParam({c: this.objId, trackingID: arguments[0]});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoConnectorStartGoogleAnalyticsService?" + params, OnComplete, OnError);
-					});
-				}
-
-				this.StartInsightsService = function(serverUrl) {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						if(arguments[0].hasOwnProperty('serverUrl')){
-							var params = vcUtilsParam({c: this.objId, serverUrl: arguments[0].serverUrl});
-						} else {
-							return Promise.reject(new MissingArgumentException('Missing Parameters', ['serverUrl'], Object.keys(arguments[0])).error);
-						}
-					} else if (arguments.length === 1 && (typeof(arguments[0]) === "string")){
-						var params = vcUtilsParam({c: this.objId, serverUrl: arguments[0]});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoConnectorStartInsightsService?" + params, OnComplete, OnError);
-					});
-				}
-
 				this.StartLectureMode = function(requestId) {
 					var args = [].slice.apply(arguments);
 					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
@@ -6274,46 +6216,6 @@ var VidyoClientLib;
 							reject(Error(response));
 						}
 						GetRequest("VidyoConnectorStartRecording?" + params, OnComplete, OnError);
-					});
-				}
-
-				this.StopGoogleAnalyticsService = function() {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						var params = vcUtilsParam({c: this.objId});
-					} else if (arguments.length === 0){
-						var params = vcUtilsParam({c: this.objId});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoConnectorStopGoogleAnalyticsService?" + params, OnComplete, OnError);
-					});
-				}
-
-				this.StopInsightsService = function() {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						var params = vcUtilsParam({c: this.objId});
-					} else if (arguments.length === 0){
-						var params = vcUtilsParam({c: this.objId});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoConnectorStopInsightsService?" + params, OnComplete, OnError);
 					});
 				}
 
@@ -6916,30 +6818,6 @@ var VidyoClientLib;
 							reject(Error(response));
 						}
 						GetRequest("VidyoConnectorUnregisterParticipantEventListener?" + params, OnComplete, OnError);
-					});
-				}
-
-				this.UnregisterPlugin = function(plugin) {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						if(arguments[0].hasOwnProperty('plugin')){
-							var params = vcUtilsParam({c: this.objId, plugin: arguments[0].plugin});
-						} else {
-							return Promise.reject(new MissingArgumentException('Missing Parameters', ['plugin'], Object.keys(arguments[0])).error);
-						}
-					} else if (arguments.length === 1 && (typeof(arguments[0]) === "number")){
-						var params = vcUtilsParam({c: this.objId, plugin: arguments[0]});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoConnectorUnregisterPlugin?" + params, OnComplete, OnError);
 					});
 				}
 
@@ -9787,30 +9665,6 @@ var VidyoClientLib;
 					});
 				}
 
-				this.EnablePreviewMirroring = function(enable) {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						if(arguments[0].hasOwnProperty('enable')){
-							var params = vcUtilsParam({r: this.objId, enable: arguments[0].enable});
-						} else {
-							return Promise.reject(new MissingArgumentException('Missing Parameters', ['enable'], Object.keys(arguments[0])).error);
-						}
-					} else if (arguments.length === 1 && (typeof(arguments[0]) === "boolean")){
-						var params = vcUtilsParam({r: this.objId, enable: arguments[0]});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoLocalRendererEnablePreviewMirroring?" + params, OnComplete, OnError);
-					});
-				}
-
 				this.EnableSelfViewCustomLayout = function(enable) {
 					var args = [].slice.apply(arguments);
 					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
@@ -10044,26 +9898,6 @@ var VidyoClientLib;
 							reject(Error(response));
 						}
 						GetRequest("VidyoLocalRendererIsPaused?" + params, OnComplete, OnError);
-					});
-				}
-
-				this.IsPreviewMirroringEnabled = function() {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						var params = vcUtilsParam({r: this.objId});
-					} else if (arguments.length === 0){
-						var params = vcUtilsParam({r: this.objId});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoLocalRendererIsPreviewMirroringEnabled?" + params, OnComplete, OnError);
 					});
 				}
 
@@ -10932,32 +10766,6 @@ var VidyoClientLib;
 							reject(Error(response));
 						}
 						GetRequest("VidyoLocalSpeakerPause?" + params, OnComplete, OnError);
-					});
-				}
-
-				this.PlaySound = function(sound, loop) {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						if(arguments[0].hasOwnProperty('sound') && arguments[0].hasOwnProperty('loop')){
-							var params = vcUtilsParam({s: this.objId, sound: (arguments[0].sound ? arguments[0].sound.objId : 0), loop: arguments[0].loop});
-						} else {
-							return Promise.reject(new MissingArgumentException('Missing Parameters', ['sound', 'loop'], Object.keys(arguments[0])).error);
-						}
-					} else if (arguments.length === 2 && (typeof(arguments[0]) === "object") && (typeof(arguments[1]) === "boolean")){
-						var params = vcUtilsParam({s: this.objId, sound: (arguments[0] ? arguments[0].objId : 0), loop: arguments[1]});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							if(sound&& response.data.sound)
-								vcUtilsExtend(sound, response.data.sound);
-							resolve(response.data);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoLocalSpeakerPlaySound?" + params, OnComplete, OnError);
 					});
 				}
 
@@ -14466,6 +14274,466 @@ var VidyoClientLib;
 				return this;
 			}
 
+			this.CreateVidyoVirtualWindowShare = function(id, windowName, applicationName, onStart, onReconfigure, onStop) {
+				var args = [].slice.apply(arguments);
+				if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+					if(arguments[0].hasOwnProperty('id') && arguments[0].hasOwnProperty('windowName') && arguments[0].hasOwnProperty('applicationName') && arguments[0].hasOwnProperty('onStart') && arguments[0].hasOwnProperty('onReconfigure') && arguments[0].hasOwnProperty('onStop')){
+						var params = vcUtilsParam({w: this.objId, id: arguments[0].id, windowName: arguments[0].windowName, applicationName: arguments[0].applicationName});
+					} else {
+						return Promise.reject(new MissingArgumentException('Missing Parameters', ['id', 'windowName', 'applicationName', 'onStart', 'onReconfigure', 'onStop'], Object.keys(arguments[0])).error);
+					}
+				} else if (arguments.length === 6 && (typeof(arguments[0]) === "string") && (typeof(arguments[1]) === "string") && (typeof(arguments[2]) === "string") && (typeof(arguments[3]) === "function") && (typeof(arguments[4]) === "function") && (typeof(arguments[5]) === "function")){
+					var params = vcUtilsParam({w: this.objId, id: arguments[0], windowName: arguments[1], applicationName: arguments[2]});
+				} else {
+					return Promise.reject(new Error('Invalid Parameters'));
+				}
+
+				return new Promise(function(resolve, reject){
+					function OnComplete(response) {
+						var vidyoVirtualWindowShare = new contextObj.VidyoVirtualWindowShare(response.data.VidyoVirtualWindowShare);	// copy construct
+						if(args.length === 1 && (typeof(args[0]) === "object") && !args[0].objId){
+							vidyoVirtualWindowShare.VidyoVirtualWindowShareStartCallback = args[0].onStart;
+							vidyoVirtualWindowShare.VidyoVirtualWindowShareReconfigureCallback = args[0].onReconfigure;
+							vidyoVirtualWindowShare.VidyoVirtualWindowShareStopCallback = args[0].onStop;
+						} else {
+							vidyoVirtualWindowShare.VidyoVirtualWindowShareStartCallback = onStart;
+							vidyoVirtualWindowShare.VidyoVirtualWindowShareReconfigureCallback = onReconfigure;
+							vidyoVirtualWindowShare.VidyoVirtualWindowShareStopCallback = onStop;
+						}
+						objects[vidyoVirtualWindowShare.objId] = vidyoVirtualWindowShare;
+						resolve(vidyoVirtualWindowShare);
+					}
+					function OnError(response) {
+						reject(Error(response));
+					}
+					GetRequest("VidyoVirtualWindowShareConstruct?" + params, OnComplete, OnError);
+				});
+			}
+			this.VidyoVirtualWindowShare = function(id, windowName, applicationName, onStart, onReconfigure, onStop) {
+				if(arguments.length === 1 && arguments[0].objId && arguments[0].objType && arguments[0].objType === "VidyoVirtualWindowShare"){
+					vcUtilsExtend(this, arguments[0]);	//	copy construct
+				} else {
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('id') && arguments[0].hasOwnProperty('windowName') && arguments[0].hasOwnProperty('applicationName') && arguments[0].hasOwnProperty('onStart') && arguments[0].hasOwnProperty('onReconfigure') && arguments[0].hasOwnProperty('onStop')){
+							this.VidyoVirtualWindowShareStartCallback = arguments[0].onStart;
+							this.VidyoVirtualWindowShareReconfigureCallback = arguments[0].onReconfigure;
+							this.VidyoVirtualWindowShareStopCallback = arguments[0].onStop;
+							var params = vcUtilsParam({w: this.objId, id: arguments[0].id, windowName: arguments[0].windowName, applicationName: arguments[0].applicationName});
+						} else {
+							throw new MissingArgumentException('Missing Parameters', ['id', 'windowName', 'applicationName', 'onStart', 'onReconfigure', 'onStop'], Object.keys(arguments[0])).error;
+						}
+					} else if (arguments.length === 6 && (typeof(arguments[0]) === "string") && (typeof(arguments[1]) === "string") && (typeof(arguments[2]) === "string") && (typeof(arguments[3]) === "function") && (typeof(arguments[4]) === "function") && (typeof(arguments[5]) === "function")){
+						this.VidyoVirtualWindowShareStartCallback = onStart;
+						this.VidyoVirtualWindowShareReconfigureCallback = onReconfigure;
+						this.VidyoVirtualWindowShareStopCallback = onStop;
+						var params = vcUtilsParam({w: this.objId, id: arguments[0], windowName: arguments[1], applicationName: arguments[2]});
+					} else {
+						throw new Error('Invalid Parameters');
+					}
+					var response = GetRequest("VidyoVirtualWindowShareConstruct?" + params);
+					if(response == null)
+						throw new Error('No Response from VidyoClient');
+					vcUtilsExtend(this, response.VidyoVirtualWindowShare);
+					objects[this.objId] = this;
+
+				}
+
+				this.Destruct = function() {
+					GetRequest("VidyoVirtualWindowShareDestruct?" + vcUtilsParam({ obj: this.objId }), function(){}, function(){});
+					delete objects[this.objId];
+				}
+
+				this.AddToLocalRenderer = function(renderer) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('renderer')){
+							var params = vcUtilsParam({w: this.objId, renderer: (arguments[0].renderer ? arguments[0].renderer.objId : 0)});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['renderer'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 1 && (typeof(arguments[0]) === "object")){
+						var params = vcUtilsParam({w: this.objId, renderer: (arguments[0] ? arguments[0].objId : 0)});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoVirtualWindowShareAddToLocalRenderer?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.AddToRemoteRenderer = function(remoteRenderer) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('remoteRenderer')){
+							var params = vcUtilsParam({w: this.objId, remoteRenderer: (arguments[0].remoteRenderer ? arguments[0].remoteRenderer.objId : 0)});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['remoteRenderer'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 1 && (typeof(arguments[0]) === "object")){
+						var params = vcUtilsParam({w: this.objId, remoteRenderer: (arguments[0] ? arguments[0].objId : 0)});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoVirtualWindowShareAddToRemoteRenderer?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.ClearConstraints = function() {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						var params = vcUtilsParam({w: this.objId});
+					} else if (arguments.length === 0){
+						var params = vcUtilsParam({w: this.objId});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoVirtualWindowShareClearConstraints?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.GetApplicationName = function() {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						var params = vcUtilsParam({w: this.objId});
+					} else if (arguments.length === 0){
+						var params = vcUtilsParam({w: this.objId});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoVirtualWindowShareGetApplicationName?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.GetId = function() {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						var params = vcUtilsParam({w: this.objId});
+					} else if (arguments.length === 0){
+						var params = vcUtilsParam({w: this.objId});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoVirtualWindowShareGetId?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.GetName = function() {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						var params = vcUtilsParam({w: this.objId});
+					} else if (arguments.length === 0){
+						var params = vcUtilsParam({w: this.objId});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoVirtualWindowShareGetName?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.GetPreviewLabel = function() {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						var params = vcUtilsParam({w: this.objId});
+					} else if (arguments.length === 0){
+						var params = vcUtilsParam({w: this.objId});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoVirtualWindowShareGetPreviewLabel?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.OnFrame = function(videoFrame, mediaFormat) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('videoFrame') && arguments[0].hasOwnProperty('mediaFormat')){
+							var params = vcUtilsParam({w: this.objId, videoFrame: (arguments[0].videoFrame ? arguments[0].videoFrame.objId : 0), mediaFormat: arguments[0].mediaFormat});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['videoFrame', 'mediaFormat'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 2 && (typeof(arguments[0]) === "object") && (typeof(arguments[1]) === "string")){
+						var params = vcUtilsParam({w: this.objId, videoFrame: (arguments[0] ? arguments[0].objId : 0), mediaFormat: arguments[1]});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoVirtualWindowShareOnFrame?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.RemoveFromLocalRenderer = function(renderer) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('renderer')){
+							var params = vcUtilsParam({w: this.objId, renderer: (arguments[0].renderer ? arguments[0].renderer.objId : 0)});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['renderer'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 1 && (typeof(arguments[0]) === "object")){
+						var params = vcUtilsParam({w: this.objId, renderer: (arguments[0] ? arguments[0].objId : 0)});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoVirtualWindowShareRemoveFromLocalRenderer?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.RemoveFromRemoteRenderer = function(remoteRenderer) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('remoteRenderer')){
+							var params = vcUtilsParam({w: this.objId, remoteRenderer: (arguments[0].remoteRenderer ? arguments[0].remoteRenderer.objId : 0)});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['remoteRenderer'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 1 && (typeof(arguments[0]) === "object")){
+						var params = vcUtilsParam({w: this.objId, remoteRenderer: (arguments[0] ? arguments[0].objId : 0)});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoVirtualWindowShareRemoveFromRemoteRenderer?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.SetBoundsConstraints = function(maxFrameInterval, minFrameInterval, maxWidth, minWidth, maxHeight, minHeight) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('maxFrameInterval') && arguments[0].hasOwnProperty('minFrameInterval') && arguments[0].hasOwnProperty('maxWidth') && arguments[0].hasOwnProperty('minWidth') && arguments[0].hasOwnProperty('maxHeight') && arguments[0].hasOwnProperty('minHeight')){
+							var params = vcUtilsParam({w: this.objId, maxFrameInterval: arguments[0].maxFrameInterval, minFrameInterval: arguments[0].minFrameInterval, maxWidth: arguments[0].maxWidth, minWidth: arguments[0].minWidth, maxHeight: arguments[0].maxHeight, minHeight: arguments[0].minHeight});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['maxFrameInterval', 'minFrameInterval', 'maxWidth', 'minWidth', 'maxHeight', 'minHeight'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 6 && (typeof(arguments[0]) === "number") && (typeof(arguments[1]) === "number") && (typeof(arguments[2]) === "number") && (typeof(arguments[3]) === "number") && (typeof(arguments[4]) === "number") && (typeof(arguments[5]) === "number")){
+						var params = vcUtilsParam({w: this.objId, maxFrameInterval: arguments[0], minFrameInterval: arguments[1], maxWidth: arguments[2], minWidth: arguments[3], maxHeight: arguments[4], minHeight: arguments[5]});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoVirtualWindowShareSetBoundsConstraints?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.SetDiscreteConstraints = function(maxFrameInterval, minFrameInterval, width, height, scaleFactor) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('maxFrameInterval') && arguments[0].hasOwnProperty('minFrameInterval') && arguments[0].hasOwnProperty('width') && arguments[0].hasOwnProperty('height') && arguments[0].hasOwnProperty('scaleFactor')){
+							var params = vcUtilsParam({w: this.objId, maxFrameInterval: arguments[0].maxFrameInterval, minFrameInterval: arguments[0].minFrameInterval, width: arguments[0].width, height: arguments[0].height, scaleFactor: arguments[0].scaleFactor});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['maxFrameInterval', 'minFrameInterval', 'width', 'height', 'scaleFactor'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 5 && (typeof(arguments[0]) === "number") && (typeof(arguments[1]) === "number") && (typeof(arguments[2]) === "number") && (typeof(arguments[3]) === "number") && (typeof(arguments[4]) === "number")){
+						var params = vcUtilsParam({w: this.objId, maxFrameInterval: arguments[0], minFrameInterval: arguments[1], width: arguments[2], height: arguments[3], scaleFactor: arguments[4]});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoVirtualWindowShareSetDiscreteConstraints?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.SetFrameInterval = function(frameInterval) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('frameInterval')){
+							var params = vcUtilsParam({w: this.objId, frameInterval: arguments[0].frameInterval});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['frameInterval'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 1 && (typeof(arguments[0]) === "number")){
+						var params = vcUtilsParam({w: this.objId, frameInterval: arguments[0]});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoVirtualWindowShareSetFrameInterval?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.SetLowLatencyProfile = function(profile) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('profile')){
+							var params = vcUtilsParam({w: this.objId, profile: arguments[0].profile});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['profile'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 1 && (typeof(arguments[0]) === "boolean")){
+						var params = vcUtilsParam({w: this.objId, profile: arguments[0]});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoVirtualWindowShareSetLowLatencyProfile?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.SetPositionInLocalRenderer = function(localRenderer, x, y, width, height, frameInterval) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('localRenderer') && arguments[0].hasOwnProperty('x') && arguments[0].hasOwnProperty('y') && arguments[0].hasOwnProperty('width') && arguments[0].hasOwnProperty('height') && arguments[0].hasOwnProperty('frameInterval')){
+							var params = vcUtilsParam({w: this.objId, localRenderer: (arguments[0].localRenderer ? arguments[0].localRenderer.objId : 0), x: arguments[0].x, y: arguments[0].y, width: arguments[0].width, height: arguments[0].height, frameInterval: arguments[0].frameInterval});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['localRenderer', 'x', 'y', 'width', 'height', 'frameInterval'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 6 && (typeof(arguments[0]) === "object") && (typeof(arguments[1]) === "number") && (typeof(arguments[2]) === "number") && (typeof(arguments[3]) === "number") && (typeof(arguments[4]) === "number") && (typeof(arguments[5]) === "number")){
+						var params = vcUtilsParam({w: this.objId, localRenderer: (arguments[0] ? arguments[0].objId : 0), x: arguments[1], y: arguments[2], width: arguments[3], height: arguments[4], frameInterval: arguments[5]});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoVirtualWindowShareSetPositionInLocalRenderer?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.SetPreviewLabel = function(previewLabel) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('previewLabel')){
+							var params = vcUtilsParam({w: this.objId, previewLabel: arguments[0].previewLabel});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['previewLabel'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 1 && (typeof(arguments[0]) === "string")){
+						var params = vcUtilsParam({w: this.objId, previewLabel: arguments[0]});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoVirtualWindowShareSetPreviewLabel?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.SetScaleFactor = function(scaleFactor) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('scaleFactor')){
+							var params = vcUtilsParam({w: this.objId, scaleFactor: arguments[0].scaleFactor});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['scaleFactor'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 1 && (typeof(arguments[0]) === "number")){
+						var params = vcUtilsParam({w: this.objId, scaleFactor: arguments[0]});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoVirtualWindowShareSetScaleFactor?" + params, OnComplete, OnError);
+					});
+				}
+
+				return this;
+			}
+
 			this.CreateVidyoApplication = function(endpoint) {
 				var args = [].slice.apply(arguments);
 				if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
@@ -14994,6 +15262,98 @@ var VidyoClientLib;
 							reject(Error(response));
 						}
 						GetRequest("VidyoEndpointAddMessageClass?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.AnalyticsControlEventAction = function(eventCategory, eventAction, enable) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('eventCategory') && arguments[0].hasOwnProperty('eventAction') && arguments[0].hasOwnProperty('enable')){
+							var params = vcUtilsParam({e: this.objId, eventCategory: arguments[0].eventCategory, eventAction: arguments[0].eventAction, enable: arguments[0].enable});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['eventCategory', 'eventAction', 'enable'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 3 && (typeof(arguments[0]) === "string") && (typeof(arguments[1]) === "string") && (typeof(arguments[2]) === "boolean")){
+						var params = vcUtilsParam({e: this.objId, eventCategory: arguments[0], eventAction: arguments[1], enable: arguments[2]});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoEndpointAnalyticsControlEventAction?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.AnalyticsNotifyApplicationEvent = function(eventName, parameters) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('eventName') && arguments[0].hasOwnProperty('parameters')){
+							var params = vcUtilsParam({e: this.objId, eventName: arguments[0].eventName, parameters: JSON.stringify({"parameters": arguments[0].parameters})});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['eventName', 'parameters'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 2 && (typeof(arguments[0]) === "string") && (typeof(arguments[1]) === "object")){
+						var params = vcUtilsParam({e: this.objId, eventName: arguments[0], parameters: JSON.stringify({"parameters": arguments[1]})});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoEndpointAnalyticsNotifyApplicationEvent?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.AnalyticsStart = function(serviceType, serverUrl, trackingId) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('serviceType') && arguments[0].hasOwnProperty('serverUrl') && arguments[0].hasOwnProperty('trackingId')){
+							var params = vcUtilsParam({e: this.objId, serviceType: arguments[0].serviceType, serverUrl: arguments[0].serverUrl, trackingId: arguments[0].trackingId});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['serviceType', 'serverUrl', 'trackingId'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 3 && (typeof(arguments[0]) === "string") && (typeof(arguments[1]) === "string") && (typeof(arguments[2]) === "string")){
+						var params = vcUtilsParam({e: this.objId, serviceType: arguments[0], serverUrl: arguments[1], trackingId: arguments[2]});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoEndpointAnalyticsStart?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.AnalyticsStop = function() {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						var params = vcUtilsParam({e: this.objId});
+					} else if (arguments.length === 0){
+						var params = vcUtilsParam({e: this.objId});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoEndpointAnalyticsStop?" + params, OnComplete, OnError);
 					});
 				}
 
@@ -15575,6 +15935,58 @@ var VidyoClientLib;
 					});
 				}
 
+				this.GetAnalyticsData = function(onGetAnalyticsDataCallback) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('onGetAnalyticsDataCallback')){
+							this.VidyoEndpointOnGetAnalyticsData = arguments[0].onGetAnalyticsDataCallback;
+							var params = vcUtilsParam({e: this.objId});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['onGetAnalyticsDataCallback'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 1 && (typeof(arguments[0]) === "function")){
+						this.VidyoEndpointOnGetAnalyticsData = onGetAnalyticsDataCallback;
+						var params = vcUtilsParam({e: this.objId});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoEndpointGetAnalyticsData?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.GetAnalyticsEventTable = function(onGetAnalyticsEventTableCallback) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('onGetAnalyticsEventTableCallback')){
+							this.VidyoEndpointOnGetAnalyticsEventTable = arguments[0].onGetAnalyticsEventTableCallback;
+							var params = vcUtilsParam({e: this.objId});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['onGetAnalyticsEventTableCallback'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 1 && (typeof(arguments[0]) === "function")){
+						this.VidyoEndpointOnGetAnalyticsEventTable = onGetAnalyticsEventTableCallback;
+						var params = vcUtilsParam({e: this.objId});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoEndpointGetAnalyticsEventTable?" + params, OnComplete, OnError);
+					});
+				}
+
 				this.GetApplicationTag = function() {
 					var args = [].slice.apply(arguments);
 					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
@@ -15999,52 +16411,6 @@ var VidyoClientLib;
 					});
 				}
 
-				this.GetGoogleAnalyticsEventTable = function(onGetAnalyticsEventTableCallback) {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						if(arguments[0].hasOwnProperty('onGetAnalyticsEventTableCallback')){
-							this.VidyoEndpointOnGetAnalyticsEventTable = arguments[0].onGetAnalyticsEventTableCallback;
-							var params = vcUtilsParam({e: this.objId});
-						} else {
-							return Promise.reject(new MissingArgumentException('Missing Parameters', ['onGetAnalyticsEventTableCallback'], Object.keys(arguments[0])).error);
-						}
-					} else if (arguments.length === 1 && (typeof(arguments[0]) === "function")){
-						this.VidyoEndpointOnGetAnalyticsEventTable = onGetAnalyticsEventTableCallback;
-						var params = vcUtilsParam({e: this.objId});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoEndpointGetGoogleAnalyticsEventTable?" + params, OnComplete, OnError);
-					});
-				}
-
-				this.GetGoogleAnalyticsServiceId = function() {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						var params = vcUtilsParam({e: this.objId});
-					} else if (arguments.length === 0){
-						var params = vcUtilsParam({e: this.objId});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoEndpointGetGoogleAnalyticsServiceId?" + params, OnComplete, OnError);
-					});
-				}
-
 				this.GetId = function() {
 					var args = [].slice.apply(arguments);
 					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
@@ -16062,26 +16428,6 @@ var VidyoClientLib;
 							reject(Error(response));
 						}
 						GetRequest("VidyoEndpointGetId?" + params, OnComplete, OnError);
-					});
-				}
-
-				this.GetInsightsServiceUrl = function() {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						var params = vcUtilsParam({e: this.objId});
-					} else if (arguments.length === 0){
-						var params = vcUtilsParam({e: this.objId});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoEndpointGetInsightsServiceUrl?" + params, OnComplete, OnError);
 					});
 				}
 
@@ -16391,30 +16737,6 @@ var VidyoClientLib;
 					});
 				}
 
-				this.GoogleAnalyticsControlEventAction = function(eventCategory, eventAction, enable) {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						if(arguments[0].hasOwnProperty('eventCategory') && arguments[0].hasOwnProperty('eventAction') && arguments[0].hasOwnProperty('enable')){
-							var params = vcUtilsParam({e: this.objId, eventCategory: arguments[0].eventCategory, eventAction: arguments[0].eventAction, enable: arguments[0].enable});
-						} else {
-							return Promise.reject(new MissingArgumentException('Missing Parameters', ['eventCategory', 'eventAction', 'enable'], Object.keys(arguments[0])).error);
-						}
-					} else if (arguments.length === 3 && (typeof(arguments[0]) === "string") && (typeof(arguments[1]) === "string") && (typeof(arguments[2]) === "boolean")){
-						var params = vcUtilsParam({e: this.objId, eventCategory: arguments[0], eventAction: arguments[1], enable: arguments[2]});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoEndpointGoogleAnalyticsControlEventAction?" + params, OnComplete, OnError);
-					});
-				}
-
 				this.HideView = function(viewId) {
 					var args = [].slice.apply(arguments);
 					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
@@ -16441,30 +16763,6 @@ var VidyoClientLib;
 					});
 				}
 
-				this.InsightsNotifyApplicationEvent = function(eventName, parameters) {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						if(arguments[0].hasOwnProperty('eventName') && arguments[0].hasOwnProperty('parameters')){
-							var params = vcUtilsParam({e: this.objId, eventName: arguments[0].eventName, parameters: JSON.stringify({"parameters": arguments[0].parameters})});
-						} else {
-							return Promise.reject(new MissingArgumentException('Missing Parameters', ['eventName', 'parameters'], Object.keys(arguments[0])).error);
-						}
-					} else if (arguments.length === 2 && (typeof(arguments[0]) === "string") && (typeof(arguments[1]) === "object")){
-						var params = vcUtilsParam({e: this.objId, eventName: arguments[0], parameters: JSON.stringify({"parameters": arguments[1]})});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoEndpointInsightsNotifyApplicationEvent?" + params, OnComplete, OnError);
-					});
-				}
-
 				this.IsDebugEnabled = function() {
 					var args = [].slice.apply(arguments);
 					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
@@ -16482,46 +16780,6 @@ var VidyoClientLib;
 							reject(Error(response));
 						}
 						GetRequest("VidyoEndpointIsDebugEnabled?" + params, OnComplete, OnError);
-					});
-				}
-
-				this.IsGoogleAnalyticsServiceEnabled = function() {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						var params = vcUtilsParam({e: this.objId});
-					} else if (arguments.length === 0){
-						var params = vcUtilsParam({e: this.objId});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoEndpointIsGoogleAnalyticsServiceEnabled?" + params, OnComplete, OnError);
-					});
-				}
-
-				this.IsInsightsServiceEnabled = function() {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						var params = vcUtilsParam({e: this.objId});
-					} else if (arguments.length === 0){
-						var params = vcUtilsParam({e: this.objId});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoEndpointIsInsightsServiceEnabled?" + params, OnComplete, OnError);
 					});
 				}
 
@@ -17270,30 +17528,6 @@ var VidyoClientLib;
 							reject(Error(response));
 						}
 						GetRequest("VidyoEndpointRegisterNetworkInterfaceEventListener?" + params, OnComplete, OnError);
-					});
-				}
-
-				this.RegisterPlugin = function(plugin) {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						if(arguments[0].hasOwnProperty('plugin')){
-							var params = vcUtilsParam({e: this.objId, plugin: arguments[0].plugin});
-						} else {
-							return Promise.reject(new MissingArgumentException('Missing Parameters', ['plugin'], Object.keys(arguments[0])).error);
-						}
-					} else if (arguments.length === 1 && (typeof(arguments[0]) === "number")){
-						var params = vcUtilsParam({e: this.objId, plugin: arguments[0]});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoEndpointRegisterPlugin?" + params, OnComplete, OnError);
 					});
 				}
 
@@ -18252,6 +18486,30 @@ var VidyoClientLib;
 							reject(Error(response));
 						}
 						GetRequest("VidyoEndpointSelectVirtualSourceWindowShare?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.SelectVirtualWindowShare = function(virtualWindowShare) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('virtualWindowShare')){
+							var params = vcUtilsParam({e: this.objId, virtualWindowShare: (arguments[0].virtualWindowShare ? arguments[0].virtualWindowShare.objId : 0)});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['virtualWindowShare'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 1 && (typeof(arguments[0]) === "object")){
+						var params = vcUtilsParam({e: this.objId, virtualWindowShare: (arguments[0] ? arguments[0].objId : 0)});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response.data.retValue);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoEndpointSelectVirtualWindowShare?" + params, OnComplete, OnError);
 					});
 				}
 
@@ -19739,54 +19997,6 @@ var VidyoClientLib;
 					});
 				}
 
-				this.StartGoogleAnalyticsService = function(trackingId) {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						if(arguments[0].hasOwnProperty('trackingId')){
-							var params = vcUtilsParam({e: this.objId, trackingId: arguments[0].trackingId});
-						} else {
-							return Promise.reject(new MissingArgumentException('Missing Parameters', ['trackingId'], Object.keys(arguments[0])).error);
-						}
-					} else if (arguments.length === 1 && (typeof(arguments[0]) === "string")){
-						var params = vcUtilsParam({e: this.objId, trackingId: arguments[0]});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoEndpointStartGoogleAnalyticsService?" + params, OnComplete, OnError);
-					});
-				}
-
-				this.StartInsightsService = function(serverUrl) {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						if(arguments[0].hasOwnProperty('serverUrl')){
-							var params = vcUtilsParam({e: this.objId, serverUrl: arguments[0].serverUrl});
-						} else {
-							return Promise.reject(new MissingArgumentException('Missing Parameters', ['serverUrl'], Object.keys(arguments[0])).error);
-						}
-					} else if (arguments.length === 1 && (typeof(arguments[0]) === "string")){
-						var params = vcUtilsParam({e: this.objId, serverUrl: arguments[0]});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoEndpointStartInsightsService?" + params, OnComplete, OnError);
-					});
-				}
-
 				this.StartLocalCameraDetection = function() {
 					var args = [].slice.apply(arguments);
 					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
@@ -19924,46 +20134,6 @@ var VidyoClientLib;
 							reject(Error(response));
 						}
 						GetRequest("VidyoEndpointStartNextLogFile?" + params, OnComplete, OnError);
-					});
-				}
-
-				this.StopGoogleAnalyticsService = function() {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						var params = vcUtilsParam({e: this.objId});
-					} else if (arguments.length === 0){
-						var params = vcUtilsParam({e: this.objId});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoEndpointStopGoogleAnalyticsService?" + params, OnComplete, OnError);
-					});
-				}
-
-				this.StopInsightsService = function() {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						var params = vcUtilsParam({e: this.objId});
-					} else if (arguments.length === 0){
-						var params = vcUtilsParam({e: this.objId});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoEndpointStopInsightsService?" + params, OnComplete, OnError);
 					});
 				}
 
@@ -20449,30 +20619,6 @@ var VidyoClientLib;
 					});
 				}
 
-				this.UnregisterPlugin = function(plugin) {
-					var args = [].slice.apply(arguments);
-					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
-						if(arguments[0].hasOwnProperty('plugin')){
-							var params = vcUtilsParam({e: this.objId, plugin: arguments[0].plugin});
-						} else {
-							return Promise.reject(new MissingArgumentException('Missing Parameters', ['plugin'], Object.keys(arguments[0])).error);
-						}
-					} else if (arguments.length === 1 && (typeof(arguments[0]) === "number")){
-						var params = vcUtilsParam({e: this.objId, plugin: arguments[0]});
-					} else {
-						return Promise.reject(new Error('Invalid Parameters'));
-					}
-					return new Promise(function(resolve, reject){
-						function OnComplete(response) {
-							resolve(response.data.retValue);
-						}
-						function OnError(response) {
-							reject(Error(response));
-						}
-						GetRequest("VidyoEndpointUnregisterPlugin?" + params, OnComplete, OnError);
-					});
-				}
-
 				this.UnregisterReconnectEventListener = function() {
 					var args = [].slice.apply(arguments);
 					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
@@ -20818,6 +20964,54 @@ var VidyoClientLib;
 							reject(Error(response));
 						}
 						GetRequest("VidyoEndpointVirtualVideoSourceUnselectAdvanced?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.VirtualWindowShareSelectAdvanced = function(virtualWindowShare) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('virtualWindowShare')){
+							var params = vcUtilsParam({e: this.objId, virtualWindowShare: (arguments[0].virtualWindowShare ? arguments[0].virtualWindowShare.objId : 0)});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['virtualWindowShare'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 1 && (typeof(arguments[0]) === "object")){
+						var params = vcUtilsParam({e: this.objId, virtualWindowShare: (arguments[0] ? arguments[0].objId : 0)});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoEndpointVirtualWindowShareSelectAdvanced?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.VirtualWindowShareUnselectAdvanced = function(virtualWindowShare) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('virtualWindowShare')){
+							var params = vcUtilsParam({e: this.objId, virtualWindowShare: (arguments[0].virtualWindowShare ? arguments[0].virtualWindowShare.objId : 0)});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['virtualWindowShare'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 1 && (typeof(arguments[0]) === "object")){
+						var params = vcUtilsParam({e: this.objId, virtualWindowShare: (arguments[0] ? arguments[0].objId : 0)});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoEndpointVirtualWindowShareUnselectAdvanced?" + params, OnComplete, OnError);
 					});
 				}
 
@@ -21363,6 +21557,30 @@ var VidyoClientLib;
 							reject(Error(response));
 						}
 						GetRequest("VidyoRoomAddVirtualVideoSource?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.AddVirtualWindowShare = function(virtualWindowShare, removeOthers) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('virtualWindowShare') && arguments[0].hasOwnProperty('removeOthers')){
+							var params = vcUtilsParam({r: this.objId, virtualWindowShare: (arguments[0].virtualWindowShare ? arguments[0].virtualWindowShare.objId : 0), removeOthers: arguments[0].removeOthers});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['virtualWindowShare', 'removeOthers'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 2 && (typeof(arguments[0]) === "object") && (typeof(arguments[1]) === "boolean")){
+						var params = vcUtilsParam({r: this.objId, virtualWindowShare: (arguments[0] ? arguments[0].objId : 0), removeOthers: arguments[1]});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoRoomAddVirtualWindowShare?" + params, OnComplete, OnError);
 					});
 				}
 
@@ -22959,6 +23177,30 @@ var VidyoClientLib;
 							reject(Error(response));
 						}
 						GetRequest("VidyoRoomRemoveVirtualVideoSource?" + params, OnComplete, OnError);
+					});
+				}
+
+				this.RemoveVirtualWindowShare = function(virtualWindowShare) {
+					var args = [].slice.apply(arguments);
+					if(arguments.length === 1 && (typeof(arguments[0]) === "object") && !arguments[0].objId ){
+						if(arguments[0].hasOwnProperty('virtualWindowShare')){
+							var params = vcUtilsParam({r: this.objId, virtualWindowShare: (arguments[0].virtualWindowShare ? arguments[0].virtualWindowShare.objId : 0)});
+						} else {
+							return Promise.reject(new MissingArgumentException('Missing Parameters', ['virtualWindowShare'], Object.keys(arguments[0])).error);
+						}
+					} else if (arguments.length === 1 && (typeof(arguments[0]) === "object")){
+						var params = vcUtilsParam({r: this.objId, virtualWindowShare: (arguments[0] ? arguments[0].objId : 0)});
+					} else {
+						return Promise.reject(new Error('Invalid Parameters'));
+					}
+					return new Promise(function(resolve, reject){
+						function OnComplete(response) {
+							resolve(response);
+						}
+						function OnError(response) {
+							reject(Error(response));
+						}
+						GetRequest("VidyoRoomRemoveVirtualWindowShare?" + params, OnComplete, OnError);
 					});
 				}
 
@@ -26675,6 +26917,32 @@ var VidyoClientLib;
 						return GetRequest("VidyoConnectorOnGetActiveNetworkInterfaceComplete?" + vcUtilsParam({ c: response.VidyoConnector ? response.VidyoConnector.objId : 0, signalingInterface: response.VidyoNetworkInterface ? response.VidyoNetworkInterface.objId : 0, mediaInterface: response.VidyoNetworkInterface ? response.VidyoNetworkInterface.objId : 0 }), function(){}, function(){});
 					}
 				},
+				VidyoConnectorOnGetAnalyticsData: function(response) {
+					var VidyoConnectorObj = (response.VidyoConnector) ? objects[response.VidyoConnector.objId] : null;
+					var serviceTypeObj = response.serviceType;
+					var serverUrlObj = response.serverUrl;
+					var trackingIDObj = response.trackingID;
+					try {
+						if (VidyoConnectorObj && VidyoConnectorObj.VidyoConnectorOnGetAnalyticsData)
+							VidyoConnectorObj.VidyoConnectorOnGetAnalyticsData(serviceTypeObj,serverUrlObj,trackingIDObj);
+					} catch(e) {
+						window.console && window.console.error && window.console.error(e);
+					} finally {
+						return GetRequest("VidyoConnectorOnGetAnalyticsDataComplete?" + vcUtilsParam({ c: response.VidyoConnector ? response.VidyoConnector.objId : 0 }), function(){}, function(){});
+					}
+				},
+				VidyoConnectorOnGetAnalyticsEventTable: function(response) {
+					var VidyoConnectorObj = (response.VidyoConnector) ? objects[response.VidyoConnector.objId] : null;
+					var eventTableObj = response.eventTable;
+					try {
+						if (VidyoConnectorObj && VidyoConnectorObj.VidyoConnectorOnGetAnalyticsEventTable)
+							VidyoConnectorObj.VidyoConnectorOnGetAnalyticsEventTable(eventTableObj);
+					} catch(e) {
+						window.console && window.console.error && window.console.error(e);
+					} finally {
+						return GetRequest("VidyoConnectorOnGetAnalyticsEventTableComplete?" + vcUtilsParam({ c: response.VidyoConnector ? response.VidyoConnector.objId : 0 }), function(){}, function(){});
+					}
+				},
 				VidyoConnectorOnGetAutoReconnectSetting: function(response) {
 					var VidyoConnectorObj = (response.VidyoConnector) ? objects[response.VidyoConnector.objId] : null;
 					var enableAutoReconnectObj = response.enableAutoReconnect;
@@ -26699,18 +26967,6 @@ var VidyoClientLib;
 						window.console && window.console.error && window.console.error(e);
 					} finally {
 						return GetRequest("VidyoConnectorOnGetCameraBackgroundEffectInfoComplete?" + vcUtilsParam({ c: response.VidyoConnector ? response.VidyoConnector.objId : 0 }), function(){}, function(){});
-					}
-				},
-				VidyoConnectorOnGetGoogleAnalyticsEventTable: function(response) {
-					var VidyoConnectorObj = (response.VidyoConnector) ? objects[response.VidyoConnector.objId] : null;
-					var eventTableObj = response.eventTable;
-					try {
-						if (VidyoConnectorObj && VidyoConnectorObj.VidyoConnectorOnGetGoogleAnalyticsEventTable)
-							VidyoConnectorObj.VidyoConnectorOnGetGoogleAnalyticsEventTable(eventTableObj);
-					} catch(e) {
-						window.console && window.console.error && window.console.error(e);
-					} finally {
-						return GetRequest("VidyoConnectorOnGetGoogleAnalyticsEventTableComplete?" + vcUtilsParam({ c: response.VidyoConnector ? response.VidyoConnector.objId : 0 }), function(){}, function(){});
 					}
 				},
 				VidyoConnectorOnGetRecordingServiceProfiles: function(response) {
@@ -28158,6 +28414,46 @@ var VidyoClientLib;
 						return GetRequest("VidyoVirtualVideoSourceStopCallbackComplete?" + vcUtilsParam({ s: response.VidyoVirtualVideoSource ? response.VidyoVirtualVideoSource.objId : 0 }), function(){}, function(){});
 					}
 				},
+				VidyoVirtualWindowShareReconfigureCallback: function(response) {
+					var VidyoVirtualWindowShareObj = (response.VidyoVirtualWindowShare) ? objects[response.VidyoVirtualWindowShare.objId] : null;
+					var frameIntervalObj = response.frameInterval;
+					var mediaFormatObj = response.mediaFormat;
+					var userDataObj = response.userData;
+					try {
+						if (VidyoVirtualWindowShareObj && VidyoVirtualWindowShareObj.VidyoVirtualWindowShareReconfigureCallback)
+							VidyoVirtualWindowShareObj.VidyoVirtualWindowShareReconfigureCallback(frameIntervalObj,mediaFormatObj,userDataObj);
+					} catch(e) {
+						window.console && window.console.error && window.console.error(e);
+					} finally {
+						return GetRequest("VidyoVirtualWindowShareReconfigureCallbackComplete?" + vcUtilsParam({ w: response.VidyoVirtualWindowShare ? response.VidyoVirtualWindowShare.objId : 0 }), function(){}, function(){});
+					}
+				},
+				VidyoVirtualWindowShareStartCallback: function(response) {
+					var VidyoVirtualWindowShareObj = (response.VidyoVirtualWindowShare) ? objects[response.VidyoVirtualWindowShare.objId] : null;
+					var frameIntervalObj = response.frameInterval;
+					var mediaFormatObj = response.mediaFormat;
+					var userDataObj = response.userData;
+					try {
+						if (VidyoVirtualWindowShareObj && VidyoVirtualWindowShareObj.VidyoVirtualWindowShareStartCallback)
+							VidyoVirtualWindowShareObj.VidyoVirtualWindowShareStartCallback(frameIntervalObj,mediaFormatObj,userDataObj);
+					} catch(e) {
+						window.console && window.console.error && window.console.error(e);
+					} finally {
+						return GetRequest("VidyoVirtualWindowShareStartCallbackComplete?" + vcUtilsParam({ w: response.VidyoVirtualWindowShare ? response.VidyoVirtualWindowShare.objId : 0 }), function(){}, function(){});
+					}
+				},
+				VidyoVirtualWindowShareStopCallback: function(response) {
+					var VidyoVirtualWindowShareObj = (response.VidyoVirtualWindowShare) ? objects[response.VidyoVirtualWindowShare.objId] : null;
+					var userDataObj = response.userData;
+					try {
+						if (VidyoVirtualWindowShareObj && VidyoVirtualWindowShareObj.VidyoVirtualWindowShareStopCallback)
+							VidyoVirtualWindowShareObj.VidyoVirtualWindowShareStopCallback(userDataObj);
+					} catch(e) {
+						window.console && window.console.error && window.console.error(e);
+					} finally {
+						return GetRequest("VidyoVirtualWindowShareStopCallbackComplete?" + vcUtilsParam({ c: response.VidyoVirtualWindowShare ? response.VidyoVirtualWindowShare.objId : 0 }), function(){}, function(){});
+					}
+				},
 				VidyoApplicationDownloadCompletedCallback: function(response) {
 					var VidyoApplicationObj = (response.VidyoApplication) ? objects[response.VidyoApplication.objId] : null;
 					var versionObj = response.version;
@@ -28342,6 +28638,20 @@ var VidyoClientLib;
 						window.console && window.console.error && window.console.error(e);
 					} finally {
 						return GetRequest("VidyoEndpointOnGetActiveNetworkInterfaceComplete?" + vcUtilsParam({ e: response.VidyoEndpoint ? response.VidyoEndpoint.objId : 0, signalingInterface: response.VidyoNetworkInterface ? response.VidyoNetworkInterface.objId : 0, mediaInterface: response.VidyoNetworkInterface ? response.VidyoNetworkInterface.objId : 0 }), function(){}, function(){});
+					}
+				},
+				VidyoEndpointOnGetAnalyticsData: function(response) {
+					var VidyoEndpointObj = (response.VidyoEndpoint) ? objects[response.VidyoEndpoint.objId] : null;
+					var serviceTypeObj = response.serviceType;
+					var serverUrlObj = response.serverUrl;
+					var trackingIDObj = response.trackingID;
+					try {
+						if (VidyoEndpointObj && VidyoEndpointObj.VidyoEndpointOnGetAnalyticsData)
+							VidyoEndpointObj.VidyoEndpointOnGetAnalyticsData(serviceTypeObj,serverUrlObj,trackingIDObj);
+					} catch(e) {
+						window.console && window.console.error && window.console.error(e);
+					} finally {
+						return GetRequest("VidyoEndpointOnGetAnalyticsDataComplete?" + vcUtilsParam({ e: response.VidyoEndpoint ? response.VidyoEndpoint.objId : 0 }), function(){}, function(){});
 					}
 				},
 				VidyoEndpointOnGetAnalyticsEventTable: function(response) {
