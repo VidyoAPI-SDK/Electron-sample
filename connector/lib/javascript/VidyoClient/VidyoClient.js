@@ -3,8 +3,8 @@ var VC = {};
 var VCUtils = {};
 
 function VidyoClientInitialize($) {
-	VCUtils.version = "22.4.0.6";
-	VCUtils.versionWithoutBuildNumber = "22.4.0";
+	VCUtils.version = "22.3.0.6";
+	VCUtils.versionWithoutBuildNumber = "22.3.0";
 	VCUtils.mimeType = "application/x-vidyoclientplugin-" + VCUtils.version;
 	/* jQuery local namespace */
 	VCUtils.jQuery = $;

@@ -77,7 +77,8 @@ let endPointStats = {};
 let logFileFilter = {
     production:"warning info@VidyoClient info@VidyoConnector info@VidyoNetworkService info@LmiPortalSession info@LmiPortalMembership info@LmiResourceManagerUpdates info@LmiPace info@LmiAudioProcessing",
     debug:"warning debug@VidyoClient debug@VidyoConnector info@VidyoNetworkService info@LmiAudioProcessing all@LmiPortalSession all@LmiPortalMembership debug@LmiResourceManager info@LmiResourceManagerUpdates info@LmiPace all@LmiIce all@LmiSignaling",
-    advanced:""
+    advanced:"",
+    enableDebugFilters : "warning debug@VidyoClient debug@VidyoConnector info@VidyoNetworkService info@LmiAudioProcessing all@LmiPortalSession all@LmiPortalMembership debug@LmiResourceManager info@LmiResourceManagerUpdates info@LmiResourceManagerPACE all@LmiIce all@LmiSignaling info@VidyoCameraEffect"
 }
 let minRoomPin =4;
 let maxRoomPin = 12;
@@ -914,13 +915,11 @@ SetMaxReceiveBitRate =(value)=>{
     });;
 }
 
-setMaxConstraintForCamera = (maxHeight , maxWidth) =>{
-
+setMaxConstraintForCamera = (maxHeight , maxWidth , framesPerSecond) =>{
+    let fps = !framesPerSecond ? 0 : 1000000000 / framesPerSecond;
     // frame interval set to 0 for setting max possible frame rate
-    selectedCamera.SetMaxConstraint({width:maxWidth , height : maxHeight , frameInterval: 0}).then((status)=>{
-        if(status){
-       
-        }else{
+    selectedCamera.SetMaxConstraint({width:maxWidth , height : maxHeight , frameInterval:fps}).then((status)=>{
+        if(!status){
             console.error("Max constraint set for camera failed") 
         }
     })
@@ -2468,7 +2467,7 @@ const getInstantCallData = () => {
 }
 
 function EnableDebugSDK(){
-    vidyoConnector.EnableDebug(7776,"Debug");   
+    vidyoConnector.EnableDebug(7776,logFileFilter.enableDebugFilters);   
 }
 function DisableDebugSDK(){
     vidyoConnector.DisableDebug();
@@ -2509,4 +2508,12 @@ async function CameraControlPTZStart(camera,direction) {
 async function CameraControlPTZStop(camera) {
     let status = await camera.ControlPTZStop();
     return status;
+}
+
+async function GetSDKVersion(onGetVersion){
+    vidyoConnector.GetVersion().then(res=>{
+        onGetVersion(res);
+    }).catch(e=>{
+        console.error('GetSDKVersion Error: ', e);
+    })
 }

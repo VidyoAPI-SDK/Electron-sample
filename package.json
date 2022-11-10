@@ -5,8 +5,6 @@
   "description": "Multiparty HD Video Conferencing using Vidyo.io",
   "main": "main.js",
   "scripts": {
-    "load-sdk-win": "node win_build_dependencies.js",
-    "load-sdk-mac": "node mac_build_dependencies.js",
     "start": "electron .",
     "compile:windows": "node-gyp rebuild --target=14.2.9 --arch=x64 --dist-url=https://atom.io/download/electron -msvs_version=2017",
     "compile:darwin": "node-gyp rebuild --target=14.2.9 --arch=$npm_config_arch --dist-url=https://atom.io/download/electron",

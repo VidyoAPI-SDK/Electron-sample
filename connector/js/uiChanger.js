@@ -12,6 +12,7 @@ let chatWindowPage = "";
 let currentShareContentObjId = "";
 let currentShareContentApplicationName = "";
 let lastSetCameraResolution = {};
+let lastSetCameraFPS = null;
 let openningModeratorUI = false;
 
 let analyticsEnabled = false;
@@ -125,6 +126,14 @@ const overlayContentBounds = [
             width:190,
             height:600
         }
+    },
+    {
+        component:'inviteContent',
+        anchor:'#invite-info-popup',
+        bounds:{
+            width:580,
+            height:700
+        }
     }
 ]
 
@@ -136,6 +145,7 @@ let viewModeOptions = {
 let feccControlOptions ={
     allowed:true,
 }
+let invitedParticipantList = [];
 function changeToSignInUI(){
     toggleNavView("guest")
     document.getElementById("joinCallcontent").classList.add("hidden")
@@ -254,6 +264,12 @@ const settingDefaultsGeneralSettings = (params) => {
 const toggleDebugModeUi = (debugMode) => {
     $("#toggleDebugMode").prop("checked", debugMode);
     $('.toggle-debug-mode span').text(debugMode ? "Enabled" : "Disabled");
+    if(debugMode){
+        $("#btnSeeVidyoLogger").show();
+    }
+    else{
+        $("#btnSeeVidyoLogger").hide();
+    }
 };
 
 const networkDefaults = () => {
@@ -328,6 +344,12 @@ function registerGeneralSettingsClickEvent(){
        else{
           disableDebugMode();
        }
+    });
+
+    $("#btnSeeVidyoLogger").on("click",function(e){
+        e.preventDefault();
+        const link = $(this).val()
+        electron.shell.openExternal(link);
     });
 }
 
@@ -982,7 +1004,8 @@ function registerModeratorUIEvents(){
         $('.vidyoConnecto-popup').removeClass('popup-hide');
         registerRaisedPopUpClickEvent();
     });
-    $('.addParticipantLink').on('click',onClickAddParicipant);
+   // $('.addParticipantLink').on('click',onClickAddParicipant);
+   $('#btnInviteParticipant').on('click',onClickAddParicipant);
 
     $(document).on("click", "#start-record", function () {
         prefix = $("input[name='radio_2']:checked").val();
@@ -1134,7 +1157,9 @@ function renderRecordingUI(recordingList) {
         $(".recording-detail").css("display", "inline-block");
         $(".recording-control").css("display", "inline-block");
         recordingList.forEach(function (item, index, array) {
-            $(".recording-detail .leftBody").append($(renderRecordingListItem(item.profile , item.prefix)));
+            $(".recording-detail .leftBody").append(
+              $(renderRecordingListItem(item.profile, item.prefix, index))
+            );
         });
     } else {
         $(".recording-detail").css("display", "none");
@@ -1142,11 +1167,13 @@ function renderRecordingUI(recordingList) {
     }
 }
 
-function renderRecordingListItem (profileName , prefix){
-    return `<label class="radioButton">`+profileName+`
-    <input type="radio" checked="checked" name="radio_2" value = "`+prefix+`">
+function renderRecordingListItem(profileName, prefix, i) {
+  return `<label class="radioButton">${profileName}
+    <input type="radio" ${
+      i === 0 ? 'checked="checked"' : ""
+    }  name="radio_2" value ="${prefix}">
     <span class="RadioCheckmark"></span>
-    </label>`
+    </label>`;
 }
 
 function renderModerationParticipantList(){
@@ -1580,6 +1607,7 @@ function registerEventForInCallScreen(){
             initOverlay('selectView',viewModeOptions);
         }
     })
+
 }
 
 
@@ -1878,6 +1906,11 @@ function intilizeUIEventRegistration(){
      return /[a-z, ]/i.test(event.key)
    })
 
+   $("#invite-info-popup").on("click", function () {
+     if (!isOverlayOpen) {
+       initOverlay("inviteContent", { ...instantCallData });
+     }
+   });
    
    
 }
@@ -2297,15 +2330,20 @@ const displayFramerate = val => {
         const fps = nanoSecond / cameraCapablitiesData.ranges[i].range.end;
         addCameraFPSToUI(fps);
     }
-    if(cameraCapablitiesData.ranges.length >1)
+    if(lastSetCameraFPS != null){
+        $('#cameras_fps option[value="' + lastSetCameraFPS + '"]').prop('selected', true);
+        return;
+    }
+    if( cameraCapablitiesData.ranges.length >1)
     {
         const fpsList = cameraCapablitiesData.ranges.map(r=>{
             return nanoSecond / r.range.end 
         })
         MAX_FPS  = Math.max(...fpsList);
         MAX_FPS = Math.round(MAX_FPS);
-        $('#cameras_fps option[value="' + MAX_FPS + '"]').prop('selected', true);
+       $('#cameras_fps option[value="' + MAX_FPS + '"]').prop('selected', true);
     }
+    
 };
 
 const addDataToAudioVideoSettingPage = () => {
@@ -2398,13 +2436,14 @@ const registerEventForAudioVideoSettingPage = () => {
     // Hook up camera resoselector functions for each of the available cameras
     $("#cameras_resolution").change(function () {
         // Camera selected from the drop-down menu
-        $("#cameras_resolution option:selected").each(function () {
-            displayFramerate(currentSelectedCameraCapabities[$(this).val()]);
-            const {width,height} = cameraCapablitiesData;
-            setLocalCameraCapabilitesFromSDK(height , width);
-            lastSetCameraResolution = {width,height};
-       });
+        var res  = $("#cameras_resolution").val();
+        onChangeCameraResolution(res)
     });
+
+    $("#cameras_fps").change(function(){
+        var fps = $(this).val();
+        onChangeCameraFPS(fps)
+    })
 
     // Hook up microphone selector functions for each of the available microphones
     $("#microphones").change(function () {
@@ -2472,6 +2511,18 @@ const registerEventForAudioVideoSettingPage = () => {
         AllowRemoteCameraControl(allowRemoteCameraControl)
     });
 }
+
+const onChangeCameraResolution = (resolution) => { 
+    displayFramerate(currentSelectedCameraCapabities[resolution]);
+    const {width,height} = cameraCapablitiesData;
+    setLocalCameraCapabilitesFromSDK(height , width);
+    lastSetCameraResolution = {width,height};
+}
+const onChangeCameraFPS = (selectedFPS) => { 
+    const {width,height} = lastSetCameraResolution;
+    setLocalCameraCapabilitesFromSDK(height , width ,selectedFPS);
+    lastSetCameraFPS = selectedFPS;
+ }
 
 const showMessageForAudioOnlyMode = (r) => {
     if(r<1){
@@ -2655,7 +2706,7 @@ const switchToLoginUI = ()=>{
         spk_elem.src = SPEAKER_UNMUTED;
         onSpeakerUnMuteClick();
     }
-    
+    $("#invite-info-popup").hide();
 }
 
 const switchToInCallUI = ()=>{
@@ -3060,6 +3111,7 @@ function renderUserSearchResult(usersData)
     $('.invitedParticipantContainer').remove();
     for(let index in usersData)
     {
+        const alreadyInvited  = IsInvited(usersData[index].id)
         let participantStatus = '';
         let checkboxStatus = '';
         if(usersData[index].presenceState == 'VIDYO_CONTACTINFOPRESENCESTATE_Available' )
@@ -3072,18 +3124,31 @@ function renderUserSearchResult(usersData)
         }
 
         html = `<div class="inviteParticipantItem invitedParticipantContainer ${participantStatus}">
-            <div>${usersData[index].name}</div>
-            <div>${participantStatus}</div>
-            <div>
+            <div class="invite-col-name">${usersData[index].name}</div>
+            <div class="invite-col-status">${participantStatus}</div>
+            
+            <div class="invite-col-check">
                 <label class="checkBox">
                     <input name="invite_participant_list" type="checkbox" ${checkboxStatus} value="${index}" />
                     <span class="checkmark"></span>
                 </label>
             </div>
+            <div class="invite-col-sent">
+            ${alreadyInvited?'Invite Sent':''}
+            </div>
+
+           
+
         </div>`;
         $('.inviteParticipantList').append(html);
     }
 }
+
+const IsInvited = (userId) => { 
+   return invitedParticipantList.filter(item=> {
+        return item.id === userId
+    }).length
+ }
 
 function addInviteList(inviteeIdObj)
 {
@@ -3093,34 +3158,54 @@ function addInviteList(inviteeIdObj)
         if(contactsObjList[index].id == inviteeIdObj)
         {
             inviteParticipantCount+=1;
-            const div1 = $("<div>",{class:"participantListItem"});
-            const div2 = $("<div>",{class:"participantName", html:contactsObjList[index].name});
-            const div3 = $("<div>",{class:"participantRemove"});
-            const div4 = $("<div>",{class:"icon" });
-            const icon = $("<i>",{class:"fa-close-gray inviteParticipantClose", title:"Remove"});
-            icon.attr("id" , `remove-invite-${contactsObjList[index].id}`)
-            icon.on("click",function(){
-                let inviteCount = $('.inviteesCount').text();
-                if(inviteCount > 0){
-                    inviteCount -=1;
-                    $('.inviteesCount').text(inviteCount);
-                }
-                $(this).parents('.participantListItem').remove();
-            })
-            div4.append(icon)
-            div3.append(div4)
-            div1.append(div2,div3);
-            $('.addParticipant .invitedParticipantlistContainer').append(div1);
+            const invitedParticipant ={
+                name:contactsObjList[index].name,
+                id:contactsObjList[index].id
+            }
+            if(!IsInvited(invitedParticipant.id)){
+                addInviteListItem(invitedParticipant);
+                updateCallInvitedList({...invitedParticipant});
+            }
+            
         }
     }
-    if(inviteParticipantCount > 0){
-        $('.addParticipant').removeClass('popup-hide');
-        $('.inviteesCount').text(inviteParticipantCount);
-        $('.addParticipant.addParticipantLink').remove();
-    }
-
     closeInvitePopup();
 }
+
+const addInviteListItem = (inviteDetails) => { 
+
+    const wrapper = $("<div>",{class:"invitedParticipant"});
+    const name = $("<div>",{class:"name", html:inviteDetails.name});
+    const removeCta = $("<div>",{class:"remove-cta", html:"&times;" });
+    wrapper.attr("data-pid",inviteDetails.id)
+    wrapper.append(name,removeCta);
+    removeCta.on("click",function(){
+        const userId = $(this).parent(".invitedParticipant").attr("data-pid");
+        updateCallInvitedList({id:userId},true);
+        $(this).parent(".invitedParticipant").remove();
+    })
+    $("#invitedParticipantList").append(wrapper);
+    
+}
+
+ const updateCallInvitedList = (participantObject, isRemove) => {
+   if (!isRemove) {
+    invitedParticipantList.push(participantObject);
+   } else {
+     var filterdList = invitedParticipantList.filter((item) => {
+       return item.id !== participantObject.id;
+     });
+     invitedParticipantList = [...filterdList];
+   }
+   $("#invitedParticipantCount").text(invitedParticipantList.length)
+ };
+
+ const RepaintInvitedList = () => { 
+    invitedParticipantList.forEach(item=>{
+        addInviteListItem(item);
+    })
+    $("#invitedParticipantCount").text(invitedParticipantList.length)
+ }
 
 function registerInviteParticipantPopupUIEvents()
 {
@@ -3608,7 +3693,18 @@ function onHideValidationPinMsg() {
     $('#moderatorPINrequestID').val("");
     $('.moderator-pin-validation-warning').hide();
 }
-
+// About setting page
+const RegisterAboutEvents = () => { 
+    $("#settingClose").on("click",onCloseSetting);
+    $("#btnGitHub, #btnDocs").on("click",function(e){
+        e.preventDefault();
+        const link = $(this).val();
+        electron.shell.openExternal(link);
+    })
+ }
+const updateSDKVersion = (version) => { 
+    $("#sdk-version").text(version)
+ }
 function updateRecordingStatus(status) {
     switch(status)
     {
@@ -3770,30 +3866,12 @@ const startCallHandler = () => {
     $("#roompin").val(roomPin);
 
     $("#joincallid").trigger("click");
-    createBrowserWindow("connector/welcome_message.html");
+    $("#invite-info-popup").show();
+    if(!isOverlayOpen){
+        initOverlay('inviteContent',{...instantCallData});
+    }
   }
-
- function createBrowserWindow(url) {
-    const remote = GetElectronRemoteModule();
-    const BrowserWindow = remote.BrowserWindow;
-    const win = new BrowserWindow({
-      height: 420,
-      width: 620,
-      minimizable:false,
-      maximizable:false,
-      resizable:false,
-      autoHideMenuBar: true,
-      fullScreenable:false,
-      fullscreen: false,
-    });
-    win.loadFile(url, {query:{
-    "extension":instantCallData.extension, 
-    "roomPin":instantCallData.roomPin, 
-    "joinLink":instantCallData.joinLink,
-    "inviteContent":instantCallData.inviteContent    
-}});
-  }
-
+  
   const getProtocolHandlerFlags = (protocolHandlerLink) => {
     const params = new URLSearchParams(protocolHandlerLink);
     const portal = params.has("portal") ? params.get("portal") : null;
