@@ -1,4 +1,4 @@
-﻿
+﻿﻿
 # VidyoConnector Electron Sample 
 
 ## Architecture Overview
