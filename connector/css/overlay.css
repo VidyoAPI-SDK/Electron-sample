@@ -127,52 +127,13 @@ ul {
 
 #camera-control-wrapper{
     width:168px;
-    height:248px;
+    height:208px;
     border-radius:8px;
     background:#253140;
     padding:0px 0px 0px 0px;
     margin:0px 0px 0px 0px;
     user-select: none;
-  }
-
-  #camera-control-wrapper > #tab-bar{
-
-    flex-direction:row;
-    background:#485B73;
-
-    height:32px;
-    width:100%;
-    display:flex;
-    justify-content:strech;
-    align-items:center;
-    border-radius:8px 8px 0 0;
-    padding:0px 0px 0px 0px;
-    margin:0px 0px 0px 0px;
-  }
-  
-  #camera-control-wrapper > #tab-bar > .tab{
-  width: 50%;
-    font-size:11px;
-    color:#fff;
-    text-align:center;
-     height:32px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    cursor:pointer;
-  }
-  
-  #camera-control-wrapper > #tab-bar > .tab:nth-child(1){
-    border-radius:8px 0 0 0 ;
-  }
-  
-  #camera-control-wrapper > #tab-bar > .tab:nth-child(2){
-    border-radius:0 8px 0 0 ;
-  }
-  #camera-control-wrapper > #tab-bar > .tab.active{
-    background:#253140;
-    cursor:default;
-  }
+  }  
   
   #manual-control {
     padding:16px; 
@@ -279,4 +240,75 @@ ul {
   }
 .hidden{
     display: none;
+}
+
+#invite-content-wrapper{
+  width:500px;
+  border-radius:8px;
+  background:#253140;
+  padding:16px;
+  box-sizing: border-box;
+  margin:0px 0px 0px 0px;
+  user-select: none;
+
+}
+#invite-content-wrapper > #logo {
+  width:100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;;
+}
+#invite-content-wrapper > #logo > img{
+  width:80px;
+  margin:0px auto;
+}
+
+#invite-content-wrapper > #heading{
+  font-size:24px;
+  font-weight: bold;
+  color:#fff;
+  text-align: center;
+  margin-bottom: 16px;;
+}
+
+#invite-content-wrapper > #invite-content{
+  font-size:14px;
+color:#fff;
+line-height: 150%;;
+text-align: left;
+margin-bottom: 16px;;
+}
+
+#invite-content-wrapper >  #join-link-wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding:8px;
+  box-sizing: border-box;;
+  border-radius: 4px;;
+  background:#121B26;
+}
+#invite-content-wrapper >  #join-link-wrapper > #caption{
+  font-size:12px;
+  color:#fff;
+  margin-bottom: 8px;;
+}
+#invite-content-wrapper >  #join-link-wrapper > #join-link{
+  font-size:16px;
+  color:#97C93D;
+  margin-bottom: 8px;;
+}
+
+#invite-content-wrapper >  #join-link-wrapper > #copy-link > button{
+ 
+  border:none;
+  background:none;
+  color:#fff;
+  border:solid 1px #ccc;
+  border-radius: 4px;;
+  cursor: pointer;
+  box-sizing: border-box;
+  margin-bottom: none;;
 }
