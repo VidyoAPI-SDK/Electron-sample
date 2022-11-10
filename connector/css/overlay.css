@@ -249,7 +249,6 @@ ul {
   padding:16px;
   box-sizing: border-box;
   margin:0px 0px 0px 0px;
-  user-select: none;
 
 }
 #invite-content-wrapper > #logo {
@@ -273,11 +272,12 @@ ul {
 }
 
 #invite-content-wrapper > #invite-content{
-  font-size:14px;
+  font-size:16px;
 color:#fff;
-line-height: 150%;;
+line-height: 130%;;
 text-align: left;
 margin-bottom: 16px;;
+white-space: pre-wrap;
 }
 
 #invite-content-wrapper >  #join-link-wrapper{

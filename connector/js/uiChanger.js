@@ -131,8 +131,8 @@ const overlayContentBounds = [
         component:'inviteContent',
         anchor:'#invite-info-popup',
         bounds:{
-            width:520,
-            height:520
+            width:580,
+            height:700
         }
     }
 ]
