@@ -1,7 +1,7 @@
 const fs = require("fs-extra");
 
 module.exports.clean = ()=> {
-    const exceptedFiles = ['package.json', 'package-lock.json']
+    const exceptedFiles = ['package.json', 'package-lock.json','README.md']
     const gitRepoPath = './git_repo/';
     try {
         exceptedFiles.forEach(file => {
