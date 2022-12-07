@@ -117,23 +117,7 @@
     {
         "target_name": "post_build",
         "type": "none",
-        "conditions": [
-         ['OS=="win"', {
-              "actions": [
-                      {
-                   'variables': {
-                         'source_dir' : '<(module_root_dir)\\VidyoClient-WinVS2017SDK\\lib\\windows\\resources\\Banuba',
-                         'dest_dir' : '<(module_root_dir)\\connector\\banuba_effects_and_resources',
-                     },
-                    "action_name": "post_build_event",
-                    "message": "Copy Banuba effects and resources to connector folder..",
-                    "inputs": [""],
-                    "outputs": [""],
-                    "action": ['python', '.\setup\copy-bnb.py' ,'<(source_dir)' , '<(dest_dir)' ],
-                 },
-               ],
-           }],
-        ],
+        "conditions": [],
     }
   ]
 }

@@ -15,7 +15,7 @@ Electron Sample built upon multiple components. When you install the Electron Sa
 
 |Component|Windows|Mac OS|
 |---------------|-------|:------|
-|Node JS (Version 14.18.2)|[Download](https://nodejs.org/download/release/v14.18.2/node-v14.18.2-x64.msi)|[Download](https://nodejs.org/download/release/v14.18.2/node-v14.18.2.pkg)|
+|Node JS (Version 14 or above)|[Download](https://nodejs.org/dist/v18.12.1/node-v18.12.1-x64.msi)|[Download](https://nodejs.org/dist/v18.12.1/node-v18.12.1-x64.msi)|
 |Python (Version 3.7.9)|[Download](https://www.python.org/ftp/python/3.7.9/python-3.7.9-amd64.exe)|[Download](https://www.python.org/ftp/python/3.7.9/python-3.7.9-macosx10.9.pkg)|
 |Microsoft Visual Studio build tools (2017)|[Download](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=16)|NA|
 |Git Bash (Optional)|[Download](https://git-scm.com/downloads)|`brew install git`|
