@@ -203,14 +203,14 @@ const ResizeOverlay = (location) => {
   const [x, y] = mainWindow.getPosition();
   if (process.platform == "win32") {
     videoOverlay.setBounds({
-      x: x + left + 20,
+      x: (x + left + 20) < 100 ? 100 : x + left + 20, // Screen edge detection
       y: y + top ,
       width: width,
       height: height,
     });
   } else {
     videoOverlay.setBounds({
-      x: x + left + 4,
+      x: (x + left + 4 ) < 100 ? 100 : x + left + 4,
       y: y + top - 16,
       width: width,
       height: height,

@@ -6,13 +6,18 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "compile:windows": "node-gyp rebuild --target=14.2.9 --arch=x64 --dist-url=https://atom.io/download/electron -msvs_version=2017",
-    "compile:darwin": "node-gyp rebuild --target=14.2.9 --arch=$npm_config_arch --dist-url=https://atom.io/download/electron",
+    "compile:windows": "electron-rebuild",
+    "compile:darwin": "electron-rebuild",
     "compile": "run-script-os",
     "download-sdk-bundle": "node ./setup/",
-    "install-with-compile": "npm run download-sdk-bundle && npm run compile",
+    "install-with-compile": "npm run download-sdk-bundle && npm run compile && npm run copy_banuba_res_files",
     "preinstall": "echo \" Starting installation.. it may take few minutes. \" ",
-    "postinstall": "npm run install-with-compile"
+    "postinstall": "npm run install-with-compile",
+    "copy_bnb_effects": "copyfiles -u 5 \"./VidyoClient-WinVS2017SDK/lib/windows/resources/Banuba/effects/**\" \"connector/banuba_effects_and_resources\"",
+    "copy_bnb_res": "copyfiles -u 5 \"./VidyoClient-WinVS2017SDK/lib/windows/resources/Banuba/bnb-resources/**\" \"connector/banuba_effects_and_resources\"",
+    "copy_banuba_res_files": "run-script-os",
+    "copy_banuba_res_files:windows": "npm run copy_bnb_effects && npm run copy_bnb_res",
+    "copy_banuba_res_files:darwin": ""
   },
   "keywords": [
     "Electron",
@@ -22,10 +27,11 @@
   ],
   "author": "Vidyo",
   "devDependencies": {
+    "@electron/rebuild": "^3.2.10",
     "copyfiles": "^2.4.1",
-    "electron": "^14.0.0",
+    "electron": "^18.3.7",
     "fs-extra": "^10.0.1",
-    "node-gyp": "^3.8.0"
+    "node-gyp": "^9.3.0"
   },
   "dependencies": {
     "@electron/remote": "^2.0.1",
