@@ -54,3 +54,8 @@ Electron Sample built upon multiple components. When you install the Electron Sa
 <br><br>
 #### If you don't see the self preview you have to check for errors in the *Developer Tools*
 ![img](connector/images/img-dev-console.png?raw=true "Opening Developer Console") 
+
+### Last updated on
+|Version|Date|
+|--------|----|
+|22.6.0|14th Feb 2023|
