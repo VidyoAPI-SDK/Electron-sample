@@ -1,4 +1,5 @@
 require("dotenv").config();
+const os = require("os");
 const electron = require('electron')
 const checkIfRemoteModuleDeprecated = () => {
   const electronVersion = process.versions.electron.toString();
@@ -98,8 +99,9 @@ function createWindow () {
 
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.webContents.send('vidyo-join-link', deeplinkingUrl)
-    if(process.platfrom  === 'darwin'){
-      mainWindow.webContents.send('log-path', app.getPath('userData'))
+    if(os.platform() === "darwin"){
+      const LOG_PATH = app.getPath('userData').toString()+ "/";
+      mainWindow.webContents.send('log-path', LOG_PATH )
     }
   })
 
