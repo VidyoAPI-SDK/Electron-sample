@@ -25,8 +25,10 @@ Electron Sample built upon multiple components. When you install the Electron Sa
 <br>
 
 #### Microsoft Build Tools are required to be configured with Node JS to be able to compile the NodeJs Native Runtime Add-on in *Windows*
+Based on the Microsoft Visual Studio that is installed on your machine, you can set the NodeJS configurations for compiling.
+Following is the example to set 2017 version :-
 #### `npm config set msvs_version 2017`
-#### ```npm config set msbuild_path "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe```
+#### ```npm config set msbuild_path "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe```
 
  <br>
 
