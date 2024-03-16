@@ -17,7 +17,7 @@ Electron Sample built upon multiple components. When you install the Electron Sa
 |---------------|-------|:------|
 |Node JS (Version 14 or above)|[Download](https://nodejs.org/dist/v18.12.1/node-v18.12.1-x64.msi)|[Download](https://nodejs.org/dist/v18.12.1/node-v18.12.1-x64.msi)|
 |Python (Version 3.7.9)|[Download](https://www.python.org/ftp/python/3.7.9/python-3.7.9-amd64.exe)|[Download](https://www.python.org/ftp/python/3.7.9/python-3.7.9-macosx10.9.pkg)|
-|Microsoft Visual Studio build tools (2017)|[Download](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=16)|NA|
+|Microsoft Visual Studio build tools (2019)|[Download](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=16)|NA|
 |Git Bash (Optional)|[Download](https://git-scm.com/downloads)|`brew install git`|
 |node-gyp (NPM Package)|`npm install -g node-gyp`|`npm install -g node-gyp`|
 
@@ -25,8 +25,8 @@ Electron Sample built upon multiple components. When you install the Electron Sa
 <br>
 
 #### Microsoft Build Tools are required to be configured with Node JS to be able to compile the NodeJs Native Runtime Add-on in *Windows*
-#### `npm config set msvs_version 2017`
-#### ```npm config set msbuild_path "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe```
+#### `npm config set msvs_version 2019`
+#### ```npm config set msbuild_path "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe"```
 
  <br>
 
