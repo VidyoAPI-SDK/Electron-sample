@@ -1592,23 +1592,10 @@ const onLogLevelChange = async (value)=>{
     }
 }
 
-const onApplyLogLevel = async (value)=>{
-    const v =  value;
-    if(!v){
-        alert("invalid case log select option is null")
-        return;
-    }
-    if("Production" === v || "Debug" === v)
-    {
-        const r = await SetLogLevel(v)
-    }else if("Advanced" === v)
-    {
-     
-       
-    } else{
-    }
-
-}
+const onApplyLogLevel = async (logLevel) => {
+  const level = GetSDKLogLevels(logLevel);
+  const r = await SetLogLevel(level);
+};
 
 const displyaLogEvents = async (filterKeys,renderMethod) => { 
     await RegisterLogEventListener(renderMethod,filterKeys)

@@ -1826,7 +1826,7 @@ function registerLogSettingclickEvent(){
             alert("invalid case log select option is null")
             return;
         }
-        onApplyLogLevel(value);
+        onApplyLogLevel(value.toString().toLowerCase());
     }
     document.getElementsByClassName("log-display")[0].onclick = function (){
         const logLevel = $("#logLevelSelect").val().toLowerCase();

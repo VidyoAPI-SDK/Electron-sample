@@ -2299,22 +2299,48 @@ async function UnRegisterLogEventListener(){
        const status =  await vidyoConnector.UnregisterLogEventListener();
 }
 
-async function SetAdvanceLogOptions(logFileFilter)
-{
-    const status = await vidyoConnector.SetAdvancedLogOptions({'advancedLogFilter':logFileFilter});
-    if(status)
-    {
-        logFileFilter.advanced = logFileFilter;
-        logLevel_ = 'Advanced';//save set level
-    } 
-    return status;
-    
+
+
+const GetSDKLoggerType = (type) => {
+  const loggerTypes = {
+    console: "VIDYO_CONNECTORLOGGERTYPE_CONSOLE",
+    file: "VIDYO_CONNECTORLOGGERTYPE_FILE",
+    feedback: "VIDYO_CONNECTORLOGGERTYPE_FEEDBACK",
+    http: "VIDYO_CONNECTORLOGGERTYPE_HTTP",
+  };
+  return loggerTypes[type];
+};
+const GetSDKLogLevels = (level='invalid') => {
+  const logLevels = {
+    production: "VIDYO_CONNECTORLOGLEVEL_PRODUCTION",
+    debug: "VIDYO_CONNECTORLOGLEVEL_DEBUG",
+    invalid: "VIDYO_CONNECTORLOGLEVEL_INVALID",
+  };
+  return logLevels[level];
+};
+
+async function SetAdvanceLogOptions(logFileFilter) {
+  const advancedLogOptions = {
+    loggerType:GetSDKLoggerType('console'),
+    advancedLogFilter: logFileFilter,
+  };
+  console.log('>>',advancedLogOptions)
+  const status = await vidyoConnector.SetAdvancedLogOptions(advancedLogOptions);
+  console.log('>>>',status)
+  if (status) {
+    logFileFilter.advanced = logFileFilter;
+    logLevel_ = "Advanced"; //save set level
+  }
+  return status;
 }
 
 async function SetLogLevel(level){
     logLevel_ = level;//save set level
-  
-    const status = await vidyoConnector.SetLogLevel(level)
+    const logLevelOptions = {
+        loggerType:GetSDKLoggerType('console'),
+        logLevel:level
+    }
+    const status = await vidyoConnector.SetLogLevel(logLevelOptions)
     return status;
 }
 

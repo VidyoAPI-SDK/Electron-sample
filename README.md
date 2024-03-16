@@ -58,4 +58,4 @@ Electron Sample built upon multiple components. When you install the Electron Sa
 ### Last updated on
 |Version|Date|
 |--------|----|
-|22.6.1|14th Feb 2023|
+|23.1.1|30th Oct 2023|
