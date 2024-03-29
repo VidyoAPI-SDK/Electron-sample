@@ -11,12 +11,13 @@ Above mentioned diagram shows the flow and usage of different components in the 
 
 ## Installing Pre-requisites :rocket: 
 
-Electron Sample built upon multiple components. When you install the Electron Sample Node JS application it compiles a NodeJs Runtime Addon using VidyoSDK, which requires NodeJS, node-gyp, Python and Microsoft Build Tools to compile.
+Electron Sample built upon multiple components. When you install the Electron Sample Node JS application it compiles a NodeJs Runtime Addon using VidyoSDK, which requires NodeJS, node-gyp, Python and Microsoft Visual Studio Build Tools (2019 / 2022) to compile.
 
 |Component|Windows|Mac OS|
 |---------------|-------|:------|
 |Node JS (Version 14 or above)|[Download](https://nodejs.org/dist/v18.12.1/node-v18.12.1-x64.msi)|[Download](https://nodejs.org/dist/v18.12.1/node-v18.12.1-x64.msi)|
 |Python (Version 3.7.9)|[Download](https://www.python.org/ftp/python/3.7.9/python-3.7.9-amd64.exe)|[Download](https://www.python.org/ftp/python/3.7.9/python-3.7.9-macosx10.9.pkg)|
+|Setuptools|pip3 install setuptools||
 |Microsoft Visual Studio build tools (2019)|[Download](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=16)|NA|
 |Git Bash (Optional)|[Download](https://git-scm.com/downloads)|`brew install git`|
 |node-gyp (NPM Package)|`npm install -g node-gyp`|`npm install -g node-gyp`|
