@@ -176,7 +176,7 @@ async function startVidyoConnector(VC, useTranscodingWebRTC, performMonitorShare
     });
     
     // check if QA id to be set.
-    if(GetDefaultGATrackingID() !== ''){
+    if(GetDefaultGA4Options().id !== ''){
         enableDefaultGoogleAnalytics();
     }
     //TODO: check load callback and success of above function call
@@ -842,11 +842,11 @@ SetAudioMaxBoostFromSDK = (value) => {
 
 enableDefaultGoogleAnalytics = () => {
     let optionItem = {
-        "googleAnalyticsDefaultId": GetDefaultGATrackingID(),
+        "GoogleAnalyticsData": GetDefaultGA4Options(),
     };
     vidyoConnector.SetOptions({ options: JSON.stringify(optionItem) }).then((status) => {
         if (status) {
-            console.log("googleAnalyticsDefaultId status", optionItem);
+            console.log("GA4 googleAnalyticsDefaultId status", optionItem);
         }
 
     });
@@ -854,7 +854,21 @@ enableDefaultGoogleAnalytics = () => {
 
 const GetDefaultGATrackingID = () => { 
     return process.env.GOOGLE_ANALYTICS_TRAKINGID?process.env.GOOGLE_ANALYTICS_TRAKINGID:''
- }
+}
+
+const GetDefaultGA4Options = () => {
+  const options = {
+    id: null,
+    key: null,
+  };
+
+  if (process.env.GA4_ID && process.env.GA4_KEY) {
+    options.id = process.env.GA4_ID;
+    options.key = process.env.GA4_KEY;
+  }
+
+  return options;
+};
 
 GetWhiteListDeviceListFromSDK = async (callBack) => {
     const result = await vidyoConnector.GetWhitelistedAudioDevices({
@@ -2396,6 +2410,9 @@ AnalyticsStopFromSDK = async () => {
 const StartGoogleAnalyticsSDK = async (trackingID) => { 
     return await vidyoConnector.StartGoogleAnalyticsService(trackingID);
 }
+const StartGoogleAnalyticsGA4SDK = async (o) => { 
+    return await vidyoConnector.StartGoogleAnalyticsService({options:o});
+}
 const StopGoogleAnalyticsSDK = async () => {  
     return await vidyoConnector.StopGoogleAnalyticsService()
 }
@@ -2406,7 +2423,11 @@ const IsGoogleAnalyticsEnabledSDK = async () => {
 const GetGoogleAnalyticsServiceIDSDK = async () => { 
     return await vidyoConnector.GetGoogleAnalyticsServiceID();
 }
-
+const GetGoogleAnalyticGA4OptionsSDK = async (onGetGoogleGA4Options) => { 
+    return await vidyoConnector.GetGoogleAnalyticsOptions({
+        onGetGoogleAnalyticsOptions:onGetGoogleGA4Options
+    });
+}
 
 const StartVidyoinsightsAnalyticsSDK = async (serverURL) => { 
     return await vidyoConnector.StartInsightsService(serverURL);

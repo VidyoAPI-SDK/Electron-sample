@@ -300,7 +300,7 @@ const loadSettingData =(settingName)=>{
         case "Analytics":
             utilty.loadTempletWithClassName("right-con-section" , "analytics_services.html").then(()=>{
                 RegisterAnalyticsServicesEvents();
-                SetDefualtAnalyticsConfiguration(['service-url-google', 'service-url-vidyoinsights']);
+                SetDefualtAnalyticsConfiguration(['service-url-google-ga4', 'service-url-vidyoinsights']);
             });
             break;
         case "About":
@@ -2206,6 +2206,44 @@ const ToggleAnalyticsServices = async (options) => {
 
 };
 
+const ToggleGA4AnalyticsServices = async (payload) => {
+    const {isEnabled} = payload;
+   
+    let response ={
+        enabled:null,
+        id:null,
+        key:null
+    }
+    return new Promise(async(resolve,reject)=>{
+        if(!isEnabled){
+            var optionItems = {
+                "id":payload.id,
+                "key":payload.key
+            }
+
+            await StartGoogleAnalyticsGA4SDK(optionItems).then((result)=>{
+             response.enabled = result;
+             response.id = payload.id;
+             response.key = payload.key   
+             resolve(response);
+             }).catch((e)=>{
+                 reject(e)
+             })
+         }
+         else{
+            await StopGoogleAnalyticsSDK().then((result)=>{
+                 response.enabled = false;
+                 response.id = null;
+                 response.key = null;
+                 resolve(response);
+             }).catch(e=>{
+                 reject(e)
+             })
+         }
+    })
+};
+
+
 const CheckIfGoogleAnalyticsIsEnabled = async () => {
     let response = {
         enabled:null,
@@ -2227,6 +2265,33 @@ const CheckIfGoogleAnalyticsIsEnabled = async () => {
         })
     })
 }
+
+
+const CheckIfGoogleAnalyticsGA4IsEnabled = async () => {
+  let response = {
+    enabled: null,
+    id: null,
+    key: null,
+  };
+  return new Promise(async (resolve, reject) => {
+    await IsGoogleAnalyticsEnabledSDK().then((enabled) => {
+      response.enabled = enabled;
+      if (enabled) {
+        GetGoogleAnalyticGA4OptionsSDK(function (data) {
+          response.id = data.id;
+          response.key = data.key;
+          resolve(response);
+        }).then(function () {
+          
+        }).catch(e => {
+            reject(e)
+        })
+      } else {
+        resolve(response);
+      }
+    });
+  });
+};
 
 
 const CheckIfVidyoInsightsIsEnabled = async () => {

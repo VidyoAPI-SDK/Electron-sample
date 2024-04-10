@@ -2048,16 +2048,48 @@ const RegisterAnalyticsServicesEvents = () => {
         $(this).on("click",()=>{
             var btn = $(this);
             var serviceUrl = btn.attr("data-service-url");
-            if($(`#${serviceUrl}`).val() === "" && serviceUrl === 'service-url-vidyoinsights' ){
-                return ;
+            if(serviceUrl === 'service-url-vidyoinsights' ){
+                if($(`#${serviceUrl}`).val() === ""){
+                    return ;
+                }
+                const payload = {
+                    isEnabled:btn.hasClass('remove'),
+                    serviceType:serviceUrl,
+                    serviceUrl:$(`#${serviceUrl}`).val() 
+                }
+                ToggleAnalyticsServiceProvider(payload)
             }
-            const payload = {
-                isEnabled:btn.hasClass('remove'),
-                serviceType:serviceUrl,
-                serviceUrl:$(`#${serviceUrl}`).val() 
-            }
-            ToggleAnalyticsServiceProvider(payload)
+            else if(serviceUrl === 'service-url-google-ga4'){
+                var id = $('#ga4-id').val();
+                var key = $('#ga4-key').val()
+                if(id=="" && key==""){
+                    id = GetDefaultGA4Options().id
+                    key = GetDefaultGA4Options().key ;
+                }
+                else if(id == "" && key != ""){
+                    return;
+                }
+                else if (id != "" && key == ""){
+                    return
+                }
+                else{
 
+                }
+                const options = {
+                    isEnabled:btn.hasClass('remove'),
+                    id,
+                    key
+                }
+                
+                ToggleGA4AnalyticsServices(options).then(result=>{
+                    UpdateUIForGA4Services(result)
+                }).catch(e=>{
+                    console.error('>>> ToggleGA4AnalyticsServices',e)
+                })
+            }
+            else{
+                
+            }
         })
     })
 
@@ -2102,12 +2134,39 @@ const UpdateUIForAnalyticsServices = (serviceType,options) => {
     }
 }
 
+
+const UpdateUIForGA4Services = (options) => {
+    const {enabled, id, key} = options;
+    $(".ga4-details").prop("disabled",false);
+    $(".ga4-details").val("");
+    $(`button[data-service-url=service-url-google-ga4]`).removeClass("remove");
+    $(`button[data-service-url=service-url-google-ga4]`).text("Start");
+    $(`span[data-service='service-url-google-ga4'].active-badge`).fadeOut(200);
+    if(enabled){
+        $("#ga4-id").val(id);
+        $("#ga4-key").val(key);
+        $(".ga4-details").prop("disabled",true);
+        $(`button[data-service-url=service-url-google-ga4]`).addClass("remove");
+        $(`button[data-service-url=service-url-google-ga4]`).text("Stop");
+        $(`span[data-service='service-url-google-ga4'].active-badge`).fadeIn(400);
+    }
+   
+}
+
 const SetDefualtAnalyticsConfiguration = (checkForServices) => {
     if(checkForServices.includes('service-url-google')) {
         CheckIfGoogleAnalyticsIsEnabled().then(response=>{
             UpdateUIForAnalyticsServices('service-url-google',response)
         }).catch((e)=>{
             console.error('Error while fetching IsGoogleAnalyticsEnabledSDK')
+        })
+    }
+
+    if(checkForServices.includes('service-url-google-ga4')) {
+        CheckIfGoogleAnalyticsGA4IsEnabled().then(response=>{
+            UpdateUIForGA4Services(response)
+        }).catch(e=>{
+            console.error(e)
         })
     }
 

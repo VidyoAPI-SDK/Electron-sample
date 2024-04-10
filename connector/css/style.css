@@ -3363,7 +3363,7 @@ input[type=range] {
     margin-bottom: 8px;
 }
 
-.service-url > input{
+.service-url > input.txt-provider-url{
     width:300px;
     border:solid 1px #ccc;
     height: 32px;
@@ -3374,7 +3374,7 @@ input[type=range] {
     border-radius: 4px 0px 0px 4px;
     border-right: none;
 }
-.service-url > input:disabled{
+.service-url > input.txt-provider-url:disabled{
     background-color: #eee;
 }
 .service-url > button{
@@ -3394,6 +3394,16 @@ input[type=range] {
     border:solid 1px  rgb(203, 48, 48);
     width:100px;;
 }
+
+.service-url > #ga4-id{
+   width:120px;
+   border-radius: 4px 0px 0px 4px;
+}
+.service-url > #ga4-key{
+    width:200px;
+    border-radius: 0px 4px 4px 0px ;
+ }
+
 
 #ga-events-table{
        overflow-y: scroll;
