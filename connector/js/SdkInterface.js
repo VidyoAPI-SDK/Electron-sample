@@ -71,12 +71,12 @@ let VidyoConnectorStartParam = {
     viewerId:"renderer",
     renderLayout:"VIDYO_CONNECTORVIEWSTYLE_Default",
     remoteParticipants:8, //maximum participant to render
-    logFileFilter:"warning info@VidyoClient info@VidyoConnector info@VidyoNetworkService info@LmiPortalSession info@LmiPortalMembership info@LmiResourceManagerUpdates info@LmiPace info@LmiAudioProcessing",
+    logFileFilter:"warning info@VidyoClient info@VidyoConnector info@VidyoNetworkService info@LmiPortalSession info@LmiPortalMembership info@LmiResourceManagerUpdates info@LmiAudioProcessing",
 }
 let endPointStats = {};
 let logFileFilter = {
-    production:"warning info@VidyoClient info@VidyoConnector info@VidyoNetworkService info@LmiPortalSession info@LmiPortalMembership info@LmiResourceManagerUpdates info@LmiPace info@LmiAudioProcessing",
-    debug:"warning debug@VidyoClient debug@VidyoConnector info@VidyoNetworkService info@LmiAudioProcessing all@LmiPortalSession all@LmiPortalMembership debug@LmiResourceManager info@LmiResourceManagerUpdates info@LmiPace all@LmiIce all@LmiSignaling",
+    production:"warning info@VidyoClient info@VidyoConnector info@VidyoNetworkService info@LmiPortalSession info@LmiPortalMembership info@LmiResourceManagerUpdates info@LmiAudioProcessing",
+    debug:"warning debug@VidyoClient debug@VidyoConnector info@VidyoNetworkService info@LmiAudioProcessing all@LmiPortalSession all@LmiPortalMembership debug@LmiResourceManager info@LmiResourceManagerUpdates all@LmiIce all@LmiSignaling",
     advanced:"",
     enableDebugFilters : "warning debug@VidyoClient debug@VidyoConnector info@VidyoNetworkService info@LmiAudioProcessing all@LmiPortalSession all@LmiPortalMembership debug@LmiResourceManager info@LmiResourceManagerUpdates info@LmiResourceManagerPACE all@LmiIce all@LmiSignaling info@VidyoCameraEffect"
 }

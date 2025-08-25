@@ -29,6 +29,8 @@ const onCallDisconnectClick = ()=>{
     windowShared = null;
     monitorShared = null;
     invitedParticipantList = [];
+    isCameraHardMuted = false;
+    isMicrophoneHardMuted = false;
 }
 
 const clearAllOpenWindow =()=>{

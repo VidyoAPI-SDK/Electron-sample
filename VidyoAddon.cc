@@ -32,31 +32,22 @@ void VidyoAddonDispatch(const Nan::FunctionCallbackInfo<v8::Value>& args)
   args.GetReturnValue().Set(Nan::New(LmiStringCStr(&responseSt)).ToLocalChecked());
 }
 
-void init(v8::Local<v8::Object> exports) {
-    v8::Local<v8::Context> context = exports->CreationContext();
-
-    exports->Set(context,
+void init(v8::Local<v8::Object> exports, v8::Local<v8::Value> module, v8::Local<v8::Context> context) {
+    Nan::Set(exports,
         Nan::New("VidyoAddonInit").ToLocalChecked(),
-        Nan::New<v8::FunctionTemplate>(VidyoAddonInit)
-        ->GetFunction(context)
-        .ToLocalChecked()
+        Nan::GetFunction(Nan::New<v8::FunctionTemplate>(VidyoAddonInit)).ToLocalChecked()
     );
 
-    exports->Set(context,
+    Nan::Set(exports,
         Nan::New("VidyoAddonUninit").ToLocalChecked(),
-        Nan::New<v8::FunctionTemplate>(VidyoAddonUninit)
-        ->GetFunction(context)
-        .ToLocalChecked()
+        Nan::GetFunction(Nan::New<v8::FunctionTemplate>(VidyoAddonUninit)).ToLocalChecked()
     );
 
-    exports->Set(context,
+    Nan::Set(exports,
         Nan::New("VidyoAddonDispatch").ToLocalChecked(),
-        Nan::New<v8::FunctionTemplate>(VidyoAddonDispatch)
-        ->GetFunction(context)
-        .ToLocalChecked()
+        Nan::GetFunction(Nan::New<v8::FunctionTemplate>(VidyoAddonDispatch)).ToLocalChecked()
     );
-
 }
 
-NODE_MODULE(VidyoAddon, init)
+NODE_MODULE_CONTEXT_AWARE(VidyoAddon, init)
 
