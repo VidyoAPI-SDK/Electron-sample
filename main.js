@@ -28,8 +28,13 @@ const BrowserWindow = electron.BrowserWindow
 const path = require('path')
 const url = require('url')
 
-if( process.env.LOCAL_SDK==="1" && process.env.DEV_MODE==="Debug"){
-  process.env.VIDYO_MODULE = './build/Debug/VidyoAddon';
+if(process.env.LOCAL_SDK==="1") {
+  if(process.env.DEV_MODE==="Debug"){
+    process.env.VIDYO_MODULE = './build/Debug/VidyoAddon';
+  }
+  else if(process.env.DEV_MODE==="Release"){
+    process.env.VIDYO_MODULE = './build/Release/VidyoAddon';
+  }
 }
 
 // Keep a global reference of the window object, if you don't, the window will

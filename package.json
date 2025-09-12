@@ -7,10 +7,14 @@
   "scripts": {
     "start": "electron .",
     "compile:darwin": "electron-rebuild",
+    "compile:darwin:arm64": "electron-rebuild --verbose --arch=arm64",
+    "compile:darwin:x64": "electron-rebuild --verbose --arch=x64",
     "compile:windows": "electron-rebuild",
     "compile": "run-script-os",
     "download-sdk-bundle": "node ./setup/",
     "install-with-compile": "npm run download-sdk-bundle && npm run compile && npm run copy_banuba_res_files",
+    "install:arm64": "npm install --arch=arm64 && npm run compile:darwin:arm64",
+    "install:x64": "npm install --arch=x64 && npm run compile:darwin:x64",
     "preinstall": "echo \" Starting installation. it may take few minutes... please wait. \"",
     "postinstall": "npm run install-with-compile",
     "copy_bnb_effects": "copyfiles -u 5 \"./VidyoClient-WinVS2017SDK/lib/windows/resources/Banuba/effects/**\" \"connector/banuba_effects_and_resources\"",
@@ -27,12 +31,9 @@
   ],
   "author": "Vidyo",
   "devDependencies": {
-    "@electron/packager": "^18.3.8",
     "@electron/rebuild": "^4.0.1",
     "copyfiles": "^2.4.1",
     "electron": "^36.0.0",
-    "electron-builder": "^26.0.12",
-    "electron-installer-dmg": "^5.0.1",
     "fs-extra": "^11.3.1",
     "node-gyp": "^11.4.1"
   },

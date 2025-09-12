@@ -25,18 +25,27 @@
           "libraries": [
             "-framework CoreLocation",
             "-framework AVFoundation",
-            "<(sdk_lib_dir_mac)/libvpx.a",
-            "<(sdk_lib_dir_mac)/libspeex.a",
-            "<(sdk_lib_dir_mac)/libopus.a",
-            "<(sdk_lib_dir_mac)/libsrtp2.a",
-            "<(sdk_lib_dir_mac)/libcrypto.a",
-            "<(sdk_lib_dir_mac)/libssl.a",
-            "<(sdk_lib_dir_mac)/libVidyoClient.a",
             "-Wl",
             "-rpath <(sdk_lib_dir_mac)/Banuba",
          ],
+         # Architecture-specific framework paths
+         'conditions': [
+           ['target_arch=="arm64"', {
+             "libraries": [
+               "-F<(sdk_lib_dir_mac)/VidyoClientMacOS.xcframework/macos-arm64 -framework VidyoClientMacOS",
+               "-rpath <(sdk_lib_dir_mac)/VidyoClientMacOS.xcframework/macos-arm64",
+             ]
+           }],
+           ['target_arch=="x64"', {
+             "libraries": [
+               "-F<(sdk_lib_dir_mac)/VidyoClientMacOS.xcframework/macos-x86_64 -framework VidyoClientMacOS",
+               "-rpath <(sdk_lib_dir_mac)/VidyoClientMacOS.xcframework/macos-x86_64",
+             ]
+           }]
+         ],
           "xcode_settings": {
-            'MACOSX_DEPLOYMENT_TARGET': '10.8'
+            'MACOSX_DEPLOYMENT_TARGET': '10.8',
+            'OTHER_LDFLAGS': ['-headerpad_max_install_names']
           }
         }],
         ['OS=="win"', {
@@ -45,7 +54,7 @@
              'SDK_INCL_DIR' : '<(module_root_dir)\\VidyoClient-WinVS2017SDK\\include\\',
           },
           "copies":[
-                    { 
+                    {
                         'destination': '<(module_root_dir)/build/Release',
                         'files':[
                            "<(SDK_LIB_DIR)\\Banuba\\Release\\BNBEffectPlayerC.dll",
@@ -53,14 +62,14 @@
                            "<(module_root_dir)/concrt140.dll",
                            "<(module_root_dir)/msvcp140.dll",
                            "<(module_root_dir)/vcruntime140.dll",
-                           "<(module_root_dir)/vcruntime140_1.dll",                           
+                           "<(module_root_dir)/vcruntime140_1.dll",
                         ]
                     },
-                    { 
+                    {
                         'destination': '<(module_root_dir)',
                         'files':[
                            "<(SDK_LIB_DIR)\\Banuba\\Release\\BNBEffectPlayerC.dll",
-                           "<(SDK_LIB_DIR)\\Banuba\\OpenAL32.dll"                         
+                           "<(SDK_LIB_DIR)\\Banuba\\OpenAL32.dll"
                         ]
                     }
                 ],
@@ -97,7 +106,7 @@
                   }
               }
             },
-            'Release': {                            
+            'Release': {
               'msvs_settings': {
                 'VCLinkerTool': {
                   'AdditionalOptions': [

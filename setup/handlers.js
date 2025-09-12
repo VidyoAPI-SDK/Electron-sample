@@ -4,6 +4,7 @@ const progress = require("progress-stream");
 const fs = require("fs-extra");
 const path = require("path");
 const cliSpinners = require('cli-spinners');
+const { createBanubaSymlinks } = require('./symlink-utils');
 const BUCKET = "https://static-vidyodev-io.s3.amazonaws.com/latest/package/";
 const JSBindings = "VidyoClient-JsSDK.zip";
 let downloadCounter = 0;
@@ -32,7 +33,12 @@ const getSDKBundleByPlatform = () => {
     const files = downloadBundle.filter(function(item){
         if(platform === "darwin")
         {
-            if(arch){
+            // Determine target architecture: use npm_config_arch if specified, otherwise detect host arch
+            // Normalize x86_64 to x64 to match downloadBundle.arch values
+            const normalizedArch = arch === 'x86_64' ? 'x64' : arch;
+            const targetArch = normalizedArch || (process.arch === 'arm64' ? 'arm64' : 'x64');
+
+            if(targetArch === 'arm64'){
                 decompressedSDKDir = "VidyoClient-OSXSDK-arm64";
                 return item.platform === platform  &&  item.arch === "arm64";
             }
@@ -128,12 +134,14 @@ const cleanup = async () => {
                 throw err;
               } else {
                 console.log("Successfully renamed the directory.");
+                // Create Banuba symlinks after SDK directory is set up
+                createBanubaSymlinks();
               }
             });
        
         }
     } catch (error) {
-        console.error(err)
+        console.error(error)
     }
  }
 
